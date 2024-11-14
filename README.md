@@ -101,4 +101,4 @@ To run all tests using the default browser configuration:
 
 View report on GitHub Pages:
 
-https://artemperehonchuk.github.io/rentzila-playwright-autotests/
+https://artemperehonchuk.github.io/rentzila-playwright-team/
