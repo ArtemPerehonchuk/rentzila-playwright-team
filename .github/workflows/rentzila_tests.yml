@@ -1,0 +1,61 @@
+name: Rentzila Playwright Tests
+
+on:
+  push:
+    branches:
+      - main
+      
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    env:
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      VALID_EMAIL: ${{ secrets.VALID_EMAIL }}
+      VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+      VALID_PHONE: ${{ secrets.VALID_PHONE }}
+      CORRECT_PHONE_NUMBERS_FULL: ${{ secrets.CORRECT_PHONE_NUMBERS_FULL }}
+      CORRECT_PHONE_NUMBERS_WITHOUT_PLUS: ${{ secrets.CORRECT_PHONE_NUMBERS_WITHOUT_PLUS }}
+      CORRECT_PHONE_NUMBERS_WITHOUT_PLUS38: ${{ secrets.CORRECT_PHONE_NUMBERS_WITHOUT_PLUS38 }}
+      HOMEPAGE_URL: ${{ secrets.HOMEPAGE_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium browser only
+        run: npx playwright install chromium
+
+      - name: Run tests
+        run: npm run test:chrome -- --reporter=html
+
+      - name: Deploy report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: playwright-report  
+          publish_branch: gh-pages  
+        continue-on-error: true    
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results/
+
+      - name: Upload videos
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-videos
+          path: test-results/videos/
