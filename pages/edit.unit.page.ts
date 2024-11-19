@@ -1,5 +1,9 @@
 import { Page as PlaywrightPage, expect } from '@playwright/test';
 import Page from './page';
+import path from 'path';
+import testData from '../data/test_data.json' assert {type: 'json'};
+
+const photoFileNames = testData['photo file names']
 
 class EditUnitPage extends Page {
 
@@ -32,6 +36,33 @@ class EditUnitPage extends Page {
     mapPopUpLocation = this.page.locator('[data-testid="address"]');
     mapPopUpConfirmChoiseBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     vehicleLocation = this.page.locator('[data-testid="mapLabel"]');
+    editedUnitImageBlocks = this.page.locator('[data-testid="imageBlock"]');
+    editedUnitImages = this.page.locator('[data-testid="unitImage"]')
+    editedUnitDeleteImgIcons = this.page.locator('[data-testid="deleteImage"]');
+    editedUnitUploadFileInput = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
+    uploadPhotoErrorPopUp = this.page.locator('[data-testid="content"] > [class*="PopupLayout_header"]');
+    uploadPhotoErrorPopUpCloseButton = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    uploadTo12PhotosErrorMsg = this.page.locator('[data-testid="description"]');
+    uploadPhotoPlusIcon = this.page.locator('[data-testid="clickImage"]');
+    mainImgLable = this.page.locator('[data-testid="mainImageLabel"]');
+    editedUnitService = this.page.locator('[class*="ServicesUnitFlow_serviceText"]');
+    editedUnitServiceCloseIcon = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
+    addServiceErrorMsg = this.page.locator('[data-testid="add-info"]');
+    serviceInput = this.page.locator('[class*="ServicesUnitFlow_searchInput"] > input');
+    serviceNotFoundMsg = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    createServiceBth = this.page.locator('[data-testid="btn-addNewItem"]');
+    servicesDropDownItems = this.page.locator('[class*="ServicesUnitFlow_searchListItem"]');
+    selectPaymentMethodInput = this.page.locator('[data-testid="div_CustomSelect"]');
+    paymentMethodsDropDown = this.page.locator('[data-testid="listItems-customSelect"]');
+    paymentMethodDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
+    minOrderPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]');
+    unitPriceErrorMsg = this.page.locator('[data-testid="div_required_RowUnitPrice"]');
+    addPriceBtn = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    additionalPriceSelect = this.page.locator('[data-testid="div_CustomSelect"]');
+    additionalPriceDropDpwn = this.page.locator('[data-testid="listItems-customSelect"]');
+    additionalPriceDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
+    selectTimeInput = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
+    additionalPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
 
     async clickOnCancelUnitChangesBtn() {
         await this.cancelUnitChangesBtn.click({force: true});
@@ -46,7 +77,7 @@ class EditUnitPage extends Page {
         await this.page.waitForLoadState('load');
         await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
         await this.saveUnitChangesBtn.click({force: true});
-        await this.page.waitForTimeout(1500);
+        await this.page.waitForTimeout(2000);
     }
 
     async clickOnLookInMyAnnouncementsBtn() {
@@ -171,6 +202,123 @@ class EditUnitPage extends Page {
         await this.clickOnMap();
         await this.clickOnMapPopUpConfirmChoiseBtn()
         await this.clickOnSaveUnitChangesBtn();
+    }
+
+    async clickOnEditedUnitDeleteImgIcon(index: number) {
+        await this.editedUnitDeleteImgIcons.nth(index).click();
+    }
+
+    async getEditedUnitUploadedPhotosCount() {
+        let uploadedImagesCount = 0;
+        const unitImageBlocks = await this.editedUnitImageBlocks.all();
+
+        for(let i = 0; i < unitImageBlocks.length; i++) {
+            const isDraggable = await unitImageBlocks[i].getAttribute('draggable');
+            if(isDraggable === 'true') {
+                uploadedImagesCount++;
+            }
+        }
+
+        return uploadedImagesCount;
+    }
+
+    async getEditedUnitName() {
+        return await this.unitNameInput.inputValue();
+    }
+
+    async uploadPhotos(numberOfPhotos: number) {   
+        for(let i = 0; i < numberOfPhotos; i++) {
+            let photoFileNameIndex = Math.floor(Math.random() * 15)
+            await this.editedUnitImageBlocks.nth(i).focus();
+            await this.editedUnitUploadFileInput.setInputFiles(path.resolve(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`));
+            await this.page.waitForLoadState('load');
+        }
+    }
+
+    async uploadMissingPhotos() {
+        let retryCount = 0;
+    
+        while (retryCount < 3) {
+            let uploadedImages = await this.getEditedUnitUploadedPhotosCount();
+            if (uploadedImages === 1) {
+                await this.uploadPhotos(3);
+            } else if (uploadedImages === 2) {
+                await this.uploadPhotos(1);
+            } else if (uploadedImages === 3) {
+                await this.uploadPhotos(1);
+            } else {
+                return; 
+            }
+
+            if (await this.uploadPhotoErrorPopUp.isVisible()) {
+                if (await this.uploadPhotoErrorPopUpCloseButton.isVisible()) {
+                    await this.uploadPhotoErrorPopUpCloseButton.click();
+                }
+                retryCount++; 
+            } else {
+                return; 
+            }
+        }
+    }
+
+    async getImgSrcAttr(numberOfImage: number) {
+        return await this.editedUnitImages.nth(numberOfImage - 1).getAttribute('src');
+    }
+
+    async hoverOnFirstImg() {
+        await this.editedUnitImageBlocks.first().hover({force: true});
+        await this.page.waitForSelector('[data-testid="deleteImage"]')
+    }
+
+    async clickOnUploadPhotoPlusIcon() {
+        await this.uploadPhotoPlusIcon.first().click();
+    }
+
+    async getFileChooser(timeout = 500) {
+        const [fileChooser] = await Promise.all([
+            this.page.waitForEvent('filechooser', { timeout }),
+            this.clickOnUploadPhotoPlusIcon()
+        ]);
+        return fileChooser;
+    }
+
+    async fileChooserSetInputFile() {
+        const fileChooser = await this.getFileChooser();
+        const photoFileNameIndex = Math.floor(Math.random() * 15)
+        await fileChooser.setFiles(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`);
+    }
+
+    async removeEditedUnitService() {
+        await this.editedUnitServiceCloseIcon.click();
+    }
+
+    async fillServiceInput(value: string) {
+        await this.serviceInput.fill(value);
+    }
+
+    async clickOnCreateServiceBtn() {
+        await this.createServiceBth.click();
+    }
+
+    async clickOnSelectPaymentMethodInput() {
+        await this.selectPaymentMethodInput.click({force: true});
+        await this.page.waitForTimeout(2000);
+    }
+
+    async clearMinOrderPriceInput() {
+        await this.minOrderPriceInput.first().clear();
+    }
+
+    async fillMinOrderPriceInput(value: any) {
+        await this.minOrderPriceInput.first().type(value)
+    }
+
+    async clickOnAddPriceBtn() {
+        await this.addPriceBtn.click();
+    }
+
+    async clickOnAdditionalPriceSelect() {
+        await this.additionalPriceSelect.nth(1).click();
     }
 }
 

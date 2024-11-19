@@ -12,6 +12,11 @@ class AdminUnitReviewPage extends Page {
     technicalCharacteristicsField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(4);
     detailDescriptionField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(5);
     locationField = this.page.locator('div[class*="AdminCurrentUnit_info_content"] > span');
+    unitPhoto = this.page.locator('[data-testid="imagePreviewBtn"] > img');
+    unitService = this.page.locator('[data-testid="customServiceBtn"]');
+    minPriceField = this.page.locator('[class*="AdminCurrentUnit_minimalPrice"]').first();
+    workTypeField = this.page.locator('[class*="AdminCurrentUnit_workType"]');
+    approveChangesBtn = this.page.locator('[data-testid="approveBtn"]');
 
     async getLocationFieldText() {
         const text = await this.locationField.evaluate(element => 
@@ -19,6 +24,10 @@ class AdminUnitReviewPage extends Page {
         );
     
         return text;
+    }
+
+    async clickOnApproveChangesBtn() {
+        await this.approveChangesBtn.click();
     }
 }
 

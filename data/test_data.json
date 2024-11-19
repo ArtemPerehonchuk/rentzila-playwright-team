@@ -44,7 +44,6 @@
         "test": "Test"
     },
     "photo file names": [
-        "pexels-albinberlin-919073",
         "pexels-alex-amorales-321095-909907",
         "pexels-alexgtacar-745150-1592384",
         "pexels-cesarperez209-733745",
@@ -60,6 +59,11 @@
         "pexels-pixabay-210019",
         "pexels-sarmad-mughal-94606-305070",
         "pexels-trace-707046"
+    ],
+    "payment methods": [
+        "Готівкою / на картку",
+        "Безготівковий розрахунок (без ПДВ)",
+        "Безготівковий розрахунок (з ПДВ)"
     ],
     "incorrect prices": {
         "space in middle": "123 456",

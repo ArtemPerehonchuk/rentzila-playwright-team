@@ -4,9 +4,11 @@ import OwnerUnitsPage from '../pages/owner.units.page';
 import AdminMainPage from '../pages/admin.main.page';
 import EditUnitPage from '../pages/edit.unit.page';
 import AdminUnitsPage from '../pages/admin.units.page';
-import AdminUnitReviewPage from '../pages/admin.unit.review.page'
+import AdminUnitReviewPage from '../pages/admin.unit.review.page';
 import ApiHelper from "../helpers/api.helper";
+import UnitDetailsPage from '../pages/unit.details.page';
 import { faker } from "@faker-js/faker";
+import testData from '../data/test_data.json' assert {type: 'json'};
 
 let apiRequestContext: APIRequestContext;
 let homepage: HomePage;
@@ -15,6 +17,7 @@ let adminMainPage: AdminMainPage;
 let editUnitPage: EditUnitPage;
 let adminUnitsPage: AdminUnitsPage;
 let adminUnitReviewPage: AdminUnitReviewPage;
+let unitDetailsPage: UnitDetailsPage;
 let apiHelper: ApiHelper;
 let accessUserToken: string;
 let accessAdminToken: string;
@@ -27,6 +30,7 @@ const ADMIN_PASSWORD: string = process.env.ADMIN_PASSWORD || '';
 let unitName: string;
 let createdUnitId: number;
 let activeUnitName: string;
+let editedUnitName: string;
 
 test.beforeAll(async () => {
     apiRequestContext = await request.newContext();
@@ -46,6 +50,7 @@ test.beforeEach(async ({ page }) => {
     editUnitPage = new EditUnitPage(page);
     adminUnitsPage= new AdminUnitsPage(page);
     adminUnitReviewPage = new AdminUnitReviewPage(page);
+    unitDetailsPage = new UnitDetailsPage(page);
     
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
@@ -78,6 +83,7 @@ test.beforeEach(async ({ page }) => {
         await homepage.clickOnProfileMyAnnouncementsItem();
         await ownerUnitsPage.clickOnActiveAnnouncementsTab();
     }
+    editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 });
 
 test('Test case C182: Edit Unit without changes', async({page}) => {
@@ -187,7 +193,6 @@ test('Test case C272: Check ""Назва оголошення"" input field', as
 test('Test case C273: Check ""Виробник транспортного засобу"" input field', async({page}) => {
     const randomString = faker.string.alpha({length: 15});
     const randomChar = faker.string.alpha({length: 1});
-    const editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clickOnVehicleManufacturerInputCloseIcon();
@@ -248,7 +253,6 @@ test('Test case C273: Check ""Виробник транспортного зас
 test('Test case C532: "Check ""Назва моделі"" input field', async({page}) => {
     const random15CharString = faker.string.alpha({length: 15});
     const random16CharString = faker.string.alpha({length: 16});
-    const editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
 
@@ -288,7 +292,6 @@ test('Test case C532: "Check ""Назва моделі"" input field', async({pa
 
 test('Test case C533: Check ""Технічні характеристики"" input field', async({page}) => {
     const randomDescription = faker.lorem.sentence();
-    const editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clearTechnicalCharacteristicsInput();
@@ -338,7 +341,6 @@ test('Test case C533: Check ""Технічні характеристики"" in
 
 test('Test case C534: Check ""Опис"" input field', async({page}) => {
     const randomDescription = faker.lorem.sentence();
-    const editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clearDetailDescriptionInput();
@@ -440,4 +442,263 @@ test('Test case C535: Check ""Місце розташування технічн
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
     await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+})
+
+test('Test case C274: Check image section functionality @edit', async({page}) => {
+    await ownerUnitsPage.clickOnEditUnitBtn();
+
+    let uploadedImages = await editUnitPage.getEditedUnitUploadedPhotosCount();
+
+    await editUnitPage.uploadMissingPhotos();
+    
+    for(let i = 0; i < 4; i ++) {
+        let mainImgSrc = await editUnitPage.getImgSrcAttr(1);
+        let secondImgSrc = await editUnitPage.getImgSrcAttr(2);
+
+        await expect(mainImgSrc).not.toBe(secondImgSrc);
+
+        await editUnitPage.hoverOnFirstImg();
+        
+        await expect(editUnitPage.editedUnitDeleteImgIcons.first()).toBeVisible();
+
+        await editUnitPage.editedUnitImageBlocks.first().hover({force: true});
+        await editUnitPage.clickOnEditedUnitDeleteImgIcon(0);
+
+        mainImgSrc = await editUnitPage.getImgSrcAttr(1);
+
+        await expect(mainImgSrc).toBe(secondImgSrc);
+    }
+    try{
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+
+        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
+        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText('Додайте в оголошення від 1 до 12 фото технічного засобу розміром до 20 МВ у форматі .jpg, .jpeg, .png. Перше фото буде основним.');
+
+        expect(await editUnitPage.getFileChooser).toBeDefined();
+
+        await editUnitPage.fileChooserSetInputFile();
+        await page.waitForLoadState('domcontentloaded');
+
+        await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
+        await expect(editUnitPage.mainImgLable).toBeVisible();
+
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+
+        if(await editUnitPage.successEditUnitMsg.isVisible()) {
+            await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+            await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+            await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+
+            await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+
+            await adminUnitsPage.clickOnAdminWatchUnitIcon();
+
+            await expect(page).toHaveURL(/units/);
+            await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
+        }else return
+    }catch(error) {
+        console.error('Error in image section functionality:', error);
+        throw error;
+    }
+})
+
+test('Test case C275: Check services functionality @edit', async({page}) => {
+    const over100CharStr = faker.string.alpha({length: 101});
+    const randomService = faker.string.alpha({length: 20});
+    const inputValues = [
+        '<>{};^',
+        over100CharStr,
+        randomService
+    ];
+
+    await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.removeEditedUnitService();
+
+    await expect(editUnitPage.editedUnitService).not.toBeVisible();
+
+    await editUnitPage.clickOnSaveUnitChangesBtn();
+
+    await expect(editUnitPage.addServiceErrorMsg).toBeVisible();
+    await expect(editUnitPage.addServiceErrorMsg).toHaveText('Додайте в оголошення принаймні 1 послугу');
+
+    for(const inputValue of inputValues) {
+        await editUnitPage.fillServiceInput(inputValue);
+
+        switch(inputValue) {
+            case '<>{};^':
+                await expect(editUnitPage.serviceInput).toHaveText('', {useInnerText: true});
+                await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', 'Наприклад: Рихлення грунту, буріння');
+                break
+
+            case over100CharStr:
+                const inputValue = await editUnitPage.serviceInput.inputValue();
+                await expect(inputValue.length).toBe(100);
+                break
+            
+            case randomService:
+                await expect(editUnitPage.serviceNotFoundMsg).toBeVisible();
+                await expect(editUnitPage.serviceNotFoundMsg).toContainText(`На жаль, послугу “${randomService}“ не знайдено в нашій базі.`)
+                break
+        }
+    }  
+    
+    await editUnitPage.clickOnCreateServiceBtn();
+
+    await expect(editUnitPage.servicesDropDownItems).toHaveText(randomService);
+    await expect(editUnitPage.editedUnitService).toBeVisible();
+
+    await editUnitPage.clickOnSaveUnitChangesBtn();
+
+    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+    await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+
+    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+
+    await adminUnitsPage.clickOnAdminWatchUnitIcon();
+
+    await expect(adminUnitReviewPage.unitService).toHaveText(randomService);
+})
+
+test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({page}) => {
+    await ownerUnitsPage.clickOnEditUnitBtn(); 
+
+    const paymentMethods = testData['payment methods'];
+
+    for(let i = paymentMethods.length - 1; i >= 0; i--) {
+        await editUnitPage.clickOnSelectPaymentMethodInput();
+
+        await expect(editUnitPage.paymentMethodsDropDown).toBeVisible();
+        
+        const paymentMethodDropDownItems = await editUnitPage.paymentMethodDropDownItems.allInnerTexts();
+
+        await expect(paymentMethods).toContain(paymentMethodDropDownItems[i]);
+
+        await editUnitPage.paymentMethodDropDownItems.nth(i).click();
+
+        await expect(editUnitPage.selectPaymentMethodInput).toHaveText(paymentMethodDropDownItems[i]);
+
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+
+        await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+        await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+        await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+
+        await editUnitPage.clickOnLookInMyAnnouncementsBtn();
+        await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
+        await ownerUnitsPage.clickOnFirstWaitingsUnit();
+
+        await expect(page).toHaveURL(/unit/);
+        await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethodDropDownItems[i]);
+
+        await unitDetailsPage.clickOnEditUnitBtn();
+
+        await expect(page).toHaveURL(/edit-unit/);
+    }
+})
+
+test('Test case C276: Check ""Вартість мінімального замовлення"" field @edit', async({page}) => {
+    await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.clearMinOrderPriceInput();
+
+    await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe('Наприклад, 1000');
+
+    await editUnitPage.clickOnSaveUnitChangesBtn();
+
+    await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
+    await expect(editUnitPage.unitPriceErrorMsg).toHaveText('Це поле обов\’язкове');
+
+    const random10Digits = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString()
+    const inputValues = [
+        '<>{};^@!#$%?()|\/`~',
+        random10Digits
+    ]
+
+    for (const value of inputValues) {
+        await editUnitPage.fillMinOrderPriceInput(value)
+        switch(value) {
+            case '<>{};^@!#$%?()|\/`~':
+                await expect(editUnitPage.minOrderPriceInput.first()).toHaveText('');
+                break
+            
+            case random10Digits: 
+                const inputValue = await editUnitPage.minOrderPriceInput.first().inputValue();
+                await expect(inputValue.length).toBe(9);
+                break
+        }
+    }
+
+    await editUnitPage.clickOnSaveUnitChangesBtn();
+
+    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+    await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+
+    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+
+    await adminUnitsPage.clickOnAdminWatchUnitIcon();
+
+    await expect(adminUnitReviewPage.minPriceField).toHaveText(random10Digits.slice(0, 9));
+})
+
+test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu @edit', async({page}) => {
+    await ownerUnitsPage.clickOnEditUnitBtn(); 
+    if(await editUnitPage.addPriceBtn.isVisible()) {
+        await editUnitPage.clickOnAddPriceBtn();
+    }
+
+    const priceOptions = testData['add price options'];
+    let additionalPriceItems;
+
+    for(let i = 1; i < priceOptions.length; i ++) {
+        await editUnitPage.clickOnAdditionalPriceSelect();
+
+        await expect(editUnitPage.additionalPriceDropDpwn).toBeVisible();
+
+        additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
+ 
+        await expect(priceOptions).toContain(additionalPriceItems[i]);
+
+        await editUnitPage.additionalPriceDropDownItems.nth(i).click();
+
+        const additionalPriceDropDownItem = await editUnitPage.additionalPriceSelect.nth(1).innerText()
+
+        await expect(additionalPriceDropDownItem.toLowerCase()).toBe(additionalPriceItems[i].toLowerCase());
+
+        if(additionalPriceItems[i] === 'Зміна') {
+            await expect(editUnitPage.selectTimeInput).toBeVisible();
+        }
+    }
+
+    await editUnitPage.clickOnAdditionalPriceSelect();
+
+    additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
+    const randomAdditionalPriceItemIndex = Math.floor(Math.random() * additionalPriceItems.length);
+    const randomAdditionalPriceDropDownOption = additionalPriceItems[randomAdditionalPriceItemIndex];
+
+    await editUnitPage.additionalPriceDropDownItems.nth(randomAdditionalPriceItemIndex).click();
+    await page.waitForTimeout(2000);
+
+    await editUnitPage.additionalPriceInput.fill('1000');
+
+    await editUnitPage.clickOnSaveUnitChangesBtn();
+
+    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+    await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+
+    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+
+    await adminUnitsPage.clickOnAdminWatchUnitIcon();
+
+    if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр кв.') {
+        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м2');
+    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр куб.') {
+        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м3');
+    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'кілометр') {
+        return
+    }
+    else {
+        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText(randomAdditionalPriceDropDownOption.toLowerCase());
+    }
 })
