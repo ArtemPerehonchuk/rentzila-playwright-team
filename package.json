@@ -15,7 +15,8 @@
     "test:prices-tab:chrome": "playwright test tests/test.prices.tab.spec.ts --config=playwright.config.chrome.ts",
     "test:services-tab:chrome": "playwright test tests/test.services.tab.spec.ts --config=playwright.config.chrome.ts",
     "test:api:chrome": "playwright test tests/test.api.spec.ts --config=playwright.config.chrome.ts",
-    "test:edit-unit:chrome": "playwright test tests/test.edit.unit.spec.ts --config=playwright.config.chrome.ts --workers=1"
+    "test:edit-unit:chrome": "playwright test tests/test.edit.unit.spec.ts --config=playwright.config.chrome.ts --workers=1",
+    "test:create-tender:chrome": "playwright test tests/test.create.tender.spec.ts --config=playwright.config.chrome.ts --workers=1"
   },
   "keywords": [],
   "author": "",

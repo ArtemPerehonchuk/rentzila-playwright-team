@@ -1,36 +1,17 @@
-import { test, expect, request, APIRequestContext } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import PrivacyPolicyPage from '../pages/privacy.policy.page';
-import CookiePolicyPage from '../pages/cookie.policy.page';
-import TermsConditionsPage from '../pages/terms.conditions.page';
-import ProductsPage from "../pages/products.page";
-import TendersPage from '../pages/tenders.page';
+import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
 import testData from '../data/test_data.json' assert {type: 'json'}
-
-
-let apiRequestContext: APIRequestContext;
-
-let homepage: HomePage;
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 const pagesUrlPath = testData["pages URL path"];
 const contactUsFormInputValues = testData["contuct us form inputs"];
 
 
-test.beforeEach(async ({ page }) => {
-    apiRequestContext = await request.newContext(); 
-    homepage = new HomePage(page, apiRequestContext);
+test.beforeEach(async ({ page, homepage }) => {
     await homepage.navigate('/');
 });
 
-test('test case C214: Verify that all elements on the footer are displayed and all links are clickable', async ({ page }) => {
-    const privacyPolicyPage = new PrivacyPolicyPage(page);
-    const cookiePolicyPage = new CookiePolicyPage(page);
-    const termsConditionsPage = new TermsConditionsPage(page);
-    const productsPage = new ProductsPage(page);
-    const tendersPage = new TendersPage(page);
-    
+test('test case C214: Verify that all elements on the footer are displayed and all links are clickable', async ({ page, homepage, privacyPolicyPage, cookiePolicyPage, termsConditionsPage, productsPage, tendersPage }) => {
     await homepage.scrollToFooter();
 
     await expect(homepage.footerContainer).toBeVisible();
@@ -91,7 +72,7 @@ test('test case C214: Verify that all elements on the footer are displayed and a
     await expect(await homepage.getContactsEmail()).toContain('info@rentzila.com.ua');
 });
 
-test('test case C226: Verify "У Вас залишилися питання?" form', async ({ page }) => {
+test('test case C226: Verify "У Вас залишилися питання?" form', async ({ page, homepage }) => {
     const userName = faker.person.firstName();
     const userPhone = contactUsFormInputValues["other correct phone"];
     

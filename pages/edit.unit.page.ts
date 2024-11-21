@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage } from '@playwright/test';
 import Page from './page';
 import path from 'path';
 import testData from '../data/test_data.json' assert {type: 'json'};

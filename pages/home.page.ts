@@ -56,6 +56,7 @@ class HomePage extends Page {
     closePopUpBtn = this.page.locator('[data-testid="crossButton"]');
     profileAnnouncementsDropDownMenuItem = this.page.locator('[data-testid="units"]');
     profileMyAnnouncementsItem = this.page.locator('[data-testid="units"] > ul > li:nth-child(1)');
+    profileTendersItem = this.page.locator('[data-testid="tenders"]');
 
     async scrollToServicesContainer() {
         await this.servicesContainer.scrollIntoViewIfNeeded();
@@ -276,7 +277,7 @@ class HomePage extends Page {
     }
 
     async clickOnEnterBtn() {
-        await this.enterBtn.click();
+        await this.enterBtn.click({force: true});
     }
 
     async clickOnSubmitLoginFormBtn() {
@@ -365,6 +366,11 @@ class HomePage extends Page {
         await this.fillInput('password', password);
         await this.submitLoginFormBtn.click();
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async clickOnProfileTendersItem() {
+        await this.profileTendersItem.click();
+        await this.page.waitForLoadState('networkidle');
     }
 }
 

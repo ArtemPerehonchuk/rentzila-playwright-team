@@ -1,7 +1,4 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page'
-
+import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
 import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random_values';
 
@@ -9,13 +6,7 @@ const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-
+test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
     await homepage.clickOnCreateUnitBtn();
@@ -24,7 +15,7 @@ test.beforeEach(async ({ page }) => {
     await homepage.clickOnSubmitLoginFormBtn();
 });
 
-test('test case C294: Verify body title and tab titles', async( {page} ) => {
+test('test case C294: Verify body title and tab titles', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.createUnitTitle).toBeVisible();
     await expect(createUnitPage.createUnitTitle).toHaveText('Створити оголошення');
     await expect(await createUnitPage.checkCreateUnitTabsTitles(1)).toBe(true);
@@ -77,7 +68,7 @@ test('test case C294: Verify body title and tab titles', async( {page} ) => {
     }
 })
 
-test('test case C296: Verify category (Категорія) section', async( {page} ) => {
+test('test case C296: Verify category (Категорія) section', async( {page, createUnitPage} ) => {
     test.setTimeout(150000);
 
     await expect(createUnitPage.categoriesTitle).toBeVisible();
@@ -111,7 +102,7 @@ test('test case C296: Verify category (Категорія) section', async( {pag
     await createUnitPage.checkOptionsInCategoriesPopUp();
 })
 
-test('test case C297: Verify unit name section', async( {page} ) => {
+test('test case C297: Verify unit name section', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.announcementNameTitle).toBeVisible();
     await expect(createUnitPage.announcementNameInput).toBeVisible();
     await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain('Назва оголошення');
@@ -186,7 +177,7 @@ test('test case C297: Verify unit name section', async( {page} ) => {
     }
 })
 
-test('test case C298: Verify vehicle manufacturer section', async( {page} ) => {
+test('test case C298: Verify vehicle manufacturer section', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.vehicleManufacturerTitle).toBeVisible();
     await expect(createUnitPage.vehicleManufacturerInput).toBeVisible();
     await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain('Виробник транспортного засобу');
@@ -265,7 +256,7 @@ test('test case C298: Verify vehicle manufacturer section', async( {page} ) => {
     await expect(await createUnitPage.getVehicleManufacturerInputText()).toBe('');
 })
 
-test('test case C299: Verify model name input field', async( {page} ) => {
+test('test case C299: Verify model name input field', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.modelNameTitle).toBeVisible();
     await expect(createUnitPage.modelNameInput).toBeVisible();
     await expect(await createUnitPage.getModelNameTitleText()).toContain('Назва моделі');
@@ -309,7 +300,7 @@ test('test case C299: Verify model name input field', async( {page} ) => {
     }
 })
 
-test('test case C317: Verify technical characteristics section', async( {page} ) => {
+test('test case C317: Verify technical characteristics section', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.technicalInfoTitle).toBeVisible();
     await expect(createUnitPage.technicalInfoInput).toBeVisible();
     await expect(createUnitPage.technicalInfoTitle).toHaveText('Технічні характеристики');
@@ -337,7 +328,7 @@ test('test case C317: Verify technical characteristics section', async( {page} )
     }
 })
 
-test('test case C318: Verify description section', async( {page} ) => {
+test('test case C318: Verify description section', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.descriptionInfoTitle).toBeVisible();
     await expect(createUnitPage.descriptionInfoInput).toBeVisible();
     await expect(createUnitPage.descriptionInfoTitle).toHaveText('Детальний опис');
@@ -366,7 +357,7 @@ test('test case C318: Verify description section', async( {page} ) => {
     }
 })
 
-test('test case C319: Verify vehicle location division', async( {page} ) => {
+test('test case C319: Verify vehicle location division', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.addressSelectionTitle).toBeVisible();
     await expect(createUnitPage.addressSelectionInput).toBeVisible();
     await expect(await createUnitPage.getAddressSelectionTitleText()).toContain('Місце розташування технічного засобу');
@@ -400,7 +391,7 @@ test('test case C319: Verify vehicle location division', async( {page} ) => {
     await expect(await createUnitPage.getAddressLineText()).toBe(newAddress);
 })
 
-test('test case C326: Verify ""Скасувати"" button', async( {page} ) => {
+test('test case C326: Verify ""Скасувати"" button', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.cancelBtn).toHaveText('Скасувати');
 
     await createUnitPage.clickOnCancelBtn();
@@ -409,7 +400,7 @@ test('test case C326: Verify ""Скасувати"" button', async( {page} ) => 
     await expect(await createUnitPage.getUrl()).toBe(HOMEPAGE_URL);
 })
 
-test('test case C329: Verify ""Далі"" button', async( {page} ) => {
+test('test case C329: Verify ""Далі"" button', async( {page, createUnitPage} ) => {
     await expect(createUnitPage.nextBtn).toHaveText('Далі')
 
     await createUnitPage.clickOnNextBtn();

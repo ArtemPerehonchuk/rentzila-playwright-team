@@ -1,22 +1,12 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import ProductsPage from '../pages/products.page';
-import UnitPage from '../pages/unit.page';
+import { test, expect } from "../fixtures";
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-let homepage: HomePage;
-let productsPage: ProductsPage;
-let unitPage: UnitPage;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    productsPage = new ProductsPage(page);
-    unitPage = new UnitPage(page);
+test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
 });
 
-test('test case c212: Checking ""Послуги"" section on the main page', async ({ page }) => {
+test('test case c212: Checking ""Послуги"" section on the main page', async ({ page, homepage, productsPage, unitPage }) => {
     const servicesList = homepage.servicesList;
     const servicesCount = await servicesList.count();
     let firstServicesUnitName;
@@ -54,7 +44,7 @@ test('test case c212: Checking ""Послуги"" section on the main page', asy
     }
 })
 
-test('test case c213: Checking ""Спецтехніка"" section on the main page', async ({ page }) => {
+test('test case c213: Checking ""Спецтехніка"" section on the main page', async ({ page, homepage, productsPage, unitPage }) => {
     const specialEquipmentsList = homepage.specialEquipmentsList;
     const specialEquipmentsCount = await specialEquipmentsList.count();
 

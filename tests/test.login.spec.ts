@@ -1,10 +1,5 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import ProfilePage from '../pages/profile.page';
+import { test, expect } from "../fixtures";
 import testData from '../data/test_data.json' assert {type: 'json'};
-import { describe } from "node:test";
-
-let homepage: HomePage;
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -21,13 +16,12 @@ const correctPhoneNumbers: string[] = [
     ];
 
 test.describe('Negative test cases for login form', () => {
-    test.beforeEach(async ({ page }) => {
-        homepage = new HomePage(page);
+    test.beforeEach(async ({ page, homepage }) => {
         await homepage.navigate('/');
         await homepage.clickOnEnterBtn();
     });
 
-    test('test case C200: Authorization with empty fields', async( {page} ) => {
+    test('test case C200: Authorization with empty fields', async( {page, homepage} ) => {
 
         await homepage.clickOnSubmitLoginFormBtn();
     
@@ -77,7 +71,7 @@ test.describe('Negative test cases for login form', () => {
         await expect(await homepage.checkInputErrorIsDisplayed('password', 'Поле не може бути порожнім')).toBe(false);
     });
 
-    test('test case C207: Authorization with invalid phone', async( { page } ) => {
+    test('test case C207: Authorization with invalid phone', async( { page, homepage } ) => {
 
         await homepage.fillInput('password', VALID_PASSWORD);
 
@@ -91,7 +85,7 @@ test.describe('Negative test cases for login form', () => {
         }
     });
 
-    test('test case C576: Authorization with invalid email', async( { page } ) => {
+    test('test case C576: Authorization with invalid email', async( { page, homepage } ) => {
 
         await homepage.fillInput('password', VALID_PASSWORD);
 
@@ -105,7 +99,7 @@ test.describe('Negative test cases for login form', () => {
         }
     });
 
-    test('test case C577: Authorization with invalid password', async( { page } ) => {
+    test('test case C577: Authorization with invalid password', async( { page, homepage } ) => {
         await homepage.fillInput('email', VALID_EMAIL);
 
         await expect(await homepage.getLoginEmailOrPhoneInputValue()).toBe(VALID_EMAIL);
@@ -120,13 +114,12 @@ test.describe('Negative test cases for login form', () => {
 });
 
 test.describe('Positive test cases for login form', () => {
-    test.beforeEach(async ({ page }) => {
-        homepage = new HomePage(page);
+    test.beforeEach(async ({ page, homepage }) => {
         await homepage.navigate('/');
         await homepage.clickOnEnterBtn();
     });
 
-    test('test case C201: Authorization with valid email and password', async( {page} ) => {
+    test('test case C201: Authorization with valid email and password', async( {page, homepage} ) => {
         await homepage.fillInput('email', VALID_EMAIL);
 
         await expect(await homepage.getLoginEmailOrPhoneInputValue()).toBe(VALID_EMAIL);
@@ -158,9 +151,7 @@ test.describe('Positive test cases for login form', () => {
         await expect(await homepage.checkUserIconIsDisplayed(false)).toBe(false);
     })
     
-    test('test case C202: Authorization with valid phone and password', async( {page} ) => {
-        const profilePage = new ProfilePage(page);
-    
+    test('test case C202: Authorization with valid phone and password', async( {page, homepage, profilePage} ) => {
         for(const phoneNumber of correctPhoneNumbers) {    
             await homepage.fillInput('email', phoneNumber);
 

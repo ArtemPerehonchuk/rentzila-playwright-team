@@ -1,9 +1,7 @@
 import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
-import { faker } from '@faker-js/faker';
 import testData from '../data/test_data.json' assert {type: 'json'};
 
-const incorrectPrices = Object.values(testData['incorrect prices']);
 const addPriceOptions = testData['add price options'];
 const hoursDropDownItems = ['8 год', '4 год'];
 

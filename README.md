@@ -97,6 +97,12 @@ To run all tests using the default browser configuration:
     npm run test:edit-unit:chrome
     ```
 
+- Run tests for create tender functionality:
+
+    ```bash
+    npm run test:create-tender:chrome
+    ```
+
 ## GitHub Pages
 
 View report on GitHub Pages:

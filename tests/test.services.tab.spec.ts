@@ -1,24 +1,10 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page';
-import PhotoTab from '../pages/photo.tab';
-import ServicesTab from '../pages/services.tab';
+import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALIR_PASSWORD: string = process.env.VALID_PASSWORD || '';
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-let photoTab: PhotoTab;
-let servicesTab: ServicesTab;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-    photoTab = new PhotoTab(page);
-    servicesTab = new ServicesTab(page);
-
+test.beforeEach(async ({ page, homepage, createUnitPage, photoTab }) => {
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
     await homepage.clickOnCreateUnitBtn();
@@ -34,7 +20,7 @@ test.beforeEach(async ({ page }) => {
     await createUnitPage.clickOnNextBtn();
 });
 
-test('Text case: 410: Verify creating new service', async ( {page} ) => {
+test('Text case: 410: Verify creating new service', async ( {page, servicesTab} ) => {
     const notExistingService = faker.string.alpha({length: 15});
 
     await servicesTab.fillServicesTabInput(notExistingService);
@@ -50,7 +36,7 @@ test('Text case: 410: Verify creating new service', async ( {page} ) => {
     await expect(servicesTab.serviceChoosenMark).toBeVisible();
 });
 
-test('Text case: 411: Verify choosing multiple services', async ( {page} ) => {
+test('Text case: 411: Verify choosing multiple services', async ( {page, servicesTab} ) => {
     const randomLetter = faker.string.alpha({length: 1});
 
     await servicesTab.fillServicesTabInput(randomLetter);
@@ -75,7 +61,7 @@ test('Text case: 411: Verify choosing multiple services', async ( {page} ) => {
     }
 });
 
-test('Text case: 412: Verify removing variants from choosed list', async ( {page} ) => {
+test('Text case: 412: Verify removing variants from choosed list', async ( {page, servicesTab} ) => {
     const randomLetter = faker.string.alpha({length: 1});
     const randomNumber = 2 + Math.floor(Math.random() * 4)
 
@@ -97,7 +83,7 @@ test('Text case: 412: Verify removing variants from choosed list', async ( {page
     }
 });
 
-test('Text case: 413: Verify ""Назад"" button', async ( {page} ) => {
+test('Text case: 413: Verify ""Назад"" button', async ( {page, photoTab, createUnitPage} ) => {
     await expect(photoTab.prevBtn).toHaveText('Назад');
 
     await photoTab.clickOnPrevBtn();
@@ -105,7 +91,7 @@ test('Text case: 413: Verify ""Назад"" button', async ( {page} ) => {
     await createUnitPage.checkCreateUnitTabsTitles(2);
 });
 
-test('Text case: 414: Verify ""Далі"" button', async ( {page} ) => {
+test('Text case: 414: Verify ""Далі"" button', async ( {page, createUnitPage, servicesTab} ) => {
     await expect(createUnitPage.nextBtn).toHaveText('Далі');
 
     await createUnitPage.clickOnNextBtn();
@@ -119,7 +105,7 @@ test('Text case: 414: Verify ""Далі"" button', async ( {page} ) => {
     await createUnitPage.checkCreateUnitTabsTitles(4);
 });
 
-test('Text case: 591: Verify ""Послуги"" input with invalid data', async ( {page} ) => {
+test('Text case: 591: Verify ""Послуги"" input with invalid data', async ( {page, servicesTab} ) => {
     await servicesTab.fillServicesTabInput('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
@@ -129,7 +115,7 @@ test('Text case: 591: Verify ""Послуги"" input with invalid data', async 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 });
 
-test('Text case: 592: Verify ""Послуги"" input choosin of existing service', async ( {page} ) => {
+test('Text case: 592: Verify ""Послуги"" input choosin of existing service', async ( {page, servicesTab} ) => {
     await expect(servicesTab.servicesTabTitle).toHaveText('Послуги');
     await expect(await servicesTab.getServicesParagraphTitleText()).toContain('Знайдіть послуги, які надає Ваш технічний засіб');
     await expect(await servicesTab.getServicesParagraphTitleText()).toContain('*');
@@ -156,8 +142,9 @@ test('Text case: 592: Verify ""Послуги"" input choosin of existing servic
     randomChar = faker.string.alpha({length: 1});
 
     await servicesTab.fillServicesTabInput(randomChar);
+    
     const selectedService = await servicesTab.getSelectedService();
-    console.log(selectedService)
+
     await servicesTab.clickOnServicesOption();
 
     await expect(servicesTab.serviceChoosenMark.first()).toHaveAttribute('viewBox', '0 0 15 12');
@@ -168,7 +155,7 @@ test('Text case: 592: Verify ""Послуги"" input choosin of existing servic
     await expect(await servicesTab.getChoosenItemTitleText()).toContain('Послуги, які надає технічний засіб:')
 });
 
-test('Text case: 632: Verify entering spesial characters in the ""Послуги"" input', async ( {page} ) => {
+test('Text case: 632: Verify entering spesial characters in the ""Послуги"" input', async ( {page, servicesTab} ) => {
     await servicesTab.fillServicesTabInput('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
@@ -184,7 +171,7 @@ test('Text case: 632: Verify entering spesial characters in the ""Послуги
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 });
 
-test('Text case: 633: Verify data length for ""Послуги"" input field', async ( {page} ) => {
+test('Text case: 633: Verify data length for ""Послуги"" input field', async ( {page, servicesTab} ) => {
     const randomChar = faker.string.alpha();
     const random101Char = faker.string.alpha({length: 101});
 
@@ -211,7 +198,7 @@ test('Text case: 633: Verify data length for ""Послуги"" input field', as
     await expect(currentInputValue.toLowerCase()).toBe(random101Char.slice(0, -1).toLowerCase());
 });
 
-test('Text case: 634: Verify the search function is not sensitive to upper or lower case', async ( {page} ) => {
+test('Text case: 634: Verify the search function is not sensitive to upper or lower case', async ( {page, servicesTab} ) => {
     await servicesTab.fillServicesTabInput('риття');
 
     await expect(servicesTab.servicesOptionsDropDown).toBeVisible();

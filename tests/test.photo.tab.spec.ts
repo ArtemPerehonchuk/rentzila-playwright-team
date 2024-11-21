@@ -1,23 +1,9 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page';
-import PhotoTab from '../pages/photo.tab';
-import ServicesTab from '../pages/services.tab'
+import { test, expect } from "../fixtures";
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-let photoTab: PhotoTab;
-let servicesTab: ServicesTab;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-    photoTab = new PhotoTab(page);
-    servicesTab = new ServicesTab(page);
-
+test.beforeEach(async ({ page, homepage, createUnitPage }) => {
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
     await homepage.clickOnCreateUnitBtn();
@@ -31,7 +17,7 @@ test.beforeEach(async ({ page }) => {
     await createUnitPage.clickOnNextBtn();
 });
 
-test('Test case C384: Verify same images uploading', async( {page} ) => {
+test('Test case C384: Verify same images uploading', async( {page, photoTab} ) => {
     await photoTab.uploadTwoSamePhotos();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
@@ -55,7 +41,7 @@ test('Test case C384: Verify same images uploading', async( {page} ) => {
     await photoTab.deleteUploadedImg(1);
 }) 
 
-test('Test case C401: Verify uploading of invalid file type', async( {page} ) => {
+test('Test case C401: Verify uploading of invalid file type', async( {page, photoTab} ) => {
     await photoTab.uploadIncorrectFileType();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
@@ -83,7 +69,7 @@ test('Test case C401: Verify uploading of invalid file type', async( {page} ) =>
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 })
 
-test('Test case C405: Verify uploading of invalid size file', async( {page} ) => {
+test('Test case C405: Verify uploading of invalid size file', async( {page, photoTab} ) => {
     await photoTab.uploadIncorrectFileSize();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
@@ -110,7 +96,7 @@ test('Test case C405: Verify uploading of invalid size file', async( {page} ) =>
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 })
 
-test('Test case 390: Verify ""Назад"" button', async({ page }) => {
+test('Test case 390: Verify ""Назад"" button', async({ page, photoTab, createUnitPage }) => {
     await expect(photoTab.prevBtn).toHaveText('Назад');
 
     await photoTab.clickOnPrevBtn();
@@ -125,7 +111,7 @@ test('Test case 390: Verify ""Назад"" button', async({ page }) => {
     await expect(createUnitPage.addressSelectionInput).toBeVisible();
 })
 
-test('Test case 393: Verify ""Далі"" button', async({ page }) => {
+test('Test case 393: Verify ""Далі"" button', async({ page, createUnitPage, photoTab, servicesTab }) => {
     await expect(createUnitPage.nextBtn).toHaveText('Далі');
 
     await createUnitPage.clickOnNextBtn();
@@ -142,7 +128,7 @@ test('Test case 393: Verify ""Далі"" button', async({ page }) => {
     await expect(servicesTab.servicesTabInput).toBeVisible();
 })
 
-test('Test case C593: Verify image uploading', async( {page}) => {
+test('Test case C593: Verify image uploading', async( {page, photoTab}) => {
     await expect(photoTab.photoTabTitle).toBeVisible
     await expect(await photoTab.getPhotoTabTitleText()).toContain('Фото технічного засобу');
     await expect(await photoTab.getPhotoTabTitleText()).toContain('*');
@@ -159,7 +145,7 @@ test('Test case C593: Verify image uploading', async( {page}) => {
     await photoTab.deleteUploadedImg(imageBlocksItems.length)
 })
 
-test('Test case C594: Verify image moving', async( {page}) => {
+test('Test case C594: Verify image moving', async( {page, photoTab}) => {
     await photoTab.uploadToTwelvePhotos(2);
 
     const imageBlockItems = await photoTab.imageBlocks.all();
@@ -184,7 +170,7 @@ test('Test case C594: Verify image moving', async( {page}) => {
     await photoTab.deleteUploadedImg(imageBlocksItems.length)
 })
 
-test('Test case C595: Verify image deleting', async( {page}) => {
+test('Test case C595: Verify image deleting', async( {page, photoTab}) => {
     await photoTab.uploadToTwelvePhotos(1);
 
     const imageBlocksItems = await photoTab.imageBlocks.all();

@@ -1,9 +1,4 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page';
-import PhotoTab from '../pages/photo.tab';
-import ServicesTab from '../pages/services.tab';
-import PricesTab from '../pages/prices.tab';
+import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
 import testData from '../data/test_data.json' assert {type: 'json'};
 
@@ -14,19 +9,7 @@ const VALIR_PASSWORD: string = process.env.VALID_PASSWORD || '';
 
 let selectedService: string;
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-let photoTab: PhotoTab;
-let servicesTab: ServicesTab;
-let pricesTab: PricesTab;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-    photoTab = new PhotoTab(page);
-    servicesTab = new ServicesTab(page);
-    pricesTab = new PricesTab(page);
-
+test.beforeEach(async ({ homepage, createUnitPage, photoTab, servicesTab }) => {
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
     await homepage.clickOnCreateUnitBtn();
@@ -45,7 +28,7 @@ test.beforeEach(async ({ page }) => {
     await createUnitPage.clickOnNextBtn();
 });
 
-test('Test case C417: Verify ""Спосіб оплати"" section', async({page}) => {
+test('Test case C417: Verify ""Спосіб оплати"" section', async({pricesTab}) => {
 
     await expect(pricesTab.paymentMethodTitle.first()).toBeVisible();
     await expect(await pricesTab.getPaymentMethodTitleText()).toContain('Спосіб оплати');
@@ -73,7 +56,7 @@ test('Test case C417: Verify ""Спосіб оплати"" section', async({page
     }
 })
 
-test('Test case C418: Verify ""Вартість мінімального замовлення"" section', async({page}) => {
+test('Test case C418: Verify ""Вартість мінімального замовлення"" section', async({pricesTab}) => {
     await expect(pricesTab.priceOfMinOrderTitle).toBeVisible();
     await expect(await pricesTab.getpriceOfMinOrderTitleText()).toContain('Вартість мінімального замовлення');
     await expect(await pricesTab.getpriceOfMinOrderTitleText()).toContain('*');
@@ -134,7 +117,7 @@ test('Test case C418: Verify ""Вартість мінімального зам�
     await expect(await pricesTab.getCurrencyFieldText()).toBe('UAH');
 })
 
-test('Test case C482: Verify adding price for service', async({page}) => {
+test('Test case C482: Verify adding price for service', async({pricesTab}) => {
     await expect(pricesTab.servicePriseTitle).toBeVisible();
     await expect(await pricesTab.getServicePriceTitleText()).toContain('Вартість Ваших послуг');
     await expect(await pricesTab.getServicePriceTitleText()).toContain('*');
@@ -221,13 +204,13 @@ test('Test case C482: Verify adding price for service', async({page}) => {
     await expect(pricesTab.addPriceBtn).toHaveText('Додати вартість');
 })
 
-test('Test case C488: Verify ""Назад"" button', async({page}) => {
+test('Test case C488: Verify ""Назад"" button', async({pricesTab, createUnitPage}) => {
     await pricesTab.checkPrevBtnText('Назад');
     await pricesTab.clickOnPrevBtn();
     await createUnitPage.checkCreateUnitTabsTitles(3);
 })
 
-test('Test case C489: Verify ""Далі"" button', async({page}) => {
+test('Test case C489: Verify ""Далі"" button', async({createUnitPage, pricesTab}) => {
     await expect(createUnitPage.nextBtn).toBeVisible();
     await expect(createUnitPage.nextBtn).toHaveText('Далі');
 
@@ -240,7 +223,7 @@ test('Test case C489: Verify ""Далі"" button', async({page}) => {
     await expect(pricesTab.priceOfMinOrderInputContainer).toHaveCSS('border-color', 'rgb(247, 56, 89)');
 })
 
-test('Test case C596: Verify adding an invalid price in the "Вартість мінімального замовлення *" input', async({page}) => {
+test('Test case C596: Verify adding an invalid price in the "Вартість мінімального замовлення *" input', async({pricesTab, createUnitPage}) => {
     await pricesTab.fillInput(pricesTab.priceOfMinOrderInput, '0');
 
     await expect(await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput)).toBe('');
@@ -268,7 +251,7 @@ test('Test case C596: Verify adding an invalid price in the "Вартість м
     await expect(pricesTab.priceOfMinOrderInputContainer).toHaveCSS('border-color', 'rgb(229, 229, 229)');
 })
 
-test('Test case C636: Verify the data entry in the "Вартість мінімального замовлення *" input', async({page}) => {
+test('Test case C636: Verify the data entry in the "Вартість мінімального замовлення *" input', async({pricesTab}) => {
     const tenDigitNumber = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString();
 
     await pricesTab.priceOfMinOrderInput.fill(tenDigitNumber);
@@ -305,7 +288,7 @@ test('Test case C636: Verify the data entry in the "Вартість мінім�
     }
 })
 
-test('Test case C637: Verify UI of the "Вартість Ваших послуг *" section', async({page}) => {
+test('Test case C637: Verify UI of the "Вартість Ваших послуг *" section', async({pricesTab}) => {
     await expect(pricesTab.servicePriseTitle).toBeVisible();
     await expect(await pricesTab.getServicePriceTitleText()).toContain('Вартість Ваших послуг');
     await expect(await pricesTab.getServicePriceTitleText()).toContain('*');
@@ -328,7 +311,7 @@ test('Test case C637: Verify UI of the "Вартість Ваших послуг
     await expect(pricesTab.selectAddPriceOptionDropDownArrow).toBeVisible();
 })
 
-test('Test case C638: Verify the data entry in the "Вартість Ваших послуг *" price input', async({page}) => {
+test('Test case C638: Verify the data entry in the "Вартість Ваших послуг *" price input', async({page, pricesTab}) => {
     await pricesTab.clickOnAddPriceBtn();
 
     await expect(pricesTab.addPriceBtn).not.toBeVisible();

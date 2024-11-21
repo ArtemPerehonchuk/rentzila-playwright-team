@@ -1,26 +1,6 @@
-import { test, expect, request, APIRequestContext } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import OwnerUnitsPage from '../pages/owner.units.page';
-import AdminMainPage from '../pages/admin.main.page';
-import EditUnitPage from '../pages/edit.unit.page';
-import AdminUnitsPage from '../pages/admin.units.page';
-import AdminUnitReviewPage from '../pages/admin.unit.review.page';
-import ApiHelper from "../helpers/api.helper";
-import UnitDetailsPage from '../pages/unit.details.page';
+import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
 import testData from '../data/test_data.json' assert {type: 'json'};
-
-let apiRequestContext: APIRequestContext;
-let homepage: HomePage;
-let ownerUnitsPage: OwnerUnitsPage;
-let adminMainPage: AdminMainPage;
-let editUnitPage: EditUnitPage;
-let adminUnitsPage: AdminUnitsPage;
-let adminUnitReviewPage: AdminUnitReviewPage;
-let unitDetailsPage: UnitDetailsPage;
-let apiHelper: ApiHelper;
-let accessUserToken: string;
-let accessAdminToken: string;
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -31,27 +11,19 @@ let unitName: string;
 let createdUnitId: number;
 let activeUnitName: string;
 let editedUnitName: string;
+let accessUserToken: string;
+let accessAdminToken: string;
 
-test.beforeAll(async () => {
-    apiRequestContext = await request.newContext();
-    apiHelper = new ApiHelper(apiRequestContext);
+test.beforeAll(async ({apiHelper}) => {
     accessUserToken = await apiHelper.createUserAccessToken(); 
     accessAdminToken = await apiHelper.createAdminAccessToken();
 });
 
-test.afterAll(async () => {
+test.afterAll(async ({apiHelper}) => {
     await apiHelper.deleteAllUnits(accessUserToken)
 });
 
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page, apiRequestContext);
-    ownerUnitsPage = new OwnerUnitsPage(page);
-    adminMainPage = new AdminMainPage(page);
-    editUnitPage = new EditUnitPage(page);
-    adminUnitsPage= new AdminUnitsPage(page);
-    adminUnitReviewPage = new AdminUnitReviewPage(page);
-    unitDetailsPage = new UnitDetailsPage(page);
-    
+test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) => {
     await homepage.navigate('/');
     await homepage.clickOnClosePopUpBtn();
     await homepage.clickOnEnterBtn()
@@ -86,7 +58,7 @@ test.beforeEach(async ({ page }) => {
     editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 });
 
-test('Test case C182: Edit Unit without changes', async({page}) => {
+test('Test case C182: Edit Unit without changes', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper }) => {
     const unitCardsLength = await ownerUnitsPage.getUnitCardsLength();
 
     if(unitCardsLength === 0) {
@@ -131,7 +103,7 @@ test('Test case C182: Edit Unit without changes', async({page}) => {
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C272: Check ""Назва оголошення"" input field', async({page}) => {
+test('Test case C272: Check ""Назва оголошення"" input field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper}) => {
     const nineCharStr = faker.string.alpha({length: 9});
     const over100CharStr = faker.string.alpha({length: 101});
     const tenCharStr = faker.string.alpha({length: 10});
@@ -190,7 +162,7 @@ test('Test case C272: Check ""Назва оголошення"" input field', as
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C273: Check ""Виробник транспортного засобу"" input field', async({page}) => {
+test('Test case C273: Check ""Виробник транспортного засобу"" input field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
     const randomString = faker.string.alpha({length: 15});
     const randomChar = faker.string.alpha({length: 1});
 
@@ -250,7 +222,7 @@ test('Test case C273: Check ""Виробник транспортного зас
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C532: "Check ""Назва моделі"" input field', async({page}) => {
+test('Test case C532: "Check ""Назва моделі"" input field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
     const random15CharString = faker.string.alpha({length: 15});
     const random16CharString = faker.string.alpha({length: 16});
 
@@ -290,7 +262,7 @@ test('Test case C532: "Check ""Назва моделі"" input field', async({pa
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C533: Check ""Технічні характеристики"" input field', async({page}) => {
+test('Test case C533: Check ""Технічні характеристики"" input field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
@@ -339,7 +311,7 @@ test('Test case C533: Check ""Технічні характеристики"" in
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C534: Check ""Опис"" input field', async({page}) => {
+test('Test case C534: Check ""Опис"" input field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
@@ -388,7 +360,7 @@ test('Test case C534: Check ""Опис"" input field', async({page}) => {
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C535: Check ""Місце розташування технічного засобу"" functionality', async({page}) => {
+test('Test case C535: Check ""Місце розташування технічного засобу"" functionality', async({page, ownerUnitsPage, editUnitPage}) => {
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clickOnSelectOnMapBtn();
@@ -444,7 +416,7 @@ test('Test case C535: Check ""Місце розташування технічн
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 })
 
-test('Test case C274: Check image section functionality @edit', async({page}) => {
+test('Test case C274: Check image section functionality @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
     let uploadedImages = await editUnitPage.getEditedUnitUploadedPhotosCount();
@@ -468,7 +440,6 @@ test('Test case C274: Check image section functionality @edit', async({page}) =>
 
         await expect(mainImgSrc).toBe(secondImgSrc);
     }
-    try{
         await editUnitPage.clickOnSaveUnitChangesBtn();
 
         await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
@@ -496,13 +467,9 @@ test('Test case C274: Check image section functionality @edit', async({page}) =>
             await expect(page).toHaveURL(/units/);
             await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
         }else return
-    }catch(error) {
-        console.error('Error in image section functionality:', error);
-        throw error;
-    }
 })
 
-test('Test case C275: Check services functionality @edit', async({page}) => {
+test('Test case C275: Check services functionality @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     const over100CharStr = faker.string.alpha({length: 101});
     const randomService = faker.string.alpha({length: 20});
     const inputValues = [
@@ -560,7 +527,7 @@ test('Test case C275: Check services functionality @edit', async({page}) => {
     await expect(adminUnitReviewPage.unitService).toHaveText(randomService);
 })
 
-test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({page}) => {
+test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
 
     const paymentMethods = testData['payment methods'];
@@ -597,7 +564,7 @@ test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({pa
     }
 })
 
-test('Test case C276: Check ""Вартість мінімального замовлення"" field @edit', async({page}) => {
+test('Test case C276: Check ""Вартість мінімального замовлення"" field @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.clearMinOrderPriceInput();
 
@@ -641,7 +608,7 @@ test('Test case C276: Check ""Вартість мінімального замо
     await expect(adminUnitReviewPage.minPriceField).toHaveText(random10Digits.slice(0, 9));
 })
 
-test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu @edit', async({page}) => {
+test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     if(await editUnitPage.addPriceBtn.isVisible()) {
         await editUnitPage.clickOnAddPriceBtn();
