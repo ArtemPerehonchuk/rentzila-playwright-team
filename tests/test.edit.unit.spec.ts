@@ -444,7 +444,7 @@ test('Test case C535: Check ""Місце розташування технічн
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 })
 
-test('Test case C274: Check image section functionality @edit', async({page}) => {
+test('Test case C274: Check image section functionality', async({page}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
     let uploadedImages = await editUnitPage.getEditedUnitUploadedPhotosCount();
@@ -468,48 +468,39 @@ test('Test case C274: Check image section functionality @edit', async({page}) =>
 
         await expect(mainImgSrc).toBe(secondImgSrc);
     }
-    try{
-        await editUnitPage.clickOnSaveUnitChangesBtn();
 
-        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
-        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText('Додайте в оголошення від 1 до 12 фото технічного засобу розміром до 20 МВ у форматі .jpg, .jpeg, .png. Перше фото буде основним.');
+    await editUnitPage.clickOnSaveUnitChangesBtn();
 
-        expect(await editUnitPage.getFileChooser).toBeDefined();
+    await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
+    await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText('Додайте в оголошення від 1 до 12 фото технічного засобу розміром до 20 МВ у форматі .jpg, .jpeg, .png. Перше фото буде основним.');
 
-        await editUnitPage.fileChooserSetInputFile();
-        await page.waitForLoadState('domcontentloaded');
+    expect(await editUnitPage.getFileChooser).toBeDefined();
 
-        await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
-        await expect(editUnitPage.mainImgLable).toBeVisible();
+    await editUnitPage.fileChooserSetInputFile();
+    await page.waitForLoadState('domcontentloaded');
 
-        await editUnitPage.clickOnSaveUnitChangesBtn();
+    await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
+    await expect(editUnitPage.mainImgLable).toBeVisible();
 
-        if(await editUnitPage.successEditUnitMsg.isVisible()) {
-            await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-            await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
-            await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+    await editUnitPage.clickOnSaveUnitChangesBtn();
 
-            await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    if(await editUnitPage.successEditUnitMsg.isVisible()) {
+        await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+        await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+        await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-            await adminUnitsPage.clickOnAdminWatchUnitIcon();
+        await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
 
-            await expect(page).toHaveURL(/units/);
-            await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
-        }else return
-    }catch(error) {
-        console.error('Error in image section functionality:', error);
-        throw error;
-    }
+        await adminUnitsPage.clickOnAdminWatchUnitIcon();
+
+        await expect(page).toHaveURL(/units/);
+        await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
+    }else return
 })
 
-test('Test case C275: Check services functionality @edit', async({page}) => {
+test('Test case C275: Check services functionality', async({page}) => {
     const over100CharStr = faker.string.alpha({length: 101});
     const randomService = faker.string.alpha({length: 20});
-    const inputValues = [
-        '<>{};^',
-        over100CharStr,
-        randomService
-    ];
 
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.removeEditedUnitService();
@@ -521,27 +512,23 @@ test('Test case C275: Check services functionality @edit', async({page}) => {
     await expect(editUnitPage.addServiceErrorMsg).toBeVisible();
     await expect(editUnitPage.addServiceErrorMsg).toHaveText('Додайте в оголошення принаймні 1 послугу');
 
-    for(const inputValue of inputValues) {
-        await editUnitPage.fillServiceInput(inputValue);
+    await editUnitPage.fillServiceInput('<>{};^');
 
-        switch(inputValue) {
-            case '<>{};^':
-                await expect(editUnitPage.serviceInput).toHaveText('', {useInnerText: true});
-                await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', 'Наприклад: Рихлення грунту, буріння');
-                break
+    await expect(editUnitPage.serviceInput).toHaveText('', {useInnerText: true});
+    await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', 'Наприклад: Рихлення грунту, буріння');
 
-            case over100CharStr:
-                const inputValue = await editUnitPage.serviceInput.inputValue();
-                await expect(inputValue.length).toBe(100);
-                break
-            
-            case randomService:
-                await expect(editUnitPage.serviceNotFoundMsg).toBeVisible();
-                await expect(editUnitPage.serviceNotFoundMsg).toContainText(`На жаль, послугу “${randomService}“ не знайдено в нашій базі.`)
-                break
-        }
-    }  
+    await editUnitPage.fillServiceInput(over100CharStr)
+
+    const inputValue = await editUnitPage.serviceInput.inputValue();
+
+    await expect(inputValue.length).toBe(100);
     
+            
+    await editUnitPage.fillServiceInput(randomService);
+
+    await expect(editUnitPage.serviceNotFoundMsg).toBeVisible();
+    await expect(editUnitPage.serviceNotFoundMsg).toContainText(`На жаль, послугу “${randomService}“ не знайдено в нашій базі.`);
+
     await editUnitPage.clickOnCreateServiceBtn();
 
     await expect(editUnitPage.servicesDropDownItems).toHaveText(randomService);
@@ -560,44 +547,45 @@ test('Test case C275: Check services functionality @edit', async({page}) => {
     await expect(adminUnitReviewPage.unitService).toHaveText(randomService);
 })
 
-test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({page}) => {
+test('Test case C541: Check ""Спосіб оплати"" menu', async({page}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
 
     const paymentMethods = testData['payment methods'];
 
-    for(let i = paymentMethods.length - 1; i >= 0; i--) {
+    for (const paymentMethod of paymentMethods.reverse()) {
         await editUnitPage.clickOnSelectPaymentMethodInput();
-
+    
         await expect(editUnitPage.paymentMethodsDropDown).toBeVisible();
         
         const paymentMethodDropDownItems = await editUnitPage.paymentMethodDropDownItems.allInnerTexts();
-
-        await expect(paymentMethods).toContain(paymentMethodDropDownItems[i]);
-
-        await editUnitPage.paymentMethodDropDownItems.nth(i).click();
-
-        await expect(editUnitPage.selectPaymentMethodInput).toHaveText(paymentMethodDropDownItems[i]);
-
+    
+        await expect(paymentMethodDropDownItems).toContain(paymentMethod);
+    
+        const paymentMethodElement = await editUnitPage.paymentMethodDropDownItems.locator(`text=${paymentMethod}`);
+        await paymentMethodElement.click();
+    
+        await expect(editUnitPage.selectPaymentMethodInput).toHaveText(paymentMethod);
+    
         await editUnitPage.clickOnSaveUnitChangesBtn();
-
+    
         await expect(editUnitPage.successEditUnitMsg).toBeVisible();
         await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
         await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
-
+    
         await editUnitPage.clickOnLookInMyAnnouncementsBtn();
         await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
         await ownerUnitsPage.clickOnFirstWaitingsUnit();
-
+    
         await expect(page).toHaveURL(/unit/);
-        await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethodDropDownItems[i]);
-
+        await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethod);
+    
         await unitDetailsPage.clickOnEditUnitBtn();
-
+    
         await expect(page).toHaveURL(/edit-unit/);
     }
 })
 
-test('Test case C276: Check ""Вартість мінімального замовлення"" field @edit', async({page}) => {
+test('Test case C276: Check ""Вартість мінімального замовлення"" field', async({page}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.clearMinOrderPriceInput();
 
@@ -608,25 +596,20 @@ test('Test case C276: Check ""Вартість мінімального замо
     await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
     await expect(editUnitPage.unitPriceErrorMsg).toHaveText('Це поле обов\’язкове');
 
-    const random10Digits = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString()
-    const inputValues = [
-        '<>{};^@!#$%?()|\/`~',
-        random10Digits
-    ]
+    const random10Digits = faker.string.numeric(10);
+    const specialChars = '<>{};^@!#$%?()|\\/`~';
+    const randomSpecialCharsSequence = faker.helpers.arrayElements(specialChars.split(''), { min: 3, max: 20 }).join('');
 
-    for (const value of inputValues) {
-        await editUnitPage.fillMinOrderPriceInput(value)
-        switch(value) {
-            case '<>{};^@!#$%?()|\/`~':
-                await expect(editUnitPage.minOrderPriceInput.first()).toHaveText('');
-                break
-            
-            case random10Digits: 
-                const inputValue = await editUnitPage.minOrderPriceInput.first().inputValue();
-                await expect(inputValue.length).toBe(9);
-                break
-        }
-    }
+    await editUnitPage.fillMinOrderPriceInput(randomSpecialCharsSequence);
+
+    await expect(editUnitPage.minOrderPriceInput.first()).toHaveText('');
+    
+        
+    await editUnitPage.fillMinOrderPriceInput(random10Digits)
+
+    const inputValue = await editUnitPage.minOrderPriceInput.first().inputValue();
+    await expect(inputValue.length).toBe(9);
+
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
@@ -641,37 +624,36 @@ test('Test case C276: Check ""Вартість мінімального замо
     await expect(adminUnitReviewPage.minPriceField).toHaveText(random10Digits.slice(0, 9));
 })
 
-test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu @edit', async({page}) => {
+test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu', async({page}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    if(await editUnitPage.addPriceBtn.isVisible()) {
+    
+    if (await editUnitPage.addPriceBtn.isVisible()) {
         await editUnitPage.clickOnAddPriceBtn();
     }
 
     const priceOptions = testData['add price options'];
     let additionalPriceItems;
 
-    for(let i = 1; i < priceOptions.length; i ++) {
+    for (const priceOption of priceOptions) {
         await editUnitPage.clickOnAdditionalPriceSelect();
-
         await expect(editUnitPage.additionalPriceDropDpwn).toBeVisible();
 
         additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
- 
-        await expect(priceOptions).toContain(additionalPriceItems[i]);
+        await expect(priceOptions).toContain(priceOption);
 
-        await editUnitPage.additionalPriceDropDownItems.nth(i).click();
+        const index = additionalPriceItems.indexOf(priceOption);
+        if (index !== -1) {
+            await editUnitPage.additionalPriceDropDownItems.nth(index).click();
+            const selectedPriceOption = await editUnitPage.additionalPriceSelect.nth(1).innerText();
+            await expect(selectedPriceOption.toLowerCase()).toBe(priceOption.toLowerCase());
 
-        const additionalPriceDropDownItem = await editUnitPage.additionalPriceSelect.nth(1).innerText()
-
-        await expect(additionalPriceDropDownItem.toLowerCase()).toBe(additionalPriceItems[i].toLowerCase());
-
-        if(additionalPriceItems[i] === 'Зміна') {
-            await expect(editUnitPage.selectTimeInput).toBeVisible();
+            if (priceOption === 'Зміна') {
+                await expect(editUnitPage.selectTimeInput).toBeVisible();
+            }
         }
     }
 
     await editUnitPage.clickOnAdditionalPriceSelect();
-
     additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
     const randomAdditionalPriceItemIndex = Math.floor(Math.random() * additionalPriceItems.length);
     const randomAdditionalPriceDropDownOption = additionalPriceItems[randomAdditionalPriceItemIndex];
@@ -680,7 +662,6 @@ test('Test case C543:  Check ""Вартість мінімального зам�
     await page.waitForTimeout(2000);
 
     await editUnitPage.additionalPriceInput.fill('1000');
-
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
@@ -691,14 +672,14 @@ test('Test case C543:  Check ""Вартість мінімального зам�
 
     await adminUnitsPage.clickOnAdminWatchUnitIcon();
 
-    if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр кв.') {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м2');
-    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр куб.') {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м3');
-    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'кілометр') {
-        return
+    const workTypeMapping: { [key: string]: string } = {
+        'метр кв.': 'м2',
+        'метр куб.': 'м3',
+    };
+
+    const workType = workTypeMapping[randomAdditionalPriceDropDownOption.toLowerCase()] || randomAdditionalPriceDropDownOption.toLowerCase();
+
+    if (workType !== 'кілометр') {
+        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText(workType);
     }
-    else {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText(randomAdditionalPriceDropDownOption.toLowerCase());
-    }
-})
+});

@@ -1,7 +1,8 @@
 import { Page as PlaywrightPage, expect } from '@playwright/test';
 import Page from './page';
-import path from 'path';
 import testData from '../data/test_data.json' assert {type: 'json'};
+import { faker } from '@faker-js/faker';
+import getPhotoPath from '../helpers/helper';
 
 const photoFileNames = testData['photo file names']
 
@@ -77,7 +78,7 @@ class EditUnitPage extends Page {
         await this.page.waitForLoadState('load');
         await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
         await this.saveUnitChangesBtn.click({force: true});
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('load');
     }
 
     async clickOnLookInMyAnnouncementsBtn() {
@@ -102,11 +103,11 @@ class EditUnitPage extends Page {
     }
 
     async getVehicleManufacturerInputText() {
-        return await this.vehicleManufacturerInput.inputValue();
+        return this.vehicleManufacturerInput.inputValue();
     }
 
     async getVehicleManufacturerInputSelectedOptionText() {
-        return await this.vehicleManufacturerInputSelectedOption.innerText();
+        return this.vehicleManufacturerInputSelectedOption.innerText();
     }
 
     async clearVehicleManufacturerInput() {
@@ -138,7 +139,7 @@ class EditUnitPage extends Page {
     }
 
     async getDetailDescriptionInputText() {
-        return await this.detailDescriptionInput.innerText(); 
+        return this.detailDescriptionInput.innerText(); 
     }
 
     async fillDetailDescriptionInput(value: string) {
@@ -178,7 +179,7 @@ class EditUnitPage extends Page {
     }
 
     async getMapPopUpLocationText() {
-        return await this.mapPopUpLocation.innerText();
+        return this.mapPopUpLocation.innerText();
     } 
     
     async clickOnMap() {
@@ -212,8 +213,8 @@ class EditUnitPage extends Page {
         let uploadedImagesCount = 0;
         const unitImageBlocks = await this.editedUnitImageBlocks.all();
 
-        for(let i = 0; i < unitImageBlocks.length; i++) {
-            const isDraggable = await unitImageBlocks[i].getAttribute('draggable');
+        for(const unitImg of unitImageBlocks) {
+            const isDraggable = await unitImg.getAttribute('draggable');
             if(isDraggable === 'true') {
                 uploadedImagesCount++;
             }
@@ -223,14 +224,15 @@ class EditUnitPage extends Page {
     }
 
     async getEditedUnitName() {
-        return await this.unitNameInput.inputValue();
+        return this.unitNameInput.inputValue();
     }
 
     async uploadPhotos(numberOfPhotos: number) {   
         for(let i = 0; i < numberOfPhotos; i++) {
-            let photoFileNameIndex = Math.floor(Math.random() * 15)
+            const randomPhotoFileName = faker.helpers.arrayElement(photoFileNames);
+
             await this.editedUnitImageBlocks.nth(i).focus();
-            await this.editedUnitUploadFileInput.setInputFiles(path.resolve(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`));
+            await this.editedUnitUploadFileInput.setInputFiles(getPhotoPath(randomPhotoFileName));
             await this.page.waitForLoadState('load');
         }
     }
@@ -239,30 +241,23 @@ class EditUnitPage extends Page {
         let retryCount = 0;
     
         while (retryCount < 3) {
-            let uploadedImages = await this.getEditedUnitUploadedPhotosCount();
-            if (uploadedImages === 1) {
-                await this.uploadPhotos(3);
-            } else if (uploadedImages === 2) {
-                await this.uploadPhotos(1);
-            } else if (uploadedImages === 3) {
-                await this.uploadPhotos(1);
+            const uploadedImages = await this.getEditedUnitUploadedPhotosCount();
+            if (uploadedImages < 4) {
+                await this.uploadPhotos(4 - uploadedImages); 
             } else {
                 return; 
             }
 
-            if (await this.uploadPhotoErrorPopUp.isVisible()) {
-                if (await this.uploadPhotoErrorPopUpCloseButton.isVisible()) {
-                    await this.uploadPhotoErrorPopUpCloseButton.click();
-                }
-                retryCount++; 
-            } else {
-                return; 
+            if (await this.uploadPhotoErrorPopUpCloseButton.isVisible()) {
+                await this.uploadPhotoErrorPopUpCloseButton.click();
             }
+
+            retryCount++;
         }
     }
 
     async getImgSrcAttr(numberOfImage: number) {
-        return await this.editedUnitImages.nth(numberOfImage - 1).getAttribute('src');
+        return this.editedUnitImages.nth(numberOfImage - 1).getAttribute('src');
     }
 
     async hoverOnFirstImg() {
@@ -274,17 +269,19 @@ class EditUnitPage extends Page {
         await this.uploadPhotoPlusIcon.first().click();
     }
 
-    async getFileChooser(timeout = 500) {
-        const [fileChooser] = await Promise.all([
-            this.page.waitForEvent('filechooser', { timeout }),
-            this.clickOnUploadPhotoPlusIcon()
-        ]);
+    async getFileChooser(timeout = 5000) {
+        const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+
+        await this.clickOnUploadPhotoPlusIcon();
+
+        const fileChooser = await fileChooserPromise;
+
         return fileChooser;
     }
 
     async fileChooserSetInputFile() {
         const fileChooser = await this.getFileChooser();
-        const photoFileNameIndex = Math.floor(Math.random() * 15)
+        const photoFileNameIndex = faker.number.int({ min: 0, max: 14 });
         await fileChooser.setFiles(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`);
     }
 
@@ -302,14 +299,14 @@ class EditUnitPage extends Page {
 
     async clickOnSelectPaymentMethodInput() {
         await this.selectPaymentMethodInput.click({force: true});
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('load')
     }
 
     async clearMinOrderPriceInput() {
         await this.minOrderPriceInput.first().clear();
     }
 
-    async fillMinOrderPriceInput(value: any) {
+    async fillMinOrderPriceInput(value: string) {
         await this.minOrderPriceInput.first().type(value)
     }
 
