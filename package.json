@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
+    "test:ui": "playwright test --ui --config=playwright.config.chrome.ts",
     "test:chrome": "playwright test --config=playwright.config.chrome.ts",
     "test:services:chrome": "playwright test tests/test.services.spec.ts --config=playwright.config.chrome.ts",
     "test:login:chrome": "playwright test tests/test.login.spec.ts --config=playwright.config.chrome.ts",
