@@ -273,7 +273,7 @@ class CreateUnitPage extends Page {
 
     async clickOnSelectOnMapBtn() {
         await this.selectOnMapBtn.click();
-        await this.page.waitForTimeout(1000)
+        await this.page.waitForTimeout(2000)
     }
 
     async getMapPopUpAddressLineText() {

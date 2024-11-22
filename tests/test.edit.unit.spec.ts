@@ -416,7 +416,7 @@ test('Test case C535: Check ""Місце розташування технічн
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 })
 
-test('Test case C274: Check image section functionality @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C274: Check image section functionality', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
     let uploadedImages = await editUnitPage.getEditedUnitUploadedPhotosCount();
@@ -469,7 +469,7 @@ test('Test case C274: Check image section functionality @edit', async({page, own
         }else return
 })
 
-test('Test case C275: Check services functionality @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C275: Check services functionality', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     const over100CharStr = faker.string.alpha({length: 101});
     const randomService = faker.string.alpha({length: 20});
     const inputValues = [
@@ -527,7 +527,7 @@ test('Test case C275: Check services functionality @edit', async({page, ownerUni
     await expect(adminUnitReviewPage.unitService).toHaveText(randomService);
 })
 
-test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
+test('Test case C541: Check ""Спосіб оплати"" menu', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
 
     const paymentMethods = testData['payment methods'];
@@ -564,7 +564,7 @@ test('Test case C541: Check ""Спосіб оплати"" menu @edit', async({pa
     }
 })
 
-test('Test case C276: Check ""Вартість мінімального замовлення"" field @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C276: Check ""Вартість мінімального замовлення"" field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.clearMinOrderPriceInput();
 
@@ -608,7 +608,7 @@ test('Test case C276: Check ""Вартість мінімального замо
     await expect(adminUnitReviewPage.minPriceField).toHaveText(random10Digits.slice(0, 9));
 })
 
-test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu @edit', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C543:  Check ""Вартість мінімального замовлення"" drop-down menu', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     if(await editUnitPage.addPriceBtn.isVisible()) {
         await editUnitPage.clickOnAddPriceBtn();

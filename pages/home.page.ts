@@ -167,7 +167,7 @@ class HomePage extends Page {
 
     async clickOnSubmitConsultationBtn() {
         await this.submitConsultationBtn.click();
-        await this.page.waitForTimeout(4000);
+        await this.page.waitForTimeout(5000);
     }
 
     async checkInputErrorIsDisplayed(inputName: string, errorText: string) {

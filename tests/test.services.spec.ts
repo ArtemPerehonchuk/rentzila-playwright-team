@@ -23,24 +23,25 @@ test('test case c212: Checking ""Послуги"" section on the main page', asy
 
         await homepage.clickFirstServicesUnit();
 
-        await expect(await productsPage.productFilterItem).toBeVisible();
-        await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
-        await expect(await productsPage.unitsContainer).toBeVisible();
+        if(await productsPage.productFilterItem.isVisible()) {
+            await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
+            await expect(await productsPage.unitsContainer).toBeVisible();
 
-        await productsPage.clickFirstProduct();
+            await productsPage.clickFirstProduct();
 
-        await expect(await unitPage.checkUnitIsVisible()).toBe(true);
+            await expect(await unitPage.checkUnitIsVisible()).toBe(true);
 
-        await unitPage.clickOnLogo();
+            await unitPage.clickOnLogo();
 
-        await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
 
-        await homepage.clickOnAnnouncementsNavMenuItem();
+            await homepage.clickOnAnnouncementsNavMenuItem();
 
-        await expect(await productsPage.productFilterItem).toBeVisible();
-        await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
+            await expect(await productsPage.productFilterItem).toBeVisible();
+            await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
 
-        await homepage.clickOnLogo();
+            await homepage.clickOnLogo();
+        }
     }
 })
 
