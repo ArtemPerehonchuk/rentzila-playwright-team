@@ -258,15 +258,9 @@ class HomePage extends Page {
         });
     }
 
-    async getUsersList() {
-        if (this.apiHelper) {
-            return await this.apiHelper.getUserDetails();
-        }
-    }
-
     async clickOnSubmitLoginFormBtn() {
         await this.submitLoginFormBtn.click();
-        await this.page.waitForTimeout(500)
+        await this.page.waitForTimeout(1000)
     }
 
     async getLoginEmailOrPhoneInputValue() {

@@ -76,7 +76,7 @@ test('test case C214: Verify that all elements on the footer are displayed and a
     await expect(await homepage.getContactsEmail()).toContain('info@rentzila.com.ua');
 });
 
-test('test case C226: Verify "У Вас залишилися питання?" form', async ({ homepage }) => {
+test('test case C226: Verify "У Вас залишилися питання?" form', async ({ homepage, apiHelper }) => {
     const userName = faker.person.firstName();
     const userPhone = contactUsFormInputValues["other correct phone"];
     
@@ -133,11 +133,12 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
     await homepage.clickOnSubmitConsultationBtn();
 
     await homepage.checkSuccessSubmitConsultationMsg();
-        
-    const userList = await homepage.getUsersList();
 
-    const containsUser = userList.some((user: any) => {
-        return user.name === userName && user.phone === userPhone
+    const userList = await apiHelper.getUserDetails();
+    const reversedUserList = userList.slice().reverse();
+
+    const containsUser = reversedUserList.some((user: any) => {
+        return user.name === userName && user.phone === userPhone;
     });
 
     await expect(containsUser).toBe(true);

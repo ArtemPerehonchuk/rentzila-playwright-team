@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright test --workers=1",
     "test:services": "playwright test tests/test.services.spec.ts",
     "test:login": "playwright test tests/test.login.spec.ts",
     "test:footer-elements": "playwright test tests/test.footer.elements.spec.ts",
