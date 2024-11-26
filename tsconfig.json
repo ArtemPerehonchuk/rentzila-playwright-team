@@ -10,6 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node"
   },
-  "include": ["./tests/**/*.ts"],
+  "include": ["./tests/**/*.ts", "fixtures.ts"],
   "exclude": ["node_modules"]
 }

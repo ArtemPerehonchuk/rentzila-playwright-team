@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, Locator, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 
 class Page {
     public page: PlaywrightPage;

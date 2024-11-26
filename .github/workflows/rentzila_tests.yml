@@ -35,7 +35,7 @@ jobs:
         run: npx playwright install chromium
 
       - name: Run tests
-        run: npm run test:chrome -- --reporter=html
+        run: npm run test -- --reporter=html
 
       - name: Deploy report to GitHub Pages
         if: always()
