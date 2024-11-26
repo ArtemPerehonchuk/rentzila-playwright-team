@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class TermsConditionsPage extends Page { 
@@ -7,7 +7,7 @@ class TermsConditionsPage extends Page {
         super(page);
     }
 
-    termsConditionsTitle = this.page.locator('h1[class*="TermsConditions_title"]');
+    termsConditionsTitle: Locator = this.page.locator('h1[class*="TermsConditions_title"]');
 
 }
 

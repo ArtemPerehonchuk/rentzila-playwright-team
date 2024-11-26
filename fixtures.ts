@@ -50,7 +50,7 @@ export const test = baseTest.extend<TestFixtures>({
         const homePage = new HomePage(page);
 
         await homePage.navigate('/');
-        await homePage.clickOnClosePopUpBtn();
+        await homePage.closePopUpBtn.click();
         
         await use(homePage)
     },

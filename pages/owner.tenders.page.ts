@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class OwnerTendersPage extends Page {
@@ -7,12 +7,7 @@ class OwnerTendersPage extends Page {
         super(page);
     }
 
-    createTenderBtn = this.page.locator('[data-testid="emptyBlockButton"]');
-
-    async clickOnCreateTenderBtn() {
-        await this.createTenderBtn.click();
-    }
-    
+    createTenderBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]');
 }
 
 export default OwnerTendersPage;

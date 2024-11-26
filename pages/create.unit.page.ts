@@ -1,6 +1,6 @@
 import { Page as PlaywrightPage, Locator, expect } from '@playwright/test';
 import Page from './page';
-import categoryNames from '../data/category_names.json' assert { type: 'json' };
+import categoryNames from '../data/category-names.json' assert { type: 'json' };
 import { faker } from '@faker-js/faker';
 
 class CreateUnitPage extends Page {  
@@ -9,55 +9,55 @@ class CreateUnitPage extends Page {
         super(page);
     }
     
-    createUnitTitle = this.page.locator('div[class*="CreateEditFlowLayout_title"]');
-    createUnitTabs = this.page.getByRole('tab');
-    createUnitTabsText = this.page.locator('div[class*="CustomLabel_label"] > span[class*="CustomLabel_labelTitle__O2bFl"]');
-    tabNumber = this.page.locator('[data-testid="labelNumber"]');
-    categoriesDropDown = this.page.locator('[data-testid="buttonDiv"]');
-    nextBtn = this.page.locator('[data-testid="nextButton"]');
-    categoryErrorMessage = this.page.locator('[class*="CategorySelect_errorTextVisible"]');
-    categoriesPopUp = this.page.locator('div[data-testid="categoryPopupWrapper"]');
-    categoriesPopUpCloseBtn = this.page.locator('[data-testid="closeIcon"]');
-    categoriesDropDownArrowDown = this.page.locator('div[data-testid="buttonDiv"]>div  img[alt="Arrow-down"]');
-    categoriesTitle = this.page.locator('div[class*="CategorySelect_title"]');
-    categoriesPopUpTitle = this.page.locator('div[class*="CategoryPopup_title"]');
-    announcementNameTitle = this.page.locator('div[class*="CustomInput_title"]').first();
-    announcementNameInput = this.page.locator('input[data-testid="custom-input"]').first();
-    announcementNameInputError = this.page.locator('[data-testid="descriptionError"]').first();
-    vehicleManufacturerTitle = this.page.locator('div[class*="SelectManufacturer_title"]');
-    vehicleManufacturerInputContainer = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"]');
-    vehicleManufacturerInput = this.page.locator('input[data-testid="input-customSelectWithSearch"]');
-    vehicleManufacturerInputError = this.page.locator('div[class*="CustomSelectWithSearch_errorTextVisible"]');
-    vehicleManufacturerInputSearchIcon = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"] > svg');
-    vehicleManufacturerSelectedOption = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]')
-    vehicleManifacturerDropDown = this.page.locator('div[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    vehicleManufacturerDropDownOption = this.page.locator('div[class*="CustomSelectWithSearch_flexForServices"]').first();
-    optionNotFoundMessage = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    selectedOptionInDropdown = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
-    clearVehicleManifacturerDropDownIcon = this.page.locator('button[class*="CustomSelectWithSearch_serviceBtn"]');
-    modelNameTitle = this.page.locator('div[class*="CustomInput_title"]').getByText('Назва моделі')
-    modelNameInput = this.page.locator('input[data-testid="custom-input"]').nth(1);
-    modelNameInputError = this.page.locator('[data-testid="descriptionError"]');
-    technicalInfoTitle = this.page.locator('div[class*="CustomTextAriaDescription_title"]').first();
-    technicalInfoInput = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
-    descriptionInfoTitle = this.page.locator('div[class*="CustomTextAriaDescription_title"]').nth(1);
-    descriptionInfoInput = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
-    addressSelectionTitle = this.page.locator('[class*="AddressSelectionBlock_title"]');
-    addressSelectionInput = this.page.locator('[data-testid="mapLabel"]');
-    addressSelectionInputError = this.page.locator('[class*="AddressSelectionBlock_errorTextVisible"]');
-    selectOnMapBtn = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
-    mapPopUp = this.page.locator('[data-testid="div-mapPopup"]');
-    mapPopUpTitle = this.page.locator('[class*="MapPopup_title"]');
-    mapPopUpAddressLine = this.page.locator('[class*="MapPopup_address"]')
-    mapPopUpCloseBtn = this.page.locator('[class*="MapPopup_title"]');
-    addressLine = this.page.locator('[data-testid="address"]');
-    selectedAddress = this.page.locator('[class*="AddressSelectionBlock_mapLabelChosen"]');
-    mapPopUpSubmitBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    mapContainer = this.page.locator('#map');
-    cancelBtn = this.page.locator('[data-testid="prevButton"]');
-    characteristicsTitle  = this.page.locator('div[class*="Characteristics_title"]');
-    vehicleManufacturerList = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    mapLabel = this.page.locator('[data-testid="mapLabel"]');
+    createUnitTitle: Locator = this.page.locator('div[class*="CreateEditFlowLayout_title"]');
+    createUnitTabs: Locator = this.page.getByRole('tab');
+    createUnitTabsText: Locator = this.page.locator('div[class*="CustomLabel_label"] > span[class*="CustomLabel_labelTitle__O2bFl"]');
+    tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
+    categoriesDropDown: Locator = this.page.locator('[data-testid="buttonDiv"]');
+    nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    categoryErrorMessage: Locator = this.page.locator('[class*="CategorySelect_errorTextVisible"]');
+    categoriesPopUp: Locator = this.page.locator('div[data-testid="categoryPopupWrapper"]');
+    categoriesPopUpCloseBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
+    categoriesDropDownArrowDown: Locator = this.page.locator('div[data-testid="buttonDiv"]>div  img[alt="Arrow-down"]');
+    categoriesTitle: Locator = this.page.locator('div[class*="CategorySelect_title"]');
+    categoriesPopUpTitle: Locator = this.page.locator('div[class*="CategoryPopup_title"]');
+    announcementNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').first();
+    announcementNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').first();
+    announcementNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]').first();
+    vehicleManufacturerTitle: Locator = this.page.locator('div[class*="SelectManufacturer_title"]');
+    vehicleManufacturerInputContainer: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"]');
+    vehicleManufacturerInput: Locator = this.page.locator('input[data-testid="input-customSelectWithSearch"]');
+    vehicleManufacturerInputError: Locator = this.page.locator('div[class*="CustomSelectWithSearch_errorTextVisible"]');
+    vehicleManufacturerInputSearchIcon: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"] > svg');
+    vehicleManufacturerSelectedOption: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]')
+    vehicleManifacturerDropDown: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    vehicleManufacturerDropDownOption: Locator = this.page.locator('div[class*="CustomSelectWithSearch_flexForServices"]').first();
+    optionNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    selectedOptionInDropdown: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
+    clearVehicleManifacturerDropDownIcon: Locator = this.page.locator('button[class*="CustomSelectWithSearch_serviceBtn"]');
+    modelNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').getByText('Назва моделі')
+    modelNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').nth(1);
+    modelNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
+    technicalInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').first();
+    technicalInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
+    descriptionInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').nth(1);
+    descriptionInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
+    addressSelectionTitle: Locator = this.page.locator('[class*="AddressSelectionBlock_title"]');
+    addressSelectionInput: Locator = this.page.locator('[data-testid="mapLabel"]');
+    addressSelectionInputError: Locator = this.page.locator('[class*="AddressSelectionBlock_errorTextVisible"]');
+    selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
+    mapPopUp: Locator = this.page.locator('[data-testid="div-mapPopup"]');
+    mapPopUpTitle: Locator = this.page.locator('[class*="MapPopup_title"]');
+    mapPopUpAddressLine: Locator = this.page.locator('[class*="MapPopup_address"]')
+    mapPopUpCloseBtn: Locator = this.page.locator('[class*="MapPopup_title"]');
+    addressLine: Locator = this.page.locator('[data-testid="address"]');
+    selectedAddress: Locator = this.page.locator('[class*="AddressSelectionBlock_mapLabelChosen"]');
+    mapPopUpSubmitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    mapContainer: Locator = this.page.locator('#map');
+    cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    characteristicsTitle: Locator  = this.page.locator('div[class*="Characteristics_title"]');
+    vehicleManufacturerList: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    mapLabel: Locator = this.page.locator('[data-testid="mapLabel"]');
 
     async checkCreateUnitTabsTitles(activeTabNumber: number) {
         if(await this.createUnitTabs.isVisible) {
@@ -136,10 +136,6 @@ class CreateUnitPage extends Page {
         return false;
     }
 
-    async clickOnCategoriesDropDown() {
-        await this.categoriesDropDown.click();
-    }
-
     async getAnnouncementNameTitleText() {
         return await this.announcementNameTitle.innerText();
     } 
@@ -172,10 +168,6 @@ class CreateUnitPage extends Page {
 
     async getVehicleManufacturerDropDownOptionText() {
         return await this.vehicleManufacturerDropDownOption.innerText();
-    }
-
-    async clickOnOptionInVehicleManufacturerDropDown() {
-        await this.vehicleManufacturerDropDownOption.click();
     }
 
     async getOptionNotFoundErrorText() {
@@ -237,16 +229,12 @@ class CreateUnitPage extends Page {
 
                     await expect(categoriesDropDownValue.toLowerCase()).toBe(thirdCategoryItemsNames[k].toLowerCase());
 
-                    await this.clickOnCategoriesDropDown();
+                    await this.categoriesDropDown.click();
                 }
             }
         }
     }
 
-    async clickOnClearIcon() {
-        await this.clearVehicleManifacturerDropDownIcon.click({force: true});
-    }
-    
     async getModelNameTitleText() {
         return await this.modelNameTitle.innerText();
     }
@@ -305,10 +293,6 @@ class CreateUnitPage extends Page {
             return address
         }
         return '';
-    }
-
-    async clickOnCancelBtn() {
-        await this.cancelBtn.click();
     }
     
     async acceptAlert() {

@@ -1,7 +1,7 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 import path from 'path';
-import testData from '../data/test_data.json' assert {type: 'json'};
+import testData from '../data/test-data.json' assert {type: 'json'};
 
 const photoFileNames = testData['photo file names']
 
@@ -11,58 +11,58 @@ class EditUnitPage extends Page {
         super(page);
     }
 
-    cancelUnitChangesBtn = this.page.locator('[data-testid="prevButton"]');
-    saveUnitChangesBtn = this.page.locator('[data-testid="nextButton"]');
-    successEditUnitMsg = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
-    lookInMyAnnouncementsBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    unitNameInput = this.page.locator('[data-testid="custom-input"]').first();
-    unitNameInputError = this.page.locator('[data-testid="descriptionError"]').first();
-    vehicleManufacturerInputCloseIcon = this.page.locator('[data-testid="closeButton"]');
-    vehicleManufacturerInput = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    vehicleManufacturerInputSelectedOption = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
-    vehicleManufacturerInputError = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
-    vehicleManufacturerNotFoundMsg = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    vehicleManufacturerDropDown = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    vehivleManufacturerFirstOption = this.page.locator('[data-testid="item-customSelectWithSearch"]').first();
-    modelNameInput = this.page.locator('[data-testid="custom-input"]').nth(1);
-    modelNameInputError = this.page.locator('[data-testid="descriptionError"]');
-    technicalCharacteristicsInput = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
-    detailDescriptionInput = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
-    selectOnMapBtn = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
-    mapPopUp = this.page.locator('[data-testid="div-mapPopup"]');
-    mapPopUpZoomInBtn = this.page.locator('[aria-label="Zoom in"]');
-    mapPopUpZoomOutBtn = this.page.locator('[aria-label="Zoom out"]');
-    mapContainer = this.page.locator('[id="map"]');
-    mapPopUpLocation = this.page.locator('[data-testid="address"]');
-    mapPopUpConfirmChoiseBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    vehicleLocation = this.page.locator('[data-testid="mapLabel"]');
-    editedUnitImageBlocks = this.page.locator('[data-testid="imageBlock"]');
-    editedUnitImages = this.page.locator('[data-testid="unitImage"]')
-    editedUnitDeleteImgIcons = this.page.locator('[data-testid="deleteImage"]');
-    editedUnitUploadFileInput = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
-    uploadPhotoErrorPopUp = this.page.locator('[data-testid="content"] > [class*="PopupLayout_header"]');
-    uploadPhotoErrorPopUpCloseButton = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    uploadTo12PhotosErrorMsg = this.page.locator('[data-testid="description"]');
-    uploadPhotoPlusIcon = this.page.locator('[data-testid="clickImage"]');
-    mainImgLable = this.page.locator('[data-testid="mainImageLabel"]');
-    editedUnitService = this.page.locator('[class*="ServicesUnitFlow_serviceText"]');
-    editedUnitServiceCloseIcon = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
-    addServiceErrorMsg = this.page.locator('[data-testid="add-info"]');
-    serviceInput = this.page.locator('[class*="ServicesUnitFlow_searchInput"] > input');
-    serviceNotFoundMsg = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    createServiceBth = this.page.locator('[data-testid="btn-addNewItem"]');
-    servicesDropDownItems = this.page.locator('[class*="ServicesUnitFlow_searchListItem"]');
-    selectPaymentMethodInput = this.page.locator('[data-testid="div_CustomSelect"]');
-    paymentMethodsDropDown = this.page.locator('[data-testid="listItems-customSelect"]');
-    paymentMethodDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
-    minOrderPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]');
-    unitPriceErrorMsg = this.page.locator('[data-testid="div_required_RowUnitPrice"]');
-    addPriceBtn = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
-    additionalPriceSelect = this.page.locator('[data-testid="div_CustomSelect"]');
-    additionalPriceDropDpwn = this.page.locator('[data-testid="listItems-customSelect"]');
-    additionalPriceDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
-    selectTimeInput = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
-    additionalPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
+    cancelUnitChangesBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    saveUnitChangesBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    successEditUnitMsg: Locator = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
+    lookInMyAnnouncementsBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    unitNameInput: Locator = this.page.locator('[data-testid="custom-input"]').first();
+    unitNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]').first();
+    vehicleManufacturerInputCloseIcon: Locator = this.page.locator('[data-testid="closeButton"]');
+    vehicleManufacturerInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    vehicleManufacturerInputSelectedOption: Locator = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
+    vehicleManufacturerInputError: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
+    vehicleManufacturerNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    vehicleManufacturerDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    vehivleManufacturerFirstOption: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]').first();
+    modelNameInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
+    modelNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
+    technicalCharacteristicsInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
+    detailDescriptionInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
+    selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
+    mapPopUp: Locator = this.page.locator('[data-testid="div-mapPopup"]');
+    mapPopUpZoomInBtn: Locator = this.page.locator('[aria-label="Zoom in"]');
+    mapPopUpZoomOutBtn: Locator = this.page.locator('[aria-label="Zoom out"]');
+    mapContainer: Locator = this.page.locator('[id="map"]');
+    mapPopUpLocation: Locator = this.page.locator('[data-testid="address"]');
+    mapPopUpConfirmChoiseBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    vehicleLocation: Locator = this.page.locator('[data-testid="mapLabel"]');
+    editedUnitImageBlocks: Locator = this.page.locator('[data-testid="imageBlock"]');
+    editedUnitImages: Locator = this.page.locator('[data-testid="unitImage"]')
+    editedUnitDeleteImgIcons: Locator = this.page.locator('[data-testid="deleteImage"]');
+    editedUnitUploadFileInput: Locator = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
+    uploadPhotoErrorPopUp: Locator = this.page.locator('[data-testid="content"] > [class*="PopupLayout_header"]');
+    uploadPhotoErrorPopUpCloseButton: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    uploadTo12PhotosErrorMsg: Locator = this.page.locator('[data-testid="description"]');
+    uploadPhotoPlusIcon: Locator = this.page.locator('[data-testid="clickImage"]');
+    mainImgLable: Locator = this.page.locator('[data-testid="mainImageLabel"]');
+    editedUnitService: Locator = this.page.locator('[class*="ServicesUnitFlow_serviceText"]');
+    editedUnitServiceCloseIcon: Locator = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
+    addServiceErrorMsg: Locator = this.page.locator('[data-testid="add-info"]');
+    serviceInput: Locator = this.page.locator('[class*="ServicesUnitFlow_searchInput"] > input');
+    serviceNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    createServiceBth: Locator = this.page.locator('[data-testid="btn-addNewItem"]');
+    servicesDropDownItems: Locator = this.page.locator('[class*="ServicesUnitFlow_searchListItem"]');
+    selectPaymentMethodInput: Locator = this.page.locator('[data-testid="div_CustomSelect"]');
+    paymentMethodsDropDown: Locator = this.page.locator('[data-testid="listItems-customSelect"]');
+    paymentMethodDropDownItems: Locator = this.page.locator('[data-testid="item-customSelect"]');
+    minOrderPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]');
+    unitPriceErrorMsg: Locator = this.page.locator('[data-testid="div_required_RowUnitPrice"]');
+    addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    additionalPriceSelect: Locator = this.page.locator('[data-testid="div_CustomSelect"]');
+    additionalPriceDropDpwn: Locator = this.page.locator('[data-testid="listItems-customSelect"]');
+    additionalPriceDropDownItems: Locator = this.page.locator('[data-testid="item-customSelect"]');
+    selectTimeInput: Locator = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
+    additionalPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
 
     async clickOnCancelUnitChangesBtn() {
         await this.cancelUnitChangesBtn.click({force: true});
@@ -80,10 +80,6 @@ class EditUnitPage extends Page {
         await this.page.waitForTimeout(2000);
     }
 
-    async clickOnLookInMyAnnouncementsBtn() {
-        await this.lookInMyAnnouncementsBtn.click();
-    }
-
     async clearUnitNameInput() {
         await this.unitNameInput.first().clear();
     }
@@ -91,10 +87,6 @@ class EditUnitPage extends Page {
     async fillUnitNameInput(value: string) {
         await this.unitNameInput.first().fill(value);
         await this.page.waitForLoadState('load')
-    }
-
-    async clickOnVehicleManufacturerInputCloseIcon() {
-        await this.vehicleManufacturerInputCloseIcon.click();
     }
     
     async fillVehicleManufacturerInput(value: string) {
@@ -193,14 +185,10 @@ class EditUnitPage extends Page {
         }
     }
 
-    async clickOnMapPopUpConfirmChoiseBtn() {
-        await this.mapPopUpConfirmChoiseBtn.click();
-    }
-
     async selectAdressOnMap() {
         await this.clickOnSelectOnMapBtn();
         await this.clickOnMap();
-        await this.clickOnMapPopUpConfirmChoiseBtn()
+        await this.mapPopUpConfirmChoiseBtn.click()
         await this.clickOnSaveUnitChangesBtn();
     }
 
@@ -296,10 +284,6 @@ class EditUnitPage extends Page {
         await this.serviceInput.fill(value);
     }
 
-    async clickOnCreateServiceBtn() {
-        await this.createServiceBth.click();
-    }
-
     async clickOnSelectPaymentMethodInput() {
         await this.selectPaymentMethodInput.click({force: true});
         await this.page.waitForTimeout(2000);
@@ -311,14 +295,6 @@ class EditUnitPage extends Page {
 
     async fillMinOrderPriceInput(value: any) {
         await this.minOrderPriceInput.first().type(value)
-    }
-
-    async clickOnAddPriceBtn() {
-        await this.addPriceBtn.click();
-    }
-
-    async clickOnAdditionalPriceSelect() {
-        await this.additionalPriceSelect.nth(1).click();
     }
 }
 

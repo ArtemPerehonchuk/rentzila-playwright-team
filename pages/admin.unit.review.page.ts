@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class AdminUnitReviewPage extends Page {
@@ -7,16 +7,16 @@ class AdminUnitReviewPage extends Page {
         super(page);
     }
 
-    manufacturerField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(2);
-    modelNameField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(3);
-    technicalCharacteristicsField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(4);
-    detailDescriptionField = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(5);
-    locationField = this.page.locator('div[class*="AdminCurrentUnit_info_content"] > span');
-    unitPhoto = this.page.locator('[data-testid="imagePreviewBtn"] > img');
-    unitService = this.page.locator('[data-testid="customServiceBtn"]');
-    minPriceField = this.page.locator('[class*="AdminCurrentUnit_minimalPrice"]').first();
-    workTypeField = this.page.locator('[class*="AdminCurrentUnit_workType"]');
-    approveChangesBtn = this.page.locator('[data-testid="approveBtn"]');
+    manufacturerField: Locator = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(2);
+    modelNameField: Locator = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(3);
+    technicalCharacteristicsField: Locator = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(4);
+    detailDescriptionField: Locator = this.page.locator('[class*="AdminCurrentUnit_info_content"]').nth(5);
+    locationField: Locator = this.page.locator('div[class*="AdminCurrentUnit_info_content"] > span');
+    unitPhoto: Locator = this.page.locator('[data-testid="imagePreviewBtn"] > img');
+    unitService: Locator = this.page.locator('[data-testid="customServiceBtn"]');
+    minPriceField: Locator = this.page.locator('[class*="AdminCurrentUnit_minimalPrice"]').first();
+    workTypeField: Locator = this.page.locator('[class*="AdminCurrentUnit_workType"]');
+    approveChangesBtn: Locator = this.page.locator('[data-testid="approveBtn"]');
 
     async getLocationFieldText() {
         const text = await this.locationField.evaluate(element => 

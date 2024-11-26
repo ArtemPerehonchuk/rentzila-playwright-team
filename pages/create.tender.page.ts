@@ -6,41 +6,41 @@ class CreateTenderPage extends Page {
         super(page)
     }
 
-    createTenderPageTitle = this.page.locator('[class*="CreateEditFlowLayout_title"]');
-    createTenderPageTabs = this.page.locator('button[id*="mui-p"]');
-    createTenderPageTabsContainer = this.page.getByRole('tablist');
-    tabNumber = this.page.locator('[data-testid="labelNumber"]');
-    maininfoTitle = this.page.locator('[class*="CreateTenderInfo_title"]');
-    nextBtn = this.page.locator('[data-testid="nextButton"]');
-    tenderNameTitle = this.page.locator('[class*="CustomInput_title"]').first();
-    tenderNameInput = this.page.locator('[data-testid="custom-input"]').first();
-    tenderNameInputErrorMsg = this.page.locator('[placeholder="Введіть назву тендера"] + [data-testid="descriptionError"]');
-    tenderServiceContainer = this.page.locator('[class*="CustomSelectWithSearch_searchResult"]');
-    tenderServiceTitle = this.page.locator('[class*="CreateTenderInfo_serviceParagraph"]');
-    tenderServiceInput = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    tenderServiceInputErrorMsg = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
-    serviceNotFoundMsg = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    servicesDropDown = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    seviceDropDownOptions = this.page.locator('[data-testid="item-customSelectWithSearch"]');
-    serviceSelectedOption = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
-    tenderCategory = this.page.locator('[data-testid="categoryWrapper"]');
-    removeSelectedServiceicon = this.page.locator('[data-testid="closeButton"]');
-    endDateErrorMsg =this.page.locator('[class*="DateContainer_container"] > [data-testid="errorMessage"][class*="DateContainer_errorTextVisible"]');
-    startDateInput = this.page.locator('[class*="react-datepicker__input-container"] > input').first();
-    endDateInput = this.page.locator('[class*="react-datepicker__input-container"] > input').nth(1);
-    incorrectEndDateErrorMsg = this.page.locator('[class*="PeriodOfProposals_errorTextVisible"]');
-    DateCalendar = this.page.locator('[class="react-datepicker__month-container"]');
-    workPeriodTitle = this.page.locator('[class*="DateContainer_title"]').nth(2);
-    workPeriodInput = this.page.locator('[tabindex="999"]');
-    workPeriodStartDate = this.page.locator('[aria-disabled="false"]').first();
-    budgetInput = this.page.locator('[data-testid="custom-input"]').nth(1);
-    budgetInputErrorMsg = this.page.locator('[data-testid="custom-input"]+[data-testid="descriptionError"]').nth(1);
-    descriptionInputErrorMsg = this.page.locator('[data-testid="textAreaError"]');
-    descriptionInput = this.page.locator('[data-testid="textAreaInput"]');
-    cancelBtn = this.page.locator('[data-testid="prevButton"]');
-    selectOnMapBtn = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
-    mapPopUpConfirmBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    uploadDocsSection = this.page.locator('[data-testid="dropDiv"]');
+    createTenderPageTitle: Locator = this.page.locator('[class*="CreateEditFlowLayout_title"]');
+    createTenderPageTabs: Locator = this.page.locator('button[id*="mui-p"]');
+    createTenderPageTabsContainer: Locator = this.page.getByRole('tablist');
+    tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
+    maininfoTitle: Locator = this.page.locator('[class*="CreateTenderInfo_title"]');
+    nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    tenderNameTitle: Locator = this.page.locator('[class*="CustomInput_title"]').first();
+    tenderNameInput: Locator = this.page.locator('[data-testid="custom-input"]').first();
+    tenderNameInputErrorMsg: Locator = this.page.locator('[placeholder="Введіть назву тендера"] + [data-testid="descriptionError"]');
+    tenderServiceContainer: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchResult"]');
+    tenderServiceTitle: Locator = this.page.locator('[class*="CreateTenderInfo_serviceParagraph"]');
+    tenderServiceInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    tenderServiceInputErrorMsg: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
+    serviceNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    servicesDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    seviceDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
+    serviceSelectedOption: Locator = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
+    tenderCategory: Locator = this.page.locator('[data-testid="categoryWrapper"]');
+    removeSelectedServiceicon: Locator = this.page.locator('[data-testid="closeButton"]');
+    endDateErrorMsg: Locator =this.page.locator('[class*="DateContainer_container"] > [data-testid="errorMessage"][class*="DateContainer_errorTextVisible"]');
+    startDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').first();
+    endDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').nth(1);
+    incorrectEndDateErrorMsg: Locator = this.page.locator('[class*="PeriodOfProposals_errorTextVisible"]');
+    DateCalendar: Locator = this.page.locator('[class="react-datepicker__month-container"]');
+    workPeriodTitle: Locator = this.page.locator('[class*="DateContainer_title"]').nth(2);
+    workPeriodInput: Locator = this.page.locator('[tabindex="999"]');
+    workPeriodStartDate: Locator = this.page.locator('[aria-disabled="false"]').first();
+    budgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
+    budgetInputErrorMsg: Locator = this.page.locator('[data-testid="custom-input"]+[data-testid="descriptionError"]').nth(1);
+    descriptionInputErrorMsg: Locator = this.page.locator('[data-testid="textAreaError"]');
+    descriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
+    cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
+    mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
 
     async checkCreateTenderTabsTitles(activeTabNumber: number, createTenderTabsNames: string[]) {
         if(await this.createTenderPageTabsContainer.isVisible) {
@@ -67,10 +67,6 @@ class CreateTenderPage extends Page {
         }else return false
     }
 
-    async clickOnNextBtn() {
-        await this.nextBtn.click();
-    }
-
     async fillCreateTenderInput(inputLocator: Locator, inputValue: string) {
         await inputLocator.fill(inputValue);
     }
@@ -89,32 +85,37 @@ class CreateTenderPage extends Page {
         await inputLocator.clear();
     }
 
-    async clickOnRemoveSelectedServiceIcon() {
-        await this.removeSelectedServiceicon.click();
-    }
-
-    async clickOnEndDateInput() {
-        await this.endDateInput.click();
-    }
-
     async selectDateAndTime(day: string, time?: string) {
-        await this.page.locator('[class*="react-datepicker__day"]').getByText(day).click();
+        await this.page.locator('[class*="react-datepicker__day"][aria-disabled="false"]').getByText(day).click();
   
         if (time) {
-            await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).click();
+            await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).first().click();
         }
     }
 
-    async clickOnStartDateInput() {
-        await this.startDateInput.click();
+    async getEndDate() {
+        await this.endDateInput.click();
+        const availableEndDays = await this.page.locator('[aria-disabled="false"]').allInnerTexts();
+
+        const endDate = availableEndDays[1];
+
+        return endDate
+    }
+
+    async getWorkPeriodStartAndEndDate(day: string, time?: string) {
+        await this.selectDateAndTime(day, time)
+        await this.workPeriodInput.click();
+        const availableWorkPeriodDays = await this.page.locator('[aria-disabled="false"]').allInnerTexts();
+
+        const workPeriodStartDate = availableWorkPeriodDays[0];
+
+        const workPeriodEndDate = availableWorkPeriodDays[2];
+
+        return {workPeriodStartDate, workPeriodEndDate}
     }
 
     async getPreviousStartDate(day: number) {
         return this.page.locator('[class*="react-datepicker__day"]').getByText(day.toString());
-    }
-
-    async clickOnWorkPeriodInput() {
-        await this.workPeriodInput.click();
     }
 
     async clickOnCancelBtn() {
@@ -131,9 +132,9 @@ class CreateTenderPage extends Page {
         await this.fillCreateTenderInput(this.tenderNameInput, tenderName);
         await this.fillCreateTenderInput(this.tenderServiceInput, letter);
         await this.seviceDropDownOptions.first().click();
-        await this.clickOnEndDateInput();
+        await this.endDateInput.click();
         await this.selectDateAndTime(endDate, '00:00');
-        await this.clickOnWorkPeriodInput();
+        await this.workPeriodInput.click();
         await this.selectDateAndTime(workPeriodStartDate);
         await this.selectDateAndTime(workPeriodEndDate);
         await this.fillCreateTenderInput(this.budgetInput, budget);

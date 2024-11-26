@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 
 class ProductsPage extends Page {
@@ -7,13 +7,13 @@ class ProductsPage extends Page {
         super(page);
     }
     
-    produtsList = this.page.locator('[data-testid="cardWrapper"]');
-    productFilterItem = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
-    dropdownArrow = this.page.locator('[data-testid="rightArrow"]').nth(2);
-    unitsContainer = this.page.locator('div[class*="MapPagination_units_container"]');
-    constructionsCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
-    othersCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
-    searchInput = this.page.getByTestId('searchInput');
+    produtsList: Locator = this.page.locator('[data-testid="cardWrapper"]');
+    productFilterItem: Locator = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
+    dropdownArrow: Locator = this.page.locator('[data-testid="rightArrow"]').nth(2);
+    unitsContainer: Locator = this.page.locator('div[class*="MapPagination_units_container"]');
+    constructionsCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
+    othersCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
+    searchInput: Locator = this.page.getByTestId('searchInput');
 
     async clickFirstProduct() {
         if(await this.produtsList.first().isVisible()) {

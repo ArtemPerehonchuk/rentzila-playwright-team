@@ -16,14 +16,14 @@ test.beforeAll(async ({apiHelper, }) => {
 
 test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
-    await homepage.clickOnClosePopUpBtn();
-    await homepage.clickOnEnterBtn()
+    await homepage.closePopUpBtn.click();
+    await homepage.enterBtn.click()
     await homepage.fillInput('email', VALID_EMAIL);
     await homepage.fillInput('password', VALID_PASSWORD);
     await homepage.clickOnSubmitLoginFormBtn();
 });
 
-test('Verify creating unit through the API request', async( {page, apiHelper, homepage, ownerUnitsPage} ) => {
+test('Verify creating unit through the API request', async( { apiHelper, homepage, ownerUnitsPage} ) => {
     unitName = faker.string.alpha({length: 15});
 
     const { response: createUnitResponse, unit } = await apiHelper.createUnit(accessUserToken, unitName);

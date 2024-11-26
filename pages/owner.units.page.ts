@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class OwnerUnitsPage extends Page {
@@ -7,14 +7,14 @@ class OwnerUnitsPage extends Page {
         super(page);
     }
 
-    firstUnitName = this.page.locator('[class*="OwnerUnitCard_name"]').first();
-    activeAnnouncementsTab = this.page.locator('button[id*="Активні"]');
-    waitingsAnnouncementsTab = this.page.locator('button[id*="Очікуючі"]');
-    activeAnnouncementsTabTitle = this.page.locator('[data-testid="title"]');
-    unitCards = this.page.locator('[class*="OwnerUnitCard_container"]');
-    editUnitBtn = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
-    editWaitingsUnitBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    firstWaitingsUnit = this.page.locator('[class*="OwnerUnitCard_container"]').first();
+    firstUnitName: Locator = this.page.locator('[class*="OwnerUnitCard_name"]').first();
+    activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
+    waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
+    activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
+    unitCards: Locator = this.page.locator('[class*="OwnerUnitCard_container"]');
+    editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
+    editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    firstWaitingsUnit: Locator = this.page.locator('[class*="OwnerUnitCard_container"]').first();
 
     async clickOnWaitingsAnnouncementsTab() {
         await this.waitingsAnnouncementsTab.click();
@@ -57,10 +57,6 @@ class OwnerUnitsPage extends Page {
             }
         }
         return editedUnitName;
-    }
-
-    async clickOnFirstWaitingsUnit() {
-        await this.firstWaitingsUnit.click();
     }
 }
 

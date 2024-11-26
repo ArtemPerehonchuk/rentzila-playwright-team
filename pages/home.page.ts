@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect, request, APIRequestContext } from '@playwright/test';
+import { Page as PlaywrightPage, expect, request, APIRequestContext, Locator } from '@playwright/test';
 import Page from './page';
 import ApiHelper from '../helpers/api.helper';
 
@@ -13,50 +13,50 @@ class HomePage extends Page {
         }
     }
 
-    servicesContainer = this.page.locator('[data-testid="services"]');
-    servicesList = this.page.locator('div[class*="RentzilaProposes_categories_list"] > div[class*="RentzilaProposes_service"]');
-    servicesUnitsList = this.page.locator('div[class*="RentzilaProposes_proposes_list"]').first().locator('div[class*="RentzilaProposes_proposes_item"]');;
-    firstServucesUnit = this.page.locator('div[class*="RentzilaProposes_proposes_item"]').first();
-    announcementsNavMenuItem = this.page.locator('[class*="Navbar_link"][href="/products/"]');
-    specialEquipmentContainer = this.page.getByTestId('specialEquipment');
-    specialEquipmentsList = this.page.locator('div[class*="RentzilaProposes_categories_list"]').nth(1).locator('div[class*="RentzilaProposes_service"]');
-    specialEquipmentsUnitsList = this.page.locator('div[class*="RentzilaProposes_proposes_list"]').nth(1).locator('div[class*="RentzilaProposes_proposes_item"]');
-    footerContainer = this.page.locator('div[class*="Footer_footer__Dhw_9"]');
-    footerRentzilaLogo = this.page.locator('div[class*="Footer_container"] > div[data-testid="logo"]');
-    aboutUsTitle = this.page.getByTestId('content');
-    privacyPolicyLink = this.page.getByTestId('politika-konfidenciinosti');
-    cookiePolicyLink = this.page.getByTestId('pravila-vikoristannya-failiv-cookie');
-    termsConditionsLink = this.page.getByTestId('umovi-dostupu-ta-koristuvannya');
-    announcementsLink = this.page.locator('div[role="listitem"] > a[href="/products/"]');
-    tendersLink = this.page.locator('div[role="listitem"] > a[href="/tenders-map/"]');
-    jobRequestsLink = this.page.locator('div[role="listitem"] > a[href="/requests-map/"]');
-    contactsTitle = this.page.locator('div[class*="RentzilaContacts_title"]');
-    contactsEmail = this.page.locator('a[class*="RentzilaContacts_email"]');
-    copyrightLabel = this.page.getByTestId('copyright');
-    searchServicesSpecialEquipmentTitle = this.page.locator('h1[class*="HeroSection_title"]');
-    consultationForm = this.page.locator('div[class*="ConsultationForm_container"]');
-    submitConsultationBtn = this.page.locator('button[type="submit"]');
-    consultationFormErrorMessage = this.page.locator('p[class*="ConsultationForm_error_message"]');
-    consultationFormNameInput = this.page.locator('input[name="name"]');
-    consultationFormPhoneInput = this.page.locator('#mobile');
-    enterBtn = this.page.locator('[class*="NavbarAuthBlock_buttonEnter"]');
-    loginEmailOrPhoneInput = this.page.locator('#email');
-    loginPasswordInput = this.page.locator('#password');
-    loginErrorInputsMsg = this.page.locator('p[class*="CustomReactHookInput_error_message"]');
-    autorizationForm = this.page.locator('[class*="LoginForm_form"]');
-    submitLoginFormBtn = this.page.locator('[class*="LoginForm_form"] [class*="ItemButtons_darkBlueRoundBtn"]');
-    hidePasswordIcon = this.page.locator('div[data-testid="reactHookButton"]');
-    userIcon = this.page.locator('div[data-testid="avatarBlock"]');
-    profileDropDown = this.page.locator('[class*="ProfileDropdownMenu_container"]');
-    profileDropDownEmail = this.page.locator('div[data-testid="email"]');
-    profileLogoutBtn = this.page.locator('div[data-testid="logout"]');
-    myProfileMenuItem = this.page.locator('div[data-testid="profile"]');
-    invalidEmailOrPasswordError = this.page.locator('div[data-testid="errorMessage"]');
-    createUnitBtn = this.page.locator('a[class*="Navbar_addAnnouncement"]');
-    closePopUpBtn = this.page.locator('[data-testid="crossButton"]');
-    profileAnnouncementsDropDownMenuItem = this.page.locator('[data-testid="units"]');
-    profileMyAnnouncementsItem = this.page.locator('[data-testid="units"] > ul > li:nth-child(1)');
-    profileTendersItem = this.page.locator('[data-testid="tenders"]');
+    servicesContainer: Locator = this.page.locator('[data-testid="services"]');
+    servicesList: Locator = this.page.locator('div[class*="RentzilaProposes_categories_list"] > div[class*="RentzilaProposes_service"]');
+    servicesUnitsList: Locator = this.page.locator('div[class*="RentzilaProposes_proposes_list"]').first().locator('div[class*="RentzilaProposes_proposes_item"]');;
+    firstServucesUnit: Locator = this.page.locator('div[class*="RentzilaProposes_proposes_item"]').first();
+    announcementsNavMenuItem: Locator = this.page.locator('[class*="Navbar_link"][href="/products/"]');
+    specialEquipmentContainer: Locator = this.page.getByTestId('specialEquipment');
+    specialEquipmentsList: Locator = this.page.locator('div[class*="RentzilaProposes_categories_list"]').nth(1).locator('div[class*="RentzilaProposes_service"]');
+    specialEquipmentsUnitsList: Locator = this.page.locator('div[class*="RentzilaProposes_proposes_list"]').nth(1).locator('div[class*="RentzilaProposes_proposes_item"]');
+    footerContainer: Locator = this.page.locator('div[class*="Footer_footer__Dhw_9"]');
+    footerRentzilaLogo: Locator = this.page.locator('div[class*="Footer_container"] > div[data-testid="logo"]');
+    aboutUsTitle: Locator = this.page.getByTestId('content');
+    privacyPolicyLink: Locator = this.page.getByTestId('politika-konfidenciinosti');
+    cookiePolicyLink: Locator = this.page.getByTestId('pravila-vikoristannya-failiv-cookie');
+    termsConditionsLink: Locator = this.page.getByTestId('umovi-dostupu-ta-koristuvannya');
+    announcementsLink: Locator = this.page.locator('div[role="listitem"] > a[href="/products/"]');
+    tendersLink: Locator = this.page.locator('div[role="listitem"] > a[href="/tenders-map/"]');
+    jobRequestsLink: Locator = this.page.locator('div[role="listitem"] > a[href="/requests-map/"]');
+    contactsTitle: Locator = this.page.locator('div[class*="RentzilaContacts_title"]');
+    contactsEmail: Locator = this.page.locator('a[class*="RentzilaContacts_email"]');
+    copyrightLabel: Locator = this.page.getByTestId('copyright');
+    searchServicesSpecialEquipmentTitle: Locator = this.page.locator('h1[class*="HeroSection_title"]');
+    consultationForm: Locator = this.page.locator('div[class*="ConsultationForm_container"]');
+    submitConsultationBtn: Locator = this.page.locator('button[type="submit"]');
+    consultationFormErrorMessage: Locator = this.page.locator('p[class*="ConsultationForm_error_message"]');
+    consultationFormNameInput: Locator = this.page.locator('input[name="name"]');
+    consultationFormPhoneInput: Locator = this.page.locator('#mobile');
+    enterBtn: Locator = this.page.locator('[class*="NavbarAuthBlock_buttonEnter"]');
+    loginEmailOrPhoneInput: Locator = this.page.locator('#email');
+    loginPasswordInput: Locator = this.page.locator('#password');
+    loginErrorInputsMsg: Locator = this.page.locator('p[class*="CustomReactHookInput_error_message"]');
+    autorizationForm: Locator = this.page.locator('[class*="LoginForm_form"]');
+    submitLoginFormBtn: Locator = this.page.locator('[class*="LoginForm_form"] [class*="ItemButtons_darkBlueRoundBtn"]');
+    hidePasswordIcon: Locator = this.page.locator('div[data-testid="reactHookButton"]');
+    userIcon: Locator = this.page.locator('div[data-testid="avatarBlock"]');
+    profileDropDown: Locator = this.page.locator('[class*="ProfileDropdownMenu_container"]');
+    profileDropDownEmail: Locator = this.page.locator('div[data-testid="email"]');
+    profileLogoutBtn: Locator = this.page.locator('div[data-testid="logout"]');
+    myProfileMenuItem: Locator = this.page.locator('div[data-testid="profile"]');
+    invalidEmailOrPasswordError: Locator = this.page.locator('div[data-testid="errorMessage"]');
+    createUnitBtn: Locator = this.page.locator('a[class*="Navbar_addAnnouncement"]');
+    closePopUpBtn: Locator = this.page.locator('[data-testid="crossButton"]');
+    profileAnnouncementsDropDownMenuItem: Locator = this.page.locator('[data-testid="units"]');
+    profileMyAnnouncementsItem: Locator = this.page.locator('[data-testid="units"] > ul > li:nth-child(1)');
+    profileTendersItem: Locator = this.page.locator('[data-testid="tenders"]');
 
     async scrollToServicesContainer() {
         await this.servicesContainer.scrollIntoViewIfNeeded();
@@ -81,10 +81,6 @@ class HomePage extends Page {
 
     async getFirstSpecialEquipmentsUnitName(): Promise<string> {
         return await this.specialEquipmentsUnitsList.first().innerText();
-    }
-
-    async clickOnAnnouncementsNavMenuItem() {
-        await this.announcementsNavMenuItem.click({force: true});
     }
 
     async scrollToFooter() {
@@ -150,10 +146,6 @@ class HomePage extends Page {
     async clickOnTendersLink() {
         await this.tendersLink.click();
         await this.page.waitForLoadState('domcontentloaded');
-    }
-
-    async clickOnContactsEmail() {
-        await this.contactsEmail.click();
     }
 
     async getContactsEmail() {
@@ -236,10 +228,6 @@ class HomePage extends Page {
         }
     }
 
-    async clickOnPhoneInput() {
-        await this.consultationFormPhoneInput.click();
-    }
-
     async getPhoneInputText() {
         return await this.consultationFormPhoneInput.inputValue();
     }
@@ -276,10 +264,6 @@ class HomePage extends Page {
         }
     }
 
-    async clickOnEnterBtn() {
-        await this.enterBtn.click({force: true});
-    }
-
     async clickOnSubmitLoginFormBtn() {
         await this.submitLoginFormBtn.click();
         await this.page.waitForTimeout(500)
@@ -291,10 +275,6 @@ class HomePage extends Page {
 
     async getPasswordInputValue() {
         return await this.loginPasswordInput.inputValue();
-    }
-
-    async clickOnHidePasswordIcon() {
-        await this.hidePasswordIcon.click();
     }
 
     async getPasswordInputType() {
@@ -334,14 +314,6 @@ class HomePage extends Page {
         }
     }
 
-    async clickOnCreateUnitBtn() {
-        await this.createUnitBtn.click();
-    }
-
-    async clickOnClosePopUpBtn() {
-        await this.closePopUpBtn.click();
-    }
-
     async clickOnProfileMyAnnouncementsItem() {
         await this.profileAnnouncementsDropDownMenuItem.click({ force: true });
     
@@ -361,7 +333,7 @@ class HomePage extends Page {
     }
 
     async loginUser(email: string, password: string) {
-        await this.clickOnEnterBtn();
+        await this.enterBtn.click();
         await this.fillInput('email', email);
         await this.fillInput('password', password);
         await this.submitLoginFormBtn.click();

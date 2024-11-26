@@ -1,6 +1,6 @@
 import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
-import testData from '../data/test_data.json' assert {type: 'json'};
+import testData from '../data/test-data.json' assert {type: 'json'};
 
 const addPriceOptions = testData['add price options'];
 const hoursDropDownItems = ['8 год', '4 год'];
@@ -12,30 +12,30 @@ class PricesTab extends Page {
         super(page);
         } 
     
-    paymentMethodTitle = this.page.locator('[class*="PricesUnitFlow_paragraph"]').first();
-    paymentMethodDropDown = this.page.locator('div[data-testid="div_CustomSelect"]');
-    paymentMethodDropDownOptions = this.page.locator('[data-testid="item-customSelect"]');
-    priceOfMinOrderTitle = this.page.locator('[class*="PricesUnitFlow_paragraph"]').nth(1);
-    priceOfMinOrderInput = this.page.locator('[class*="RowUnitPrice_priceInput"]');
-    priceOfMinOrderInputContainer = this.page.locator('[data-testid="input_wrapper_RowUnitPrice"]').first();
-    currencyField = this.page.locator('[class*="RowUnitPrice_currencyWrapper"] > input');
-    servicePriseTitle = this.page.locator('[data-testid="div_servicePrices_PricesUnitFlow"]');
-    servicePriceClue = this.page.locator('[class*="PricesUnitFlow_description"]');
-    addPriceBtn = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
-    addBtnIcon = this.page.locator('[data-testid="addPriceButton_ServicePrice"] > svg');
-    addPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
-    addPriceCurrency = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(3);
-    selectAddPriceOptionDropDown = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
-    selectAddPriceOptionDropDownArrow = this.page.locator('[data-testid="arrowImage"]').nth(1);
-    addPriceDropDownOptions = this.page.locator('li[class*="CustomSelect_option"]');
-    hoursDropDown = this.page.locator('[class*="RowUnitPrice_selectTiming"] > [class*="CustomSelect_select"]').nth(1);
-    hoursDropDownArrow = this.page.locator('[data-testid="arrowImage"]').nth(2);
-    hoursDropDownOptions = this.page.locator('[data-testid="listItems-customSelect"] > [data-testid="item-customSelect"]');
-    removePriceBtn = this.page.locator('[data-testid="div_removePrice_RowUnitPrice"]');
-    additionalServicePriceSection = this.page.locator('[class*="RowUnitPrice_wrapper"]').nth(1);
-    prevBtn = this.page.locator('[data-testid="prevButton"]');
-    priceOfMinOrderInputError = this.page.locator('[class*="RowUnitPrice_error"]');
-    serviceInAddPriceSection = this.page.locator('[class*="ServicePrice_service"] > span')
+    paymentMethodTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').first();
+    paymentMethodDropDown: Locator = this.page.locator('div[data-testid="div_CustomSelect"]');
+    paymentMethodDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelect"]');
+    priceOfMinOrderTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').nth(1);
+    priceOfMinOrderInput: Locator = this.page.locator('[class*="RowUnitPrice_priceInput"]');
+    priceOfMinOrderInputContainer: Locator = this.page.locator('[data-testid="input_wrapper_RowUnitPrice"]').first();
+    currencyField: Locator = this.page.locator('[class*="RowUnitPrice_currencyWrapper"] > input');
+    servicePriseTitle: Locator = this.page.locator('[data-testid="div_servicePrices_PricesUnitFlow"]');
+    servicePriceClue: Locator = this.page.locator('[class*="PricesUnitFlow_description"]');
+    addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    addBtnIcon: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"] > svg');
+    addPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
+    addPriceCurrency: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(3);
+    selectAddPriceOptionDropDown: Locator = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
+    selectAddPriceOptionDropDownArrow : Locator= this.page.locator('[data-testid="arrowImage"]').nth(1);
+    addPriceDropDownOptions: Locator = this.page.locator('li[class*="CustomSelect_option"]');
+    hoursDropDown: Locator = this.page.locator('[class*="RowUnitPrice_selectTiming"] > [class*="CustomSelect_select"]').nth(1);
+    hoursDropDownArrow: Locator = this.page.locator('[data-testid="arrowImage"]').nth(2);
+    hoursDropDownOptions: Locator = this.page.locator('[data-testid="listItems-customSelect"] > [data-testid="item-customSelect"]');
+    removePriceBtn: Locator = this.page.locator('[data-testid="div_removePrice_RowUnitPrice"]');
+    additionalServicePriceSection: Locator = this.page.locator('[class*="RowUnitPrice_wrapper"]').nth(1);
+    prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    priceOfMinOrderInputError: Locator = this.page.locator('[class*="RowUnitPrice_error"]');
+    serviceInAddPriceSection: Locator = this.page.locator('[class*="ServicePrice_service"] > span')
 
     async getDropDownBgText() {
         return await this.paymentMethodDropDown.innerText();
@@ -43,10 +43,6 @@ class PricesTab extends Page {
 
     async getPaymentMethodTitleText() {
         return await this.paymentMethodTitle.innerText();
-    }
-
-    async clickOnPaymentMethodDropDown() {
-        await this.paymentMethodDropDown.click();
     }
 
     async getPaymentMethodDropDownOptionsText() {
@@ -103,10 +99,6 @@ class PricesTab extends Page {
         return await this.servicePriceClue.innerText();
     }
 
-    async clickOnAddPriceBtn() {
-        await this.addPriceBtn.click();
-    }
-
     async getAddPriceInputBgText() {
        return await this.addPriceInput.getAttribute('placeholder');
     }
@@ -146,17 +138,9 @@ class PricesTab extends Page {
         }
     }
 
-    async clickOnRemovePriceBtn() {
-        await this.removePriceBtn.click();
-    }
-
     async checkPrevBtnText(expectedText: string) {
         const currentText = await this.prevBtn.innerText();
         await expect(currentText).toBe(expectedText);
-    }
-    
-    async clickOnPrevBtn() {
-        await this.prevBtn.click();
     }
 
     async getServiceFromAddPriceSection() {
