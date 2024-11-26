@@ -107,7 +107,9 @@
         "incorrect file format": "Формат зображення не підтримується",
         "more 20Mb file": "Ви не можете завантажити файл більше 20 МВ",
         "min price less 1000": "Мінімальна вартiсть має бути не менше 1000 грн",
-        "incorrect choosen address": "Виберіть коректне місце на мапі України"
+        "incorrect choosen address": "Виберіть коректне місце на мапі України",
+        "invalid email or password": "Невірний e-mail або пароль",
+        "incorrect password format": "Пароль повинен містити"
     },
     "success messages": {
         "unit edited": "Вашe оголошення успішно відредаговане"

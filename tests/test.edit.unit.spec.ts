@@ -568,7 +568,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
     }
 })
 
-test('Test case C276: Check "Вартість мінімального замовлення" field', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C276: Check "Вартість мінімального замовлення" field', async({ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.clearMinOrderPriceInput();
 

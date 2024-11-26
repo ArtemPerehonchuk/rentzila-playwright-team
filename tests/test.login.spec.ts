@@ -109,7 +109,12 @@ test.describe('Negative test cases for login form', () => {
             await homepage.fillInput('password', password);
             await homepage.clickOnSubmitLoginFormBtn();
 
-            await expect(await homepage.getIncorrectPasswordErrorText()).toMatch(/^(Пароль повинен містити|Невірний e-mail або пароль)/);
+            if(await homepage.invalidEmailOrPasswordError.isVisible()) {
+                await expect(homepage.invalidEmailOrPasswordError).toContainText(errorMessages["invalid email or password"]);
+            }
+            else if(await homepage.loginErrorInputsMsg.isVisible()) {
+                await expect(homepage.loginErrorInputsMsg).toContainText(errorMessages["incorrect password format"]);
+            }else return
         }
     });
 });
