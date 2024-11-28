@@ -18,15 +18,19 @@
     "test:create-tender": "playwright test tests/test.create.tender.spec.ts --workers=1",
     "test:generate-report": "playwright show-report test-results/html/index.html"
   },
-  "keywords": ["playwright", "automation", "e2e-tests", "qa", "rentzila", "typescript"],
+  "keywords": [
+    "playwright",
+    "automation",
+    "e2e-tests",
+    "qa",
+    "rentzila",
+    "typescript"
+  ],
   "author": "Artem Perehonchuk",
   "license": "ISC",
   "dependencies": {
+    "@playwright/test": "^1.47.0",
     "dotenv": "^16.4.5",
-    "form-data": "^4.0.1",
-    "@playwright/test": "^1.47.0"
-  },
-  "devDependencies": {
     "@faker-js/faker": "^9.0.1",
     "@types/dotenv": "^6.1.1",
     "@types/form-data": "^2.2.1",

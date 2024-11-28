@@ -1,6 +1,6 @@
 import { Page as PlaywrightPage, Locator, expect } from '@playwright/test';
 import Page from './page';
-import categoryNames from '../data/category-names.json' assert { type: 'json' };
+import categoryNames from '../data/category.names.json' assert { type: 'json' };
 import { faker } from '@faker-js/faker';
 
 class CreateUnitPage extends Page {  

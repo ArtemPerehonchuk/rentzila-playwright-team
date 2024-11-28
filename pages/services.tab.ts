@@ -1,6 +1,6 @@
 import { Page as PlaywrightPage,Locator } from '@playwright/test';
 import Page from './page';
-import { getRandomLetter } from '../helpers/random-values';
+import { getRandomLetter } from '../helpers/random.values';
 
 class ServicesTab extends Page {  
 

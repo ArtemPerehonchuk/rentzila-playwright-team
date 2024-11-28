@@ -41,6 +41,7 @@ class CreateTenderPage extends Page {
     selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
     mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
+    availableDays: Locator = this.page.locator('[aria-disabled="false"]');
 
     async checkCreateTenderTabsTitles(activeTabNumber: number, createTenderTabsNames: string[]) {
         if(await this.createTenderPageTabsContainer.isVisible) {
@@ -85,8 +86,16 @@ class CreateTenderPage extends Page {
         await inputLocator.clear();
     }
 
-    async selectDateAndTime(day: string, time?: string) {
-        await this.page.locator('[class*="react-datepicker__day"][aria-disabled="false"]').getByText(day).click();
+    // async selectDateAndTime(day: string, time?: string) {
+    //     await this.page.locator('[class*="react-datepicker__day"][aria-disabled="false"]').getByText(day).click();
+  
+    //     if (time) {
+    //         await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).first().click();
+    //     }
+    // }
+
+    async selectDateAndTime(dayIndex: number, time?: string) {
+        await this.availableDays.nth(dayIndex).click();
   
         if (time) {
             await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).first().click();
@@ -102,14 +111,18 @@ class CreateTenderPage extends Page {
         return endDate
     }
 
-    async getWorkPeriodStartAndEndDate(day: string, time?: string) {
-        await this.selectDateAndTime(day, time)
+    async getWorkPeriodStartAndEndDate(dayIndex: number, time?: string) {
+        await this.selectDateAndTime(dayIndex, time)
         await this.workPeriodInput.click();
         const availableWorkPeriodDays = await this.page.locator('[aria-disabled="false"]').allInnerTexts();
+        const availableWorkPeriodDaysLocators = await this.page.locator('[aria-disabled="false"]').all();
+
+        console.log(availableWorkPeriodDays)
+        console.log(availableWorkPeriodDaysLocators)
 
         const workPeriodStartDate = availableWorkPeriodDays[0];
 
-        const workPeriodEndDate = availableWorkPeriodDays[2];
+        const workPeriodEndDate = availableWorkPeriodDays[1];
 
         return {workPeriodStartDate, workPeriodEndDate}
     }
@@ -128,15 +141,15 @@ class CreateTenderPage extends Page {
         await this.mapPopUpConfirmBtn.click();
     }
 
-    async fillRequiredFields(tenderName: string, letter: string, endDate: string, workPeriodStartDate: string, workPeriodEndDate: string,  budget: string, description: string) {
+    async fillRequiredFields(tenderName: string, letter: string, budget: string, description: string) {
         await this.fillCreateTenderInput(this.tenderNameInput, tenderName);
         await this.fillCreateTenderInput(this.tenderServiceInput, letter);
         await this.seviceDropDownOptions.first().click();
         await this.endDateInput.click();
-        await this.selectDateAndTime(endDate, '00:00');
+        await this.selectDateAndTime(1, '00:00');
         await this.workPeriodInput.click();
-        await this.selectDateAndTime(workPeriodStartDate);
-        await this.selectDateAndTime(workPeriodEndDate);
+        await this.selectDateAndTime(0);
+        await this.selectDateAndTime(1);
         await this.fillCreateTenderInput(this.budgetInput, budget);
         await this.selectAdress()
         await this.page.waitForLoadState('load');

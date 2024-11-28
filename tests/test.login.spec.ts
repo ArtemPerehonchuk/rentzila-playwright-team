@@ -1,5 +1,5 @@
 import { test, expect } from "../fixtures";
-import testData from '../data/test-data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -8,13 +8,11 @@ const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 const incorrectPhoneNumbers = Object.values(testData["incorrect-phone-numbers"]);
 const incorrectEmails = Object.values(testData["incorrect-emails"]);
 const incorrectPasswords = Object.values(testData["incorrect-passwords"]);
-const pagesUrlPath = testData["pages URL path"];
 const correctPhoneNumbers: string[] = [
         process.env.CORRECT_PHONE_NUMBERS_FULL || '',
         process.env.CORRECT_PHONE_NUMBERS_WITHOUT_PLUS || '',
         process.env.CORRECT_PHONE_NUMBERS_WITHOUT_PLUS38 || ''
     ];
-const errorMessages = testData["error messages"];
 
 test.describe('Negative test cases for login form', () => {
     test.beforeEach(async ({ page, homepage }) => {
@@ -27,49 +25,49 @@ test.describe('Negative test cases for login form', () => {
         await homepage.clickOnSubmitLoginFormBtn();
     
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(true);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(true);
     
         await homepage.fillInput('email', VALID_EMAIL);
         await homepage.clickOnSubmitLoginFormBtn();
 
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(false);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(false);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(true);
     
         await homepage.clearInput('email');
 
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(true);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(true);
     
         await homepage.fillInput('password', VALID_PASSWORD);
         await homepage.clickOnSubmitLoginFormBtn();
     
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(true);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(false);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(false);
     
         await homepage.clearInput('password');
         await homepage.fillInput('email', VALID_EMAIL);
         await homepage.clickOnSubmitLoginFormBtn();
 
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(false);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(false);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(true);
     
         await homepage.clearInput('email');
 
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(true);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(true);
     
         await homepage.fillInput('password', VALID_PASSWORD);
         await homepage.clickOnSubmitLoginFormBtn();
 
         await expect(homepage.autorizationForm).toBeVisible();
-        await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["field must be filled"])).toBe(true);
-        await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["field must be filled"])).toBe(false);
+        await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+        await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.fieldMustBeFilled)).toBe(false);
     });
 
     test('test case C207: Authorization with invalid phone', async( {homepage } ) => {
@@ -82,7 +80,7 @@ test.describe('Negative test cases for login form', () => {
             await homepage.fillInput('email', phoneNumber);
             await homepage.clickOnSubmitLoginFormBtn();
 
-            await expect(homepage.loginErrorInputsMsg).toHaveText(errorMessages["incorrect email or phone format"]);
+            await expect(homepage.loginErrorInputsMsg).toHaveText(testData.errorMessages.incorrectEmailOrPhoneFormat);
         }
     });
 
@@ -96,7 +94,7 @@ test.describe('Negative test cases for login form', () => {
             await homepage.fillInput('email', email);
             await homepage.clickOnSubmitLoginFormBtn();
 
-            await expect(homepage.loginErrorInputsMsg).toHaveText(errorMessages["incorrect email or phone format"]);
+            await expect(homepage.loginErrorInputsMsg).toHaveText(testData.errorMessages.incorrectEmailOrPhoneFormat);
         }
     });
 
@@ -110,10 +108,10 @@ test.describe('Negative test cases for login form', () => {
             await homepage.clickOnSubmitLoginFormBtn();
 
             if(await homepage.invalidEmailOrPasswordError.isVisible()) {
-                await expect(homepage.invalidEmailOrPasswordError).toContainText(errorMessages["invalid email or password"]);
+                await expect(homepage.invalidEmailOrPasswordError).toContainText(testData.errorMessages.invalidEmailOrPassword);
             }
             else if(await homepage.loginErrorInputsMsg.isVisible()) {
-                await expect(homepage.loginErrorInputsMsg).toContainText(errorMessages["incorrect password format"]);
+                await expect(homepage.loginErrorInputsMsg).toContainText(testData.errorMessages.incorrectPasswordFormat);
             }else return
         }
     });
@@ -161,11 +159,11 @@ test.describe('Positive test cases for login form', () => {
         for(const phoneNumber of correctPhoneNumbers) {    
             await homepage.fillInput('email', phoneNumber);
 
-            await expect(await homepage.checkInputErrorIsDisplayed('email', errorMessages["required field"])).toBe(false);
+            await expect(await homepage.checkInputErrorIsDisplayed('email', testData.errorMessages.requiredField)).toBe(false);
 
             await homepage.fillInput('password', VALID_PASSWORD);
 
-            await expect(await homepage.checkInputErrorIsDisplayed('password', errorMessages["required field"])).toBe(false);
+            await expect(await homepage.checkInputErrorIsDisplayed('password', testData.errorMessages.requiredField)).toBe(false);
     
             await homepage.clickOnSubmitLoginFormBtn();
 
@@ -175,7 +173,7 @@ test.describe('Positive test cases for login form', () => {
             await homepage.clickOnUserIcon();
             await homepage.clickOnMyProfileMenuItem();
 
-            await expect(await profilePage.getUrl()).toContain(pagesUrlPath["owner-cabinet"]);
+            await expect(await profilePage.getUrl()).toContain(testData.pagesURLPath["owner-cabinet"]);
             await expect(profilePage.profilePhoneInput).toBeVisible();
             await expect(await profilePage.getProfilePhoneInputValue()).toBe(VALID_PHONE);
 

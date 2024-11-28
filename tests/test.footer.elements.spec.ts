@@ -1,15 +1,9 @@
 import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
-import testData from '../data/test-data.json' assert {type: 'json'}
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
-const pagesUrlPath = testData["pages URL path"];
 const contactUsFormInputValues = testData["contuct us form inputs"];
-const titleTexts = testData["title texts"];
-const placeholderTexts = testData["input placeholder texts"];
-const errorMessages = testData["error messages"];
-const borderColors = testData["border colors"];
-
 
 test.beforeEach(async ({ page, homepage }) => {
     await homepage.navigate('/');
@@ -37,38 +31,38 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homepage.clickOnPrivacyPolicyLink();
 
-    await expect(await privacyPolicyPage.getUrl()).toContain(pagesUrlPath["privacy-policy"]);
+    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath["privacy-policy"]);
     await expect(privacyPolicyPage.privacyPolicyTitle).toBeVisible();
-    await expect(privacyPolicyPage.privacyPolicyTitle).toHaveText(titleTexts["privacy policy"]);
+    await expect(privacyPolicyPage.privacyPolicyTitle).toHaveText(testData.titleTexts.privacyPolicy);
 
     await homepage.clickOnCookiePolicyLink();
 
-    await expect(await cookiePolicyPage.getUrl()).toContain(pagesUrlPath["cookey-policy"]);
+    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath["cookey-policy"]);
     await expect(cookiePolicyPage.cookiePolicyTitle).toBeVisible()
-    await expect(cookiePolicyPage.cookiePolicyTitle).toHaveText(titleTexts["cookie policy"]);
+    await expect(cookiePolicyPage.cookiePolicyTitle).toHaveText(testData.titleTexts.cookiePolicy);
 
     await homepage.clickOnTermsConditionsLink();
 
-    await expect(await termsConditionsPage.getUrl()).toContain(pagesUrlPath["terms-conditions"]);
+    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath["terms-conditions"]);
     await expect(termsConditionsPage.termsConditionsTitle).toBeVisible()
-    await expect(termsConditionsPage.termsConditionsTitle).toHaveText(titleTexts["terms conditions"]);
+    await expect(termsConditionsPage.termsConditionsTitle).toHaveText(testData.titleTexts.termsConditions);
 
     await homepage.clickOnAnnouncementsLink();
 
-    await expect(await productsPage.getUrl()).toContain(pagesUrlPath["products"]);
+    await expect(await productsPage.getUrl()).toContain(testData.pagesURLPath.products);
     await expect(productsPage.searchInput).toBeVisible();
-    await expect(await productsPage.getSearchInputBgText()).toBe(placeholderTexts["search announcement input"]);
+    await expect(await productsPage.getSearchInputBgText()).toBe(testData.inputPlaceholderTexts.searchAnnouncementInput);
 
     await productsPage.clickOnLogo();
 
     await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
-    await expect(await homepage.getSearchServiceSpecialEquipmentTitleText()).toContain(titleTexts["special equipment"]);
+    await expect(await homepage.getSearchServiceSpecialEquipmentTitleText()).toContain(testData.titleTexts.specialEquipment);
 
     await homepage.clickOnTendersLink();
 
-    await expect(await tendersPage.getUrl()).toContain(pagesUrlPath["tenders-map"]);
+    await expect(await tendersPage.getUrl()).toContain(testData.pagesURLPath["tenders-map"]);
     await expect(tendersPage.searchInput).toBeVisible();
-    await expect(await tendersPage.getSerchInputBgText()).toBe(placeholderTexts["search tender input"]);
+    await expect(await tendersPage.getSerchInputBgText()).toBe(testData.inputPlaceholderTexts.searchTenderInput);
 
     await tendersPage.clickOnLogo();
 
@@ -86,14 +80,14 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
 
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', errorMessages["field must be filled"])).toBe(true);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', errorMessages["field must be filled"])).toBe(true);
+    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(true);
 
     await homepage.fillInput('name', 'test');
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', errorMessages["field must be filled"])).toBe(false);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', errorMessages["field must be filled"])).toBe(true);
+    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(false);
+    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(true);
 
     await homepage.consultationFormPhoneInput.click();
 
@@ -103,23 +97,23 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
     await homepage.clearInput('name');
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', errorMessages["field must be filled"])).toBe(true);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', errorMessages["field must be filled"])).toBe(false);
+    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(false);
 
     await homepage.fillInput('name', contactUsFormInputValues.test);
     await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone with spaces"]);
     await homepage.clickOnSubmitConsultationBtn();
 
     await expect(homepage.consultationFormErrorMessage.first()).toBeVisible();
-    await expect(homepage.consultationFormErrorMessage.first()).toHaveText(errorMessages["phone number was not validated"]);
+    await expect(homepage.consultationFormErrorMessage.first()).toHaveText(testData.errorMessages.phoneNumberWasNotValidated);
     await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', 'rgb(247, 56, 89)')
 
     await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone same digits and spaces"]);
     await homepage.clickOnSubmitConsultationBtn();
 
     await expect(homepage.consultationFormErrorMessage.first()).toBeVisible();
-    await expect(homepage.consultationFormErrorMessage.first()).toHaveText(errorMessages["phone number was not validated"]);
-    await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', borderColors["error color"])
+    await expect(homepage.consultationFormErrorMessage.first()).toHaveText(testData.errorMessages.phoneNumberWasNotValidated);
+    await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', testData.borderColors.errorColor)
 
     await homepage.fillInput('phone', contactUsFormInputValues["other correct phone"]);
     await homepage.clickOnSubmitConsultationBtn();

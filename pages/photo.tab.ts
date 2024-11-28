@@ -1,7 +1,7 @@
 import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 import path from 'path';
-import testData from '../data/test-data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 
 const photoFileNames = testData['photo file names'];
 

@@ -30,7 +30,8 @@ class AdminUnitsPage extends Page {
 
     async clickOnWaitingsTab() {
         await this.waitingsTab.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('load');
+        //await this.page.waitForTimeout(1000);
     }
 
     async clickOnActivesTab() {
@@ -40,7 +41,8 @@ class AdminUnitsPage extends Page {
 
     async clickOnAllUnitsTab() {
         await this.allUnitsTab.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(1000);
     }
 
     async getStatusColumnItemsLength() {
@@ -54,7 +56,8 @@ class AdminUnitsPage extends Page {
 
     async fillSearchInput(value: string) { 
         await this.serachUnitInput.type(value);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(2000);
     }
 
     async verifyEditedUnitPresentsInWaitingsTab(expectedUnitTab: string, unitName: string) {
@@ -106,12 +109,14 @@ class AdminUnitsPage extends Page {
 
     async clickOnAdminWatchUnitIcon() {
         await this.adminWatchUnitIcon.first().click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(3000)
     }
 
     async clickOnAdminShowIcon() {
         await this.adminShowIcon.first().click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(3000)
     }
 }
 

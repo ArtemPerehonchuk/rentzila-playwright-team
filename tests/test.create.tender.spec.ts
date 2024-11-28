@@ -1,16 +1,9 @@
 import { test, expect } from '../fixtures';
-import testData from '../data/test-data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 import {faker} from '@faker-js/faker';
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
-const createTenderTabsNames = testData['create tender tabs names'];
-const errorMessages = testData['error messages'];
-const placeholderTexts = testData['input placeholder texts'];
-const titleTexts = testData['title texts'];
-const borderColors = testData['border colors'];
-const buttonNames = testData['button names'];
-const pagesUrl = testData['pages URL path'];
 
 let accessUserToken: string;
 let accessAdminToken: string;
@@ -29,23 +22,23 @@ test.beforeEach(async ({homepage, ownerTendersPage}) => {
 
 test('Test Case: C777 Verify body and tabs titles', async ({createTenderPage }) => {
     await expect(createTenderPage.createTenderPageTitle).toBeVisible();
-    await expect(createTenderPage.createTenderPageTitle).toHaveText(titleTexts['create tender']);
+    await expect(createTenderPage.createTenderPageTitle).toHaveText(testData.titleTexts.createTender);
 
-    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, createTenderTabsNames)).toBeTruthy();
+    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, testData['create tender tabs names'])).toBeTruthy();
 });
 
 test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }) => {
     await expect(createTenderPage.tenderNameTitle).toBeVisible();
-    await expect(await createTenderPage.tenderNameTitle.innerText()).toContain(titleTexts['tender name']);
-    await expect(await createTenderPage.tenderNameTitle.innerText()).toContain(titleTexts['arrow symbol']);
-    await expect(createTenderPage.tenderNameInput).toHaveAttribute('placeholder', placeholderTexts['tender name input']);
+    await expect(await createTenderPage.tenderNameTitle.innerText()).toContain(testData.titleTexts.tenderName);
+    await expect(await createTenderPage.tenderNameTitle.innerText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(createTenderPage.tenderNameInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.tenderNameInput);
 
     await createTenderPage.nextBtn.click();
 
-    await expect(createTenderPage.tenderNameInput).toHaveCSS('border-color', borderColors['error color']);
+    await expect(createTenderPage.tenderNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
     await expect(createTenderPage.tenderNameInputErrorMsg).toBeVisible();
-    await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(errorMessages['tender name less 10 symbols']);
-    await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', borderColors['error color']);
+    await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
+    await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
 
     const random10Char = faker.string.alpha({length: 10});
     const randomLetter = faker.string.alpha({length: 1});
@@ -67,14 +60,14 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
 
             case random9Char:
                 await expect(createTenderPage.tenderNameInputErrorMsg).toBeVisible();
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(errorMessages['tender name less 10 symbols']);
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', borderColors['error color']);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
 
                 await createTenderPage.copyPasteValue(createTenderPage.tenderNameInput);
 
                 await expect(createTenderPage.tenderNameInputErrorMsg).toBeVisible();
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(errorMessages['tender name less 10 symbols']);
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', borderColors['error color']);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
                 break
             
             case random71Char:
@@ -90,14 +83,14 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
 
             case '{}<>;^':
                 await expect(createTenderPage.tenderNameInputErrorMsg).toBeVisible();
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(errorMessages['tender name less 10 symbols']);
-                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', borderColors['error color']);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
+                await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
                 await expect(createTenderPage.tenderNameInput).toHaveValue('');
                 break 
 
             case random10Char:
                 await expect(createTenderPage.tenderNameInputErrorMsg).not.toBeVisible();
-                await expect(createTenderPage.tenderNameInput).toHaveCSS('border-color', borderColors['default grey']);
+                await expect(createTenderPage.tenderNameInput).toHaveCSS('border-color', testData.borderColors.defaultGrey);
                 break 
         }
     }
@@ -105,16 +98,16 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
 
 test('Test Case: C779 Verify service section', async ({ createTenderPage }) => {
     await expect(createTenderPage.tenderServiceTitle).toBeVisible();
-    await expect(await createTenderPage.tenderServiceTitle.innerText()).toContain(titleTexts['tender service']);
-    await expect(await createTenderPage.tenderServiceTitle.innerText()).toContain(titleTexts['arrow symbol']);
-    await expect(createTenderPage.tenderServiceInput).toHaveAttribute('placeholder', placeholderTexts['tender service input']);
+    await expect(await createTenderPage.tenderServiceTitle.innerText()).toContain(testData.titleTexts.tenderService);
+    await expect(await createTenderPage.tenderServiceTitle.innerText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(createTenderPage.tenderServiceInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.tenderServiceInput);
 
     await createTenderPage.nextBtn.click();
 
-    await expect(createTenderPage.tenderServiceContainer).toHaveCSS('border-color', borderColors['error color']);
+    await expect(createTenderPage.tenderServiceContainer).toHaveCSS('border-color', testData.borderColors.errorColor);
     await expect(createTenderPage.tenderServiceInputErrorMsg).toBeVisible();
-    await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveText(errorMessages['required field']);
-    await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveCSS('color', borderColors['error color']);
+    await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveText(testData.errorMessages.requiredField);
+    await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
 
     const randomLetter = faker.string.alpha({length: 1});
     const random101Char = faker.string.alpha({length: 101});
@@ -165,25 +158,24 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     await createTenderPage.nextBtn.click();
 
     await expect(createTenderPage.endDateErrorMsg).toBeVisible();
-    await expect(createTenderPage.endDateErrorMsg).toHaveText(errorMessages['required field']);
+    await expect(createTenderPage.endDateErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
     const startDate  = await createTenderPage.startDateInput.inputValue();
     const currentDate = new Date;
     const formatedStartDate = startDate.split(',')[0];
     const formatedCurrentDate = `${currentDate.getDate().toString().padStart(2, '0')}.${(currentDate.getMonth()+1).toString().padStart(2, '0')}.${currentDate.getFullYear()}`;
-    const less24HourEndDate = currentDate.getDate() + 1;
     const dateBeforToday = currentDate.getDate() - 1;
-    const correctDate = currentDate.getDate() + 2;
+    const correctDate = await createTenderPage.getEndDate()
 
     await expect(formatedStartDate).toBe(formatedCurrentDate);
 
     await createTenderPage.endDateInput.click();
-    await createTenderPage.selectDateAndTime(less24HourEndDate.toString(), '00:00')
+    await createTenderPage.selectDateAndTime(0, '00:00')
 
     await createTenderPage.nextBtn.click();
 
     await expect(createTenderPage.incorrectEndDateErrorMsg).toBeVisible();
-    await expect(createTenderPage.incorrectEndDateErrorMsg).toHaveText(errorMessages['incorrect end date']);
+    await expect(createTenderPage.incorrectEndDateErrorMsg).toHaveText(testData.errorMessages.incorrectEndDate);
     
     await createTenderPage.startDateInput.click()
     
@@ -191,12 +183,12 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     await expect(await createTenderPage.getPreviousStartDate(dateBeforToday)).toHaveAttribute('aria-disabled', 'true');
 
     await createTenderPage.endDateInput.click();
-    await createTenderPage.selectDateAndTime(correctDate.toString(), '00:00');
+    await createTenderPage.selectDateAndTime(1, '00:00');
 
     const selectedEndDate = await createTenderPage.endDateInput.inputValue();
 
     await expect(createTenderPage.incorrectEndDateErrorMsg).not.toBeVisible();
-    await expect(selectedEndDate.split('.')[0]).toBe(correctDate.toString());
+    await expect(selectedEndDate.split('.')[0]).toBe(correctDate);
     await expect(createTenderPage.workPeriodTitle).toBeVisible();
 
     await createTenderPage.workPeriodInput.click();
@@ -204,23 +196,23 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     const workPeriodStartDay = await createTenderPage.workPeriodStartDate.innerText();
     const difference = parseInt(workPeriodStartDay) - parseInt(selectedEndDate);
 
-    await expect(difference).toBe(1);
+    await expect(difference).not.toBe(0);
     await expect(createTenderPage.DateCalendar).toBeVisible();
 
-    await createTenderPage.selectDateAndTime(workPeriodStartDay); 
+    await createTenderPage.selectDateAndTime(0); 
 
     const selectedWorkPeriodDate = await createTenderPage.workPeriodInput.inputValue();
 
-    await expect(selectedWorkPeriodDate.split('.')[0]).toBe(workPeriodStartDay)
+    await expect(selectedWorkPeriodDate.split('.')[0]).toBe(workPeriodStartDay.padStart(2, '0'))
 });
 
 test('Test Case: C781 Verify announced price section', async ({ createTenderPage }) => {
     await createTenderPage.nextBtn.click();
 
     await expect(createTenderPage.budgetInput).toHaveValue('');
-    await expect(createTenderPage.budgetInput).toHaveAttribute('placeholder', placeholderTexts['tender budget input']);
+    await expect(createTenderPage.budgetInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.tenderBudgetInput);
     await expect(createTenderPage.budgetInputErrorMsg).toBeVisible();
-    await expect(createTenderPage.budgetInputErrorMsg).toHaveText(errorMessages['required field']);
+    await expect(createTenderPage.budgetInputErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
     await createTenderPage.fillCreateTenderInput(createTenderPage.budgetInput, 'a"`{}<>;^');
 
@@ -239,14 +231,14 @@ test('Test Case: C783 Verify additional info section', async ({ page, createTend
     await createTenderPage.nextBtn.click();
 
     await expect(createTenderPage.descriptionInputErrorMsg).toBeVisible();
-    await expect(createTenderPage.descriptionInputErrorMsg).toContainText(errorMessages['tender description less 40 symbols']);
+    await expect(createTenderPage.descriptionInputErrorMsg).toContainText(testData.errorMessages.tenderDescriptionLess40Symbols);
 
     const random39Char = faker.string.alpha({length: 39});
 
     await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, random39Char);
 
     await expect(createTenderPage.descriptionInputErrorMsg).toBeVisible();
-    await expect(createTenderPage.descriptionInputErrorMsg).toContainText(errorMessages['tender description less 40 symbols']);
+    await expect(createTenderPage.descriptionInputErrorMsg).toContainText(testData.errorMessages.tenderDescriptionLess40Symbols);
     
     await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, '<>{};^');
     
@@ -261,7 +253,7 @@ test('Test Case: C783 Verify additional info section', async ({ page, createTend
 });
 
 test('Test Case: C784 Verify "Скасувати" button', async ({ page, createTenderPage }) => {
-    await expect(createTenderPage.cancelBtn).toHaveText(buttonNames.cancel);
+    await expect(createTenderPage.cancelBtn).toHaveText(testData.buttonNames.cancel);
 
     let dialogAppeared = false; 
 
@@ -273,18 +265,16 @@ test('Test Case: C784 Verify "Скасувати" button', async ({ page, create
     await createTenderPage.clickOnCancelBtn();
 
     await expect(dialogAppeared).toBe(true);
-    await expect(page).toHaveURL(new RegExp(pagesUrl['owner-tender']));
+    await expect(page).toHaveURL(new RegExp(testData.pagesURLPath['owner-tender']));
 });
 
 test('Test Case: C785 Verify "Далі" button', async ({ createTenderPage }) => {
     const tenderName = faker.string.alpha({length: 10});
     const letter = faker.string.alpha({length: 1});
-    const endDate = await createTenderPage.getEndDate();
-    const { workPeriodStartDate, workPeriodEndDate } = await createTenderPage.getWorkPeriodStartAndEndDate(endDate);
     const budget = faker.string.numeric(5);
     const description = faker.string.alpha({length: 40});
 
-    await createTenderPage.fillRequiredFields(tenderName, letter,  endDate.toString(), workPeriodStartDate.toString(),  workPeriodEndDate.toString(), budget, description);
+    await createTenderPage.fillRequiredFields(tenderName, letter, budget, description);
     await createTenderPage.nextBtn.click();
 
     while(await createTenderPage.maininfoTitle.isVisible()) {

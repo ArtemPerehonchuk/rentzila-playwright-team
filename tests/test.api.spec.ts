@@ -36,7 +36,7 @@ test('Verify creating unit through the API request', async( { apiHelper, homepag
     await homepage.clickOnProfileMyAnnouncementsItem();
     await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
 
-    const {response: uploadPhotoResponse, responseData} = await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);
+    const uploadPhotoResponse = await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);
 
     await expect(uploadPhotoResponse.status()).toBe(201)
 

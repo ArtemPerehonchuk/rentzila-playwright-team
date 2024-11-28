@@ -1,5 +1,7 @@
 import { Page as PlaywrightPage, Locator } from '@playwright/test';
 
+const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || ''
+
 class Page {
     public page: PlaywrightPage;
     public logo: Locator;
@@ -20,8 +22,8 @@ class Page {
     }
 
     async clickOnLogo() {
-        await this.logo.click();
-        await this.page.waitForTimeout(2000);
+      await this.logo.click({force: true});
+      await this.page.waitForTimeout(4000);
     }
   }
 

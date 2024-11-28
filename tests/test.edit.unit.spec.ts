@@ -1,17 +1,11 @@
 import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
-import testData from '../data/test-data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL || '';
 const ADMIN_PASSWORD: string = process.env.ADMIN_PASSWORD || '';
-
-const pagesUrl = testData["pages URL path"];
-const titleTexts = testData["title texts"];
-const errorMessages = testData["error messages"];
-const placeholderTexts = testData["input placeholder texts"];
-const successMssages = testData["success messages"];
 
 let unitName: string;
 let createdUnitId: number;
@@ -42,7 +36,7 @@ test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) =>
     await homepage.clickOnUserIcon();
     await homepage.clickOnProfileMyAnnouncementsItem();
     
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(pagesUrl["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
 
     await ownerUnitsPage.clickOnActiveAnnouncementsTab();
 
@@ -77,11 +71,11 @@ test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUn
     
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(pagesUrl["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
 
     await editUnitPage.clickOnCancelUnitChangesBtn();
 
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(pagesUrl["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clickOnSaveUnitChangesBtn();
@@ -97,7 +91,7 @@ test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUn
 
     if(unitCardsLength === 1) {
         await expect(ownerUnitsPage.activeAnnouncementsTabTitle).toBeVisible();
-        await expect(ownerUnitsPage.activeAnnouncementsTabTitle).toHaveText(titleTexts["active announcements not exist"]);
+        await expect(ownerUnitsPage.activeAnnouncementsTabTitle).toHaveText(testData.titleTexts.activeAnnouncementsNotExist);
         await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', activeUnitName);
     }else if(unitCardsLength > 0 && unitCardsLength !== 1) {
         const editedUnitName = await ownerUnitsPage.verifyEditedUnitExludedFromUnitCards(unitName);
@@ -124,7 +118,7 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.unitNameInputError).toBeVisible();
-    await expect(editUnitPage.unitNameInputError).toHaveText(errorMessages["required field"]);
+    await expect(editUnitPage.unitNameInputError).toHaveText(testData.errorMessages.requiredField);
 
     for(const inputValue of inputValues) {
         await editUnitPage.fillUnitNameInput(inputValue);
@@ -133,17 +127,17 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
         switch(inputValue) {
             case '<>{};^':
                 await expect(editUnitPage.unitNameInput).toHaveText('', {useInnerText: true});
-                await expect(editUnitPage.unitNameInput).toHaveAttribute('placeholder', placeholderTexts["announcement name input"]);
+                await expect(editUnitPage.unitNameInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.announcementNameInput);
                 break
 
             case nineCharStr:
                 await expect(editUnitPage.unitNameInputError).toBeVisible();
-                await expect(editUnitPage.unitNameInputError).toHaveText(errorMessages["announcement name less 10 symbols"]);
+                await expect(editUnitPage.unitNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
                 break
 
             case over100CharStr:
                 await expect(editUnitPage.unitNameInputError).toBeVisible();
-                await expect(editUnitPage.unitNameInputError).toHaveText(errorMessages["announcement name more 100 symbols"]);
+                await expect(editUnitPage.unitNameInputError).toHaveText(testData.errorMessages.announcementNameMore100Symbols);
                 break
         }
     }
@@ -175,7 +169,7 @@ test('Test case C273: Check "Виробник транспортного зас�
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.vehicleManufacturerInputCloseIcon.click();
 
-    await expect(editUnitPage.vehicleManufacturerInput).toHaveAttribute('placeholder', placeholderTexts["vehicle manufacturer input"]);
+    await expect(editUnitPage.vehicleManufacturerInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.vehicleManufacturerInput);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
@@ -184,7 +178,7 @@ test('Test case C273: Check "Виробник транспортного зас�
     }
 
     await expect(editUnitPage.vehicleManufacturerInputError).toBeVisible();
-    await expect(editUnitPage.vehicleManufacturerInputError).toHaveText(errorMessages["required field"]);
+    await expect(editUnitPage.vehicleManufacturerInputError).toHaveText(testData.errorMessages.requiredField);
 
     await editUnitPage.fillVehicleManufacturerInput('<>{};^');
 
@@ -234,7 +228,7 @@ test('Test case C532: "Check "Назва моделі" input field', async({ own
 
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    await expect(editUnitPage.modelNameInput).toHaveAttribute('placeholder', placeholderTexts["model name input"]);
+    await expect(editUnitPage.modelNameInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.modelNameInput);
 
     await editUnitPage.fillModelNameInput('<>{};^');
 
@@ -243,7 +237,7 @@ test('Test case C532: "Check "Назва моделі" input field', async({ own
     await editUnitPage.fillModelNameInput(random16CharString);
 
     await expect(editUnitPage.modelNameInputError).toBeVisible();
-    await expect(editUnitPage.modelNameInputError).toHaveText(errorMessages["model name less 15 symbols"]);
+    await expect(editUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
 
     await editUnitPage.fillModelNameInput(random15CharString);
 
@@ -299,7 +293,7 @@ test('Test case C533: Check "Технічні характеристики" inpu
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
     await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
@@ -348,7 +342,7 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
     await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
@@ -411,14 +405,14 @@ test('Test case C535: Check "Місце розташування технічн�
 
     await editUnitPage.mapPopUpConfirmChoiseBtn.click();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(pagesUrl["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
     await expect(editUnitPage.mapPopUp).not.toBeVisible();
     await expect(editUnitPage.vehicleLocation).toHaveText(choosenLocation);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 })
 
@@ -447,7 +441,7 @@ test('Test case C274: Check image section functionality', async({page, ownerUnit
         await editUnitPage.clickOnSaveUnitChangesBtn();
 
         await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
-        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText(errorMessages["upload images"]);
+        await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText(testData.errorMessages.uploadImages);
 
         expect(await editUnitPage.getFileChooser).toBeDefined();
 
@@ -461,14 +455,14 @@ test('Test case C274: Check image section functionality', async({page, ownerUnit
 
         if(await editUnitPage.successEditUnitMsg.isVisible()) {
             await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-            await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+            await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
             await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
             await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
 
             await adminUnitsPage.clickOnAdminWatchUnitIcon();
 
-            await expect(page).toHaveURL(new RegExp(pagesUrl.unit));
+            await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.unit));
             await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
         }else return
 })
@@ -490,7 +484,7 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.addServiceErrorMsg).toBeVisible();
-    await expect(editUnitPage.addServiceErrorMsg).toHaveText(errorMessages["add min 1 service"]);
+    await expect(editUnitPage.addServiceErrorMsg).toHaveText(testData.errorMessages.addMin1Service);
 
     for(const inputValue of inputValues) {
         await editUnitPage.fillServiceInput(inputValue);
@@ -498,7 +492,7 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
         switch(inputValue) {
             case '<>{};^':
                 await expect(editUnitPage.serviceInput).toHaveText('', {useInnerText: true});
-                await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', placeholderTexts["edit unit service"]);
+                await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.editUnitService);
                 break
 
             case over100CharStr:
@@ -521,7 +515,7 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
     await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
@@ -552,19 +546,19 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
         await editUnitPage.clickOnSaveUnitChangesBtn();
 
         await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-        await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+        await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
         await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
         await editUnitPage.lookInMyAnnouncementsBtn.click();
         await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
         await ownerUnitsPage.firstWaitingsUnit.click();
 
-        await expect(page).toHaveURL(new RegExp(pagesUrl.unit));
+        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.unit));
         await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethodDropDownItems[i]);
 
         await unitDetailsPage.clickOnEditUnitBtn();
 
-        await expect(page).toHaveURL(new RegExp(pagesUrl["edit-unit"]));
+        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
     }
 })
 
@@ -572,12 +566,12 @@ test('Test case C276: Check "Вартість мінімального замо�
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.clearMinOrderPriceInput();
 
-    await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe(placeholderTexts["min order input"]);
+    await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe(testData.inputPlaceholderTexts.minOrderInput);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
-    await expect(editUnitPage.unitPriceErrorMsg).toHaveText(errorMessages["required field"]);
+    await expect(editUnitPage.unitPriceErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
     const random10Digits = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString()
     const inputValues = [
@@ -602,7 +596,7 @@ test('Test case C276: Check "Вартість мінімального замо�
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
     await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
@@ -655,7 +649,7 @@ test('Test case C543:  Check "Вартість мінімального замо
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(successMssages["unit edited"]);
+    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
     await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);

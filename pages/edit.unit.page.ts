@@ -1,7 +1,7 @@
 import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 import path from 'path';
-import testData from '../data/test-data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 
 const photoFileNames = testData['photo file names']
 
@@ -77,7 +77,8 @@ class EditUnitPage extends Page {
         await this.page.waitForLoadState('load');
         await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
         await this.saveUnitChangesBtn.click({force: true});
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(2000);
     }
 
     async clearUnitNameInput() {
@@ -126,7 +127,8 @@ class EditUnitPage extends Page {
         await this.clearTechnicalCharacteristicsInput();
         await this.technicalCharacteristicsInput.click();
         await this.technicalCharacteristicsInput.type(value);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(1000);
     }
 
     async getDetailDescriptionInputText() {

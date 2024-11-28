@@ -6,7 +6,7 @@ test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
 });
 
-test('test case c212: Checking "Послуги" section on the main page', async ({  homepage, productsPage, unitPage }) => {
+test('test case c212: Checking "Послуги" section on the main page', async ({ homepage, productsPage, unitPage }) => {
     const servicesList = homepage.servicesList;
     const servicesCount = await servicesList.count();
     let firstServicesUnitName;

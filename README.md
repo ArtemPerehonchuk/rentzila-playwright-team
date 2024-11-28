@@ -22,20 +22,27 @@ This project contains end-to-end tests for the Rentzila web site using Playwrigh
     ```bash
     cd rentzila-playwright-tests
     ````
-3. Install dependencies:
+
+3. Install Playwright:
+
+    ```bash
+    npx playwright install
+    ```
+
+4. Install dependencies:
 
     ```bash
     npm install
     ```
 
-4. Create an .env file:
+5. Create an .env file:
 
-In the project root directory, create an .env file by copying the example.env file:
+    In the project root directory, create an .env file by copying the example.env file:
 
     ```bash
     cp example.env .env
     ```
-Then, update the .env file with your specific environment variables, such as credentials and homepage URL.
+    Then, update the .env file with your specific environment variables, such as credentials and homepage URL.
 
 ## Running Tests
 1. Run All Tests:

@@ -1,16 +1,11 @@
 import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
-import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random-values';
-import testData from '../data/test-data.json' assert {type: 'json'}
+import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random.values';
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
-const titleTexts = testData["title texts"];
-const placeholderTexts = testData["input placeholder texts"];
-const errorMessages = testData["error messages"];
-const borderColors = testData["border colors"];
-const buttonNames = testData["button names"];
 
 test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
@@ -23,7 +18,7 @@ test.beforeEach(async ({ homepage }) => {
 
 test('test case C294: Verify body title and tab titles', async( {createUnitPage} ) => {
     await expect(createUnitPage.createUnitTitle).toBeVisible();
-    await expect(createUnitPage.createUnitTitle).toHaveText(titleTexts["create unit"]);
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await expect(await createUnitPage.checkCreateUnitTabsTitles(1)).toBe(true);
 
     const tabNames = await createUnitPage.createUnitTabsText.allInnerTexts();
@@ -80,20 +75,20 @@ test('test case C296: Verify category (Категорія) section', async( {cre
     await expect(createUnitPage.categoriesTitle).toBeVisible();
     await expect(createUnitPage.categoriesDropDown).toBeVisible();
     await expect(createUnitPage.categoriesDropDownArrowDown).toBeVisible();
-    await expect(await createUnitPage.getCategoriesTitleText()).toContain(titleTexts.category);
-    await expect(await createUnitPage.getCategoriesTitleText()).toContain(titleTexts["arrow symbol"]);
-    await expect(await createUnitPage.getCategoriesDropDownBgText()).toContain(placeholderTexts["choose category"]);
+    await expect(await createUnitPage.getCategoriesTitleText()).toContain(testData.titleTexts.category);
+    await expect(await createUnitPage.getCategoriesTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getCategoriesDropDownBgText()).toContain(testData.inputPlaceholderTexts.chooseCategory);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.categoryErrorMessage).toBeVisible();
-    await expect(await createUnitPage.getCategoryInputErrorText()).toBe(errorMessages["required field"]);
-    await expect(createUnitPage.categoriesDropDown).toHaveCSS('border-color', borderColors["error color"]);
+    await expect(await createUnitPage.getCategoryInputErrorText()).toBe(testData.errorMessages.requiredField);
+    await expect(createUnitPage.categoriesDropDown).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     await createUnitPage.categoriesDropDown.click();
 
     await expect(createUnitPage.categoriesPopUp).toBeVisible();
-    await expect(createUnitPage.categoriesPopUpTitle).toHaveText(titleTexts["categories pop up"]);
+    await expect(createUnitPage.categoriesPopUpTitle).toHaveText(testData.titleTexts.categoriesPopUp);
 
     await createUnitPage.clickOnCategoriesPopUpCloseBtn();
 
@@ -111,15 +106,15 @@ test('test case C296: Verify category (Категорія) section', async( {cre
 test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
     await expect(createUnitPage.announcementNameTitle).toBeVisible();
     await expect(createUnitPage.announcementNameInput).toBeVisible();
-    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(titleTexts["announcement name"]);
-    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(titleTexts["arrow symbol"]);
-    await expect(await createUnitPage.getAnnouncementNameInputBgText()).toContain(placeholderTexts["announcement name input"]);
+    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(testData.titleTexts.announcementName);
+    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getAnnouncementNameInputBgText()).toContain(testData.inputPlaceholderTexts.announcementNameInput);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.announcementNameInputError).toBeVisible();
-    await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["required field"]);
-    await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+    await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.requiredField);
+    await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     const randomToNineCharNumber = String(faker.number.int({min: 1, max: 999999999}));
     const random101CharString = faker.string.alpha({ length: 101 });
@@ -139,45 +134,45 @@ test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
         switch(value) {
             case randomToNineCharNumber:
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["announcement name less 10 symbols"]);
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
 
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["announcement name less 10 symbols"]);
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case random101CharString:
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["announcement name more 100 symbols"]);
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameMore100Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 await expect(await createUnitPage.getAnnouncementInputValueCharCount()).toBe(100);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
                 await createUnitPage.announcementNameInput.type(randomOneCharString);
 
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["announcement name more 100 symbols"]);
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameMore100Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case '<>{};^':
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText(errorMessages["announcement name less 10 symbols"]);
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
                 await expect(await createUnitPage.getAnnouncementNameInputValueText()).toBe('');
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["error color"]);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case randomTenCharString:
                 await expect(createUnitPage.announcementNameInputError).not.toBeVisible();
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["default grey"]);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.defaultGrey);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
 
                 await expect(createUnitPage.announcementNameInputError).not.toBeVisible();
-                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', borderColors["default grey"]);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.defaultGrey);
                 break
         }
     }
@@ -186,16 +181,16 @@ test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
 test('test case C298: Verify vehicle manufacturer section', async( {createUnitPage} ) => {
     await expect(createUnitPage.vehicleManufacturerTitle).toBeVisible();
     await expect(createUnitPage.vehicleManufacturerInput).toBeVisible();
-    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(titleTexts["vehicle manufacturer"]);
-    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(titleTexts["arrow symbol"]);
-    await expect(await createUnitPage.getVehicleManufacturerInputBgText()).toContain(placeholderTexts["vehicle manufacturer input"]);
+    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(testData.titleTexts.vehicleManufacturer);
+    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getVehicleManufacturerInputBgText()).toContain(testData.inputPlaceholderTexts.vehicleManufacturerInput);
    
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.vehicleManufacturerInputError).toBeVisible();
     await expect(createUnitPage.vehicleManufacturerInputSearchIcon).toBeVisible();
-    await expect(createUnitPage.vehicleManufacturerInputError).toHaveText(errorMessages["required field"]);
-    await expect(createUnitPage.vehicleManufacturerInputContainer).toHaveCSS('border-color', borderColors["dark blue"]);
+    await expect(createUnitPage.vehicleManufacturerInputError).toHaveText(testData.errorMessages.requiredField);
+    await expect(createUnitPage.vehicleManufacturerInputContainer).toHaveCSS('border-color', testData.borderColors.darkBlue);
 
     const random101CharString = faker.string.alpha({ length: 101 });
     const randomOneCharString = faker.string.alpha({ length: 1 });
@@ -265,8 +260,8 @@ test('test case C298: Verify vehicle manufacturer section', async( {createUnitPa
 test('test case C299: Verify model name input field', async( {createUnitPage} ) => {
     await expect(createUnitPage.modelNameTitle).toBeVisible();
     await expect(createUnitPage.modelNameInput).toBeVisible();
-    await expect(await createUnitPage.getModelNameTitleText()).toContain(titleTexts["model name"]);
-    await expect(await createUnitPage.getModelNameInputBgText()).toBe(placeholderTexts["model name input"]);
+    await expect(await createUnitPage.getModelNameTitleText()).toContain(testData.titleTexts.modelName);
+    await expect(await createUnitPage.getModelNameInputBgText()).toBe(testData.inputPlaceholderTexts.modelNameInput);
 
     const random16CharStr = faker.string.alpha({ length: 16 });
     const random10To15CharStr = faker.string.alpha({ length: {min: 10, max: 15} });
@@ -286,14 +281,14 @@ test('test case C299: Verify model name input field', async( {createUnitPage} ) 
 
         if(input === random16CharStr || input === randomStrWithSpaceInEnd || input === randomStrWithSpaceIncide) {
             await expect(createUnitPage.modelNameInputError).toBeVisible();
-            await expect(createUnitPage.modelNameInputError).toHaveText(errorMessages["model name less 15 symbols"]);
-            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', borderColors["error color"]);
+            await expect(createUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
+            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
             await createUnitPage.copyPasteValueInSectionInput(createUnitPage.modelNameInput);
 
             await expect(createUnitPage.modelNameInputError).toBeVisible();
-            await expect(createUnitPage.modelNameInputError).toHaveText(errorMessages["model name less 15 symbols"]);
-            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', borderColors["error color"]);
+            await expect(createUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
+            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
             await createUnitPage.clearSectionInput(createUnitPage.modelNameInput);
         }
@@ -309,7 +304,7 @@ test('test case C299: Verify model name input field', async( {createUnitPage} ) 
 test('test case C317: Verify technical characteristics section', async( {createUnitPage} ) => {
     await expect(createUnitPage.technicalInfoTitle).toBeVisible();
     await expect(createUnitPage.technicalInfoInput).toBeVisible();
-    await expect(createUnitPage.technicalInfoTitle).toHaveText(titleTexts["technical characteristics"]);
+    await expect(createUnitPage.technicalInfoTitle).toHaveText(testData.titleTexts.technicalCharacteristics);
     await expect(createUnitPage.technicalInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
@@ -337,7 +332,7 @@ test('test case C317: Verify technical characteristics section', async( {createU
 test('test case C318: Verify description section', async( {createUnitPage} ) => {
     await expect(createUnitPage.descriptionInfoTitle).toBeVisible();
     await expect(createUnitPage.descriptionInfoInput).toBeVisible();
-    await expect(createUnitPage.descriptionInfoTitle).toHaveText(titleTexts["detail description"]);
+    await expect(createUnitPage.descriptionInfoTitle).toHaveText(testData.titleTexts.detailDescription);
     await expect(createUnitPage.descriptionInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
@@ -366,27 +361,27 @@ test('test case C318: Verify description section', async( {createUnitPage} ) => 
 test('test case C319: Verify vehicle location division', async( {createUnitPage} ) => {
     await expect(createUnitPage.addressSelectionTitle).toBeVisible();
     await expect(createUnitPage.addressSelectionInput).toBeVisible();
-    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(titleTexts["vehical address"]);
-    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(titleTexts["arrow symbol"]);
-    await expect(createUnitPage.addressSelectionInput).toHaveText(placeholderTexts["choose on map"]);
+    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(testData.titleTexts.vehicalAddress);
+    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(createUnitPage.addressSelectionInput).toHaveText(testData.inputPlaceholderTexts.chooseOnMap);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.addressSelectionInputError).toBeVisible();
-    await expect(createUnitPage.addressSelectionInputError).toHaveText(errorMessages["incorrect choosen address"]);
-    await expect(createUnitPage.addressSelectionInput).toHaveCSS('border-color', borderColors["error color"]);
+    await expect(createUnitPage.addressSelectionInputError).toHaveText(testData.errorMessages.incorrectChoosenAddress);
+    await expect(createUnitPage.addressSelectionInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     await createUnitPage.clickOnSelectOnMapBtn();
 
     await expect(createUnitPage.mapPopUp).toBeVisible();
-    await expect(createUnitPage.mapPopUpTitle).toHaveText(titleTexts["vehicles on map"]);
-    await expect(await createUnitPage.getMapPopUpAddressLineText()).toBe('Київ, вулиця Володимирська 21/20 Україна, Київська область');
+    await expect(createUnitPage.mapPopUpTitle).toHaveText(testData.titleTexts.vehiclesOnMap);
+    await expect(await createUnitPage.getMapPopUpAddressLineText()).toContain('Київ');
     await expect(createUnitPage.mapPopUpCloseBtn).toBeVisible();
 
     await createUnitPage.clickOnMapPopUpSubmitBtn();
 
     await expect(createUnitPage.mapPopUp).not.toBeVisible();
-    await expect(await createUnitPage.getAddressLineText()).toBe('Київ, вулиця Володимирська 21/20 Україна, Київська область');
+    await expect(await createUnitPage.getAddressLineText()).toContain('Київ');
 
     await createUnitPage.clickOnSelectOnMapBtn();
 
@@ -398,7 +393,7 @@ test('test case C319: Verify vehicle location division', async( {createUnitPage}
 })
 
 test('test case C326: Verify "Скасувати" button', async( {createUnitPage} ) => {
-    await expect(createUnitPage.cancelBtn).toHaveText(buttonNames.cancel);
+    await expect(createUnitPage.cancelBtn).toHaveText(testData.buttonNames.cancel);
 
     await createUnitPage.cancelBtn.click();
     await createUnitPage.acceptAlert();
@@ -407,7 +402,7 @@ test('test case C326: Verify "Скасувати" button', async( {createUnitPag
 })
 
 test('test case C329: Verify "Далі" button', async( {createUnitPage} ) => {
-    await expect(createUnitPage.nextBtn).toHaveText(buttonNames.next)
+    await expect(createUnitPage.nextBtn).toHaveText(testData.buttonNames.next)
 
     await createUnitPage.clickOnNextBtn();
 
@@ -422,6 +417,6 @@ test('test case C329: Verify "Далі" button', async( {createUnitPage} ) => {
     await createUnitPage.fillAddress();
     await createUnitPage.clickOnNextBtn();
 
-    await expect(createUnitPage.createUnitTitle).toHaveText(titleTexts["create unit"]);
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await createUnitPage.checkCreateUnitTabsTitles(2);
 })

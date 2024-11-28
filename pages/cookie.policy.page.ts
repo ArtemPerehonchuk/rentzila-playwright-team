@@ -8,7 +8,6 @@ class CookiePolicyPage extends Page {
     }
 
     cookiePolicyTitle: Locator = this.page.locator('h1[class*="Cookies_title"]');
-
 }
 
 export default CookiePolicyPage;

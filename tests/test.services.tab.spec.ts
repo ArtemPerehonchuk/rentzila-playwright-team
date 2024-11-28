@@ -1,13 +1,9 @@
 import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
-import testData from '../data/test-data.json' assert {type: 'json'}
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALIR_PASSWORD: string = process.env.VALID_PASSWORD || '';
-const buttonNames = testData["button names"];
-const borderColors = testData["border colors"];
-const titleTexts = testData["title texts"];
-const placeholderTexts = testData["input placeholder texts"];
 
 test.beforeEach(async ({ homepage, createUnitPage, photoTab }) => {
     await homepage.navigate('/');
@@ -33,7 +29,7 @@ test('Text case: 410: Verify creating new service', async ( {servicesTab} ) => {
     await expect(servicesTab.serviceNotFoundMessage).toBeVisible();
     await expect(servicesTab.createServiceBtn).toBeVisible();
     await expect(await servicesTab.getServiceNotFoundMessageText()).toContain(`На жаль, послугу “${notExistingService}“ не знайдено в нашій базі.`);
-    await expect(servicesTab.createServiceBtn).toHaveText(buttonNames["create service"]);
+    await expect(servicesTab.createServiceBtn).toHaveText(testData.buttonNames.createService);
 
     await servicesTab.createServiceBtn.click();
 
@@ -89,7 +85,7 @@ test('Text case: 412: Verify removing variants from choosed list', async ( {serv
 });
 
 test('Text case: 413: Verify "Назад" button', async ( {photoTab, createUnitPage} ) => {
-    await expect(photoTab.prevBtn).toHaveText(buttonNames.previous);
+    await expect(photoTab.prevBtn).toHaveText(testData.buttonNames.previous);
 
     await photoTab.prevBtn.click();
 
@@ -97,12 +93,12 @@ test('Text case: 413: Verify "Назад" button', async ( {photoTab, createUnit
 });
 
 test('Text case: 414: Verify "Далі" button', async ( {createUnitPage, servicesTab} ) => {
-    await expect(createUnitPage.nextBtn).toHaveText(buttonNames.next);
+    await expect(createUnitPage.nextBtn).toHaveText(testData.buttonNames.next);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(servicesTab.addServiceClueMsg).toBeVisible();
-    await expect(servicesTab.addServiceClueMsg).toHaveCSS('border-color', borderColors["error color"]);
+    await expect(servicesTab.addServiceClueMsg).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     await servicesTab.selectService();
     await createUnitPage.clickOnNextBtn();
@@ -121,13 +117,13 @@ test('Text case: 591: Verify "Послуги" input with invalid data', async ( 
 });
 
 test('Text case: 592: Verify "Послуги" input choosin of existing service', async ( {page, servicesTab} ) => {
-    await expect(servicesTab.servicesTabTitle).toHaveText(titleTexts.services);
-    await expect(await servicesTab.getServicesParagraphTitleText()).toContain(titleTexts["services paragraph"]);
-    await expect(await servicesTab.getServicesParagraphTitleText()).toContain(titleTexts["arrow symbol"]);
+    await expect(servicesTab.servicesTabTitle).toHaveText(testData.titleTexts.services);
+    await expect(await servicesTab.getServicesParagraphTitleText()).toContain(testData.titleTexts.servicesParagraph);
+    await expect(await servicesTab.getServicesParagraphTitleText()).toContain(testData.titleTexts.arrowSymbol);
     await expect(servicesTab.addServiceClueMsg).toBeVisible();
     await expect(servicesTab.addServiceClueMsg).toHaveText('Додайте в оголошення принаймні 1 послугу');
     await expect(servicesTab.searchServiceIcon).toBeVisible();
-    await expect(await servicesTab.getServiceTabInputBgText()).toBe(placeholderTexts["services input"]);
+    await expect(await servicesTab.getServiceTabInputBgText()).toBe(testData.inputPlaceholderTexts.servicesInput);
 
     let randomChar = faker.string.alpha({length: 1});
 
@@ -157,7 +153,7 @@ test('Text case: 592: Verify "Послуги" input choosin of existing service'
     await expect(servicesTab.removeChoosenItemIcon).toBeVisible();
     await expect(selectedService).toBe(await servicesTab.getChosenItemText());
     await expect(servicesTab.chosenServicesTitle).toBeVisible();
-    await expect(await servicesTab.getChoosenItemTitleText()).toContain(titleTexts["choosen services"])
+    await expect(await servicesTab.getChoosenItemTitleText()).toContain(testData.titleTexts.choosenServices)
 });
 
 test('Text case: 632: Verify entering spesial characters in the "Послуги" input', async ( {servicesTab} ) => {

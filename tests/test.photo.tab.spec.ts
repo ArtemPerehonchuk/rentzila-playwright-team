@@ -1,12 +1,8 @@
 import { test, expect } from "../fixtures";
-import testData from '../data/test-data.json' assert {type: 'json'}
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
-const errorMessages = testData["error messages"];
-const buttonNames = testData["button names"];
-const borderColors = testData["border colors"];
-const titleTexts = testData["title texts"];
 
 test.beforeEach(async ({ homepage, createUnitPage }) => {
     await homepage.navigate('/');
@@ -26,7 +22,7 @@ test('Test case C384: Verify same images uploading', async( {photoTab} ) => {
     await photoTab.uploadTwoSamePhotos();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(photoTab.invalidPhotoPopUp).toHaveText(errorMessages["uploading the same fotos is not allowed"]);
+    await expect(photoTab.invalidPhotoPopUp).toHaveText(testData.errorMessages.uploadingTheSamePhotosIsNotAllowed);
 
     await photoTab.closePopUpBtn.click();
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
@@ -50,7 +46,7 @@ test('Test case C401: Verify uploading of invalid file type', async( {photoTab} 
     await photoTab.uploadIncorrectFileType();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(errorMessages["incorrect file format"]);
+    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(testData.errorMessages.incorrectFileFormat);
 
     await photoTab.closePopUpBtn.click();
 
@@ -60,7 +56,7 @@ test('Test case C401: Verify uploading of invalid file type', async( {photoTab} 
 
     await photoTab.uploadIncorrectFileType();
 
-    await expect(photoTab.submitPopUpBtn).toHaveText(buttonNames.understood);
+    await expect(photoTab.submitPopUpBtn).toHaveText(testData.buttonNames.understood);
 
     await photoTab.submitPopUpBtn.click();
 
@@ -78,7 +74,7 @@ test('Test case C405: Verify uploading of invalid size file', async( {photoTab} 
     await photoTab.uploadIncorrectFileSize();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(errorMessages["more 20Mb file"]);
+    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(testData.errorMessages.more20MbFile);
 
     await photoTab.closePopUpBtn.click();
 
@@ -87,7 +83,7 @@ test('Test case C405: Verify uploading of invalid size file', async( {photoTab} 
 
     await photoTab.uploadIncorrectFileSize();
 
-    await expect(photoTab.submitPopUpBtn).toHaveText(buttonNames.understood);
+    await expect(photoTab.submitPopUpBtn).toHaveText(testData.buttonNames.understood);
 
     await photoTab.submitPopUpBtn.click();
 
@@ -102,7 +98,7 @@ test('Test case C405: Verify uploading of invalid size file', async( {photoTab} 
 })
 
 test('Test case 390: Verify "Назад" button', async({ photoTab, createUnitPage }) => {
-    await expect(photoTab.prevBtn).toHaveText(buttonNames.previous);
+    await expect(photoTab.prevBtn).toHaveText(testData.buttonNames.previous);
 
     await photoTab.prevBtn.click();
 
@@ -117,17 +113,17 @@ test('Test case 390: Verify "Назад" button', async({ photoTab, createUnitPa
 })
 
 test('Test case 393: Verify "Далі" button', async({ createUnitPage, photoTab, servicesTab }) => {
-    await expect(createUnitPage.nextBtn).toHaveText(buttonNames.next);
+    await expect(createUnitPage.nextBtn).toHaveText(testData.buttonNames.next);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(photoTab.uploadPhotoClueLine).toBeVisible();
-    await expect(photoTab.uploadPhotoClueLine).toHaveCSS('color', borderColors["error color"]);
+    await expect(photoTab.uploadPhotoClueLine).toHaveCSS('color', testData.borderColors.errorColor);
 
     await photoTab.uploadPhoto();
     await createUnitPage.clickOnNextBtn();
 
-    await expect(createUnitPage.createUnitTitle).toHaveText(titleTexts["create unit"]);
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await createUnitPage.checkCreateUnitTabsTitles(3);
     await expect(servicesTab.servicesTabTitle).toBeVisible();
     await expect(servicesTab.servicesTabInput).toBeVisible();
@@ -135,9 +131,9 @@ test('Test case 393: Verify "Далі" button', async({ createUnitPage, photoTab
 
 test('Test case C593: Verify image uploading', async( {photoTab}) => {
     await expect(photoTab.photoTabTitle).toBeVisible
-    await expect(await photoTab.getPhotoTabTitleText()).toContain(titleTexts["photo tab title"]);
-    await expect(await photoTab.getPhotoTabTitleText()).toContain(titleTexts["arrow symbol"]);
-    await expect(await photoTab.getUploadPhotoClueLineText()).toContain(errorMessages["upload images"]);
+    await expect(await photoTab.getPhotoTabTitleText()).toContain(testData.titleTexts.photoTabTitle);
+    await expect(await photoTab.getPhotoTabTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await photoTab.getUploadPhotoClueLineText()).toContain(testData.errorMessages.uploadImages);
     await photoTab.checkFileChooserIsDisplayed();  
 
     await photoTab.uploadToTwelvePhotos(1);
