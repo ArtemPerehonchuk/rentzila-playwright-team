@@ -447,8 +447,6 @@ test('Test case C535: Check ""Місце розташування технічн
 test('Test case C274: Check image section functionality', async({page}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    let uploadedImages = await editUnitPage.getEditedUnitUploadedPhotosCount();
-
     await editUnitPage.uploadMissingPhotos();
     
     for(let i = 0; i < 4; i ++) {
@@ -484,18 +482,16 @@ test('Test case C274: Check image section functionality', async({page}) => {
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(await editUnitPage.successEditUnitMsg.isVisible()) {
-        await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-        await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
-        await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+    await expect(editUnitPage.successEditUnitMsg).toHaveText('Вашe оголошення успішно відредаговане');
+    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-        await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
 
-        await adminUnitsPage.clickOnAdminWatchUnitIcon();
+    await adminUnitsPage.clickOnAdminWatchUnitIcon();
 
-        await expect(page).toHaveURL(/units/);
-        await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
-    }else return
+    await expect(page).toHaveURL(/units/);
+    await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
 })
 
 test('Test case C275: Check services functionality', async({page}) => {
@@ -597,8 +593,7 @@ test('Test case C276: Check ""Вартість мінімального замо
     await expect(editUnitPage.unitPriceErrorMsg).toHaveText('Це поле обов\’язкове');
 
     const random10Digits = faker.string.numeric(10);
-    const specialChars = '<>{};^@!#$%?()|\\/`~';
-    const randomSpecialCharsSequence = faker.helpers.arrayElements(specialChars.split(''), { min: 3, max: 20 }).join('');
+    const randomSpecialCharsSequence = faker.string.symbol({min: 5, max:20})
 
     await editUnitPage.fillMinOrderPriceInput(randomSpecialCharsSequence);
 

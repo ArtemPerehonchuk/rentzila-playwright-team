@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 import getPhotoPath from '../helpers/helper';
 
 const photoFileNames = testData['photo file names']
+const photoIndexes = testData.photoIndexes;
 
 class EditUnitPage extends Page {
 
@@ -274,14 +275,12 @@ class EditUnitPage extends Page {
 
         await this.clickOnUploadPhotoPlusIcon();
 
-        const fileChooser = await fileChooserPromise;
-
-        return fileChooser;
+        return await fileChooserPromise;;
     }
 
     async fileChooserSetInputFile() {
         const fileChooser = await this.getFileChooser();
-        const photoFileNameIndex = faker.number.int({ min: 0, max: 14 });
+        const photoFileNameIndex = faker.helpers.arrayElement(photoIndexes)
         await fileChooser.setFiles(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`);
     }
 
