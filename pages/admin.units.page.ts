@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 import HomePage from './home.page';
 import AdminMainPage from './admin.main.page';
@@ -17,20 +17,21 @@ class AdminUnitsPage extends Page {
         this.adminMainPage = new AdminMainPage(page);
     }
 
-    announcementsTitle = this.page.locator('[class*="AdminLayout_title"]');
-    allUnitsTab = this.page.locator('[data-testid="statusBtns"]').first();
-    waitingsTab = this.page.locator('[data-testid="statusBtns"]').nth(1);
-    activesTab = this.page.locator('[data-testid="statusBtns"]').nth(2);
-    statusColumn = this.page.locator('[class*="AdminTableRowUnits_status"]');
-    serachUnitInput = this.page.locator('[data-testid="input"]');
-    unitNameCell = this.page.locator('td[class*="MuiTableCell-root"]').nth(1);
-    adminWatchUnitIcon = this.page.locator('[data-testid="adminShowButton"]');
-    sortDateBtn = this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
-    adminShowIcon = this.page.locator('[data-testid="adminOkoButton"]');
+    announcementsTitle: Locator = this.page.locator('[class*="AdminLayout_title"]');
+    allUnitsTab: Locator = this.page.locator('[data-testid="statusBtns"]').first();
+    waitingsTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(1);
+    activesTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(2);
+    statusColumn: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]');
+    serachUnitInput: Locator = this.page.locator('[data-testid="input"]');
+    unitNameCell: Locator = this.page.locator('td[class*="MuiTableCell-root"]').nth(1);
+    adminWatchUnitIcon: Locator = this.page.locator('[data-testid="adminShowButton"]');
+    sortDateBtn: Locator = this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
+    adminShowIcon: Locator = this.page.locator('[data-testid="adminOkoButton"]');
 
     async clickOnWaitingsTab() {
         await this.waitingsTab.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('load');
+        //await this.page.waitForTimeout(1000);
     }
 
     async clickOnActivesTab() {
@@ -40,7 +41,8 @@ class AdminUnitsPage extends Page {
 
     async clickOnAllUnitsTab() {
         await this.allUnitsTab.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(1000);
     }
 
     async getStatusColumnItemsLength() {
@@ -54,7 +56,8 @@ class AdminUnitsPage extends Page {
 
     async fillSearchInput(value: string) { 
         await this.serachUnitInput.type(value);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(2000);
     }
 
     async verifyEditedUnitPresentsInWaitingsTab(expectedUnitTab: string, unitName: string) {
@@ -106,12 +109,14 @@ class AdminUnitsPage extends Page {
 
     async clickOnAdminWatchUnitIcon() {
         await this.adminWatchUnitIcon.first().click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(3000)
     }
 
     async clickOnAdminShowIcon() {
         await this.adminShowIcon.first().click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForLoadState('load');
+        // await this.page.waitForTimeout(3000)
     }
 }
 

@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class ProfilePage extends Page {
@@ -7,8 +7,8 @@ class ProfilePage extends Page {
         super(page);
     }
 
-    profilePhoneInput = this.page.locator('input[data-testid="input_OwnerProfileNumber"]');
-    profileLogoutBtn = this.page.locator('div[data-testid="logOut"]');
+    profilePhoneInput: Locator = this.page.locator('input[data-testid="input_OwnerProfileNumber"]');
+    profileLogoutBtn: Locator = this.page.locator('div[data-testid="logOut"]');
 
 
     async getProfilePhoneInputValue() {

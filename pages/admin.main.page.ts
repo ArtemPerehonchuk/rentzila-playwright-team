@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class AdminMainPage extends Page {
@@ -7,16 +7,16 @@ class AdminMainPage extends Page {
         super(page);
     }
 
-    adminPanelIcon = this.page.locator('[data-testid="superuserIcon_Navbar"]');
-    announcementsMenuItem = this.page.locator('a[href="/admin/units/"]');
-    searchUnitInput = this.page.locator('[data-testid="input"]');
-    adminShowUnitDetailsBtn = this.page.locator('[data-testid="adminShowButton"]').first();
-    aproveUnitBtn = this.page.locator('[data-testid="approveBtn"]');
-    homeBtn = this.page.locator('[data-testid="homeButton"]');
-    adminPanelTitle = this.page.locator('[class*="AdminLayout_title"]');
-    dateSortContainer = this.page.locator('[class*="MuiTableCell-head "]').nth(6);
-    dateSortBtn = this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
-    searchedUnitStatus = this.page.locator('[class*="AdminTableRowUnits_status"]').first();
+    adminPanelIcon : Locator= this.page.locator('[data-testid="superuserIcon_Navbar"]');
+    announcementsMenuItem : Locator= this.page.locator('a[href="/admin/units/"]');
+    searchUnitInput : Locator= this.page.locator('[data-testid="input"]');
+    adminShowUnitDetailsBtn : Locator= this.page.locator('[data-testid="adminShowButton"]').first();
+    aproveUnitBtn : Locator= this.page.locator('[data-testid="approveBtn"]');
+    homeBtn : Locator= this.page.locator('[data-testid="homeButton"]');
+    adminPanelTitle : Locator= this.page.locator('[class*="AdminLayout_title"]');
+    dateSortContainer : Locator= this.page.locator('[class*="MuiTableCell-head "]').nth(6);
+    dateSortBtn : Locator= this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
+    searchedUnitStatus: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]').first();
 
     async moveAnnouncementToActiveState(unitId: string) {
         await this.clickOnAdminPanelIcon();
