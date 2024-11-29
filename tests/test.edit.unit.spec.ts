@@ -58,7 +58,7 @@ test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) =>
     editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 });
 
-test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper }) => {
+test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper }) => {
     const unitCardsLength = await ownerUnitsPage.getUnitCardsLength();
 
     if(unitCardsLength === 0) {
@@ -80,8 +80,10 @@ test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUn
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
+    if(!(await editUnitPage.successEditUnitMsg.isVisible())) {
         await editUnitPage.selectAdressOnMap()
+        await editUnitPage.uploadPhotos(1);
+        await editUnitPage.clickOnSaveUnitChangesBtn();
     }
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
@@ -114,6 +116,7 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearUnitNameInput();
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
@@ -167,6 +170,7 @@ test('Test case C273: Check "Виробник транспортного зас�
     const randomChar = faker.string.alpha({length: 1});
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.vehicleManufacturerInputCloseIcon.click();
 
     await expect(editUnitPage.vehicleManufacturerInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.vehicleManufacturerInput);
@@ -227,6 +231,7 @@ test('Test case C532: "Check "Назва моделі" input field', async({ own
     const random16CharString = faker.string.alpha({length: 16});
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
 
     await expect(editUnitPage.modelNameInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.modelNameInput);
 
@@ -266,6 +271,7 @@ test('Test case C533: Check "Технічні характеристики" inpu
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearTechnicalCharacteristicsInput();
 
     await expect(editUnitPage.technicalCharacteristicsInput).toHaveText('', {useInnerText: true});
@@ -315,6 +321,7 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearDetailDescriptionInput();
 
     await expect(editUnitPage.detailDescriptionInput).toHaveText('', {useInnerText: true});
@@ -363,6 +370,7 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
 test('Test case C535: Check "Місце розташування технічного засобу" functionality', async({ ownerUnitsPage, editUnitPage}) => {
 
     await ownerUnitsPage.clickOnEditUnitBtn();
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clickOnSelectOnMapBtn();
 
     await expect(editUnitPage.mapPopUp).toBeVisible();
@@ -477,6 +485,7 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.removeEditedUnitService();
 
     await expect(editUnitPage.editedUnitService).not.toBeVisible();
@@ -527,6 +536,7 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
 
 test('Test case C541: Check "Спосіб оплати" menu', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.uploadPhotos(1);
 
     const paymentMethods = testData['payment methods'];
 
@@ -564,6 +574,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
 test('Test case C276: Check "Вартість мінімального замовлення" field', async({ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearMinOrderPriceInput();
 
     await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe(testData.inputPlaceholderTexts.minOrderInput);
@@ -608,6 +619,7 @@ test('Test case C276: Check "Вартість мінімального замо�
 
 test('Test case C543:  Check "Вартість мінімального замовлення" drop-down menu', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
+    await editUnitPage.uploadPhotos(1);
     if(await editUnitPage.addPriceBtn.isVisible()) {
         await editUnitPage.addPriceBtn.click();
     }

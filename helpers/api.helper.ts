@@ -2,6 +2,7 @@ import { APIRequestContext } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
 import FormData from 'form-data';
+import path from 'path';
 
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
@@ -153,47 +154,54 @@ class ApiHelper {
         return response;
     }
 
-    // async uploadUnitPhoto(accessUserToken: string, unitId: number) {
-    //     const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
-    //         headers: {
-    //             'Authorization': `Bearer ${accessUserToken}`,
-    //             ...this.defaultHeaders
-    //         },
-    //         multipart: {
-    //             unit: unitId.toString(),
-    //             image: {
-    //                 name: 'pexels-albinberlin-919073.jpg',
-    //                 mimeType: 'image/jpeg',
-    //                 buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
-    //             },
-    //             is_main: 'true'
-    //         }
-    //     });
+    async uploadUnitPhoto(accessUserToken: string, unitId: number) {
+        const imagePath = path.resolve('./data/photo/pexels-albinberlin-919073.jpg');
+        const imageReadStream = fs.createReadStream(imagePath);
+        const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
+            headers: {
+                'Authorization': `Bearer ${accessUserToken}`,
+                ...this.defaultHeaders
+            },
+            multipart: {
+                unit: unitId.toString(),
+                image: imageReadStream,
+                is_main: 'true'
+            }
+            // multipart: {
+            //     unit: unitId.toString(),
+            //     image: {
+            //         name: 'pexels-albinberlin-919073.jpg',
+            //         mimeType: 'image/jpeg',
+            //         buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
+            //     },
+            //     is_main: 'true'
+            // }
+        });
 
-    //     const responseData = await response.json();
-    //     // const status = await response.status()
-    //     // console.log('upload status: ', status)
+        const responseData = await response.json();
+        // const status = await response.status()
+        // console.log('upload status: ', status)
     
-    //     return {response, responseData};
-    // }
-
-    async uploadUnitPhoto(accessUserToken: string, unitId: number, isMain: boolean = true) {
-            const form = new FormData();
-
-            form.append('unit', unitId.toString());
-            form.append('image', fs.createReadStream('./data/photo/pexels-albinberlin-919073.jpg')); 
-            form.append('is_main', isMain.toString());
-
-            const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
-                headers: {
-                    'Authorization': `Bearer ${accessUserToken}`,
-                    ...form.getHeaders() 
-                },
-                data: form 
-            });
-    
-            return response;
+        return response;
     }
+
+    // async uploadUnitPhoto(accessUserToken: string, unitId: number, isMain: boolean = true) {
+    //         const form = new FormData();
+
+    //         form.append('unit', unitId.toString());
+    //         form.append('image', fs.createReadStream('./data/photo/pexels-albinberlin-919073.jpg')); 
+    //         form.append('is_main', isMain.toString());
+
+    //         const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
+    //             headers: {
+    //                 'Authorization': `Bearer ${accessUserToken}`,
+    //                 ...form.getHeaders() 
+    //             },
+    //             data: form 
+    //         });
+    
+    //         return response;
+    // }
 
     async getUnitId(accessToken: string, unitName: string) {
         const unitsList = await this.getUnitsList(accessToken);

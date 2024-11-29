@@ -189,6 +189,7 @@ class CreateUnitPage extends Page {
     async clickOutsidePopup() {
         await this.page.waitForSelector('[class*="NavbarCatalog_wrapper"]', { state: 'visible' });
         await this.page.click('[class*="NavbarCatalog_wrapper"]', { force: true });
+        await this.page.waitForLoadState('load');
     }
 
     async checkOptionsInCategoriesPopUp() {
