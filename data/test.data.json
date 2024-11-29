@@ -109,7 +109,8 @@
         "minPriceLess1000": "Мінімальна вартiсть має бути не менше 1000 грн",
         "incorrectChoosenAddress": "Виберіть коректне місце на мапі України",
         "invalidEmailOrPassword": "Невірний e-mail або пароль",
-        "incorrectPasswordFormat": "Пароль повинен містити"
+        "incorrectPasswordFormat": "Пароль повинен містити",
+        "addMin1File": "Додайте до вашого тендеру як мінімум один файл"
     },
     "successMessages": {
         "unitEdited": "Вашe оголошення успішно відредаговане"
@@ -155,7 +156,8 @@
         "technicalCharacteristics": "Технічні характеристики",
         "detailDescription": "Детальний опис",
         "vehicalAddress": "Місце розташування технічного засобу",
-        "vehiclesOnMap": "Техніка на мапі"
+        "vehiclesOnMap": "Техніка на мапі",
+        "tenderDocsTitle": "Перелік документів"
     },
     "borderColors": {
         "errorColor": "rgb(247, 56, 89)",
@@ -170,5 +172,24 @@
         "next": "Далі",
         "addPrice": "Додати вартість",
         "createService": "Створити послугу"
+    },
+    "clueTexts": {
+        "tenderDocsClue1": "Виберіть до 5 файлів або перетягніть їх сюди",
+        "tenderDocsClue2": "Файли до 20 MB в форматі jpg, jpeg, png, pdf, doc, docx, xls, xlsx, zip"
+    },
+    "fileNames": [
+        "test.doc.file.doc",
+        "test.doc.file.docx",
+        "test.jpeg.file.jpeg",
+        "test.jpg.file.jpg",
+        "test.pdf",
+        "test.png.file.png",
+        "test.xls.file.xls",
+        "test.xlsx.file.xlsx",
+        "test.zip.file.zip"
+    ],
+    "invalidFileNames": {
+        "invalidFormat": "test.odt.file.odt",
+        "invalidSize": "invalid.size"
     }
 }

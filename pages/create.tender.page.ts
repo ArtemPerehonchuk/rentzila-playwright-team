@@ -1,5 +1,6 @@
 import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
+import path from 'path';
 
 class CreateTenderPage extends Page {
     constructor(page: PlaywrightPage) {
@@ -42,6 +43,17 @@ class CreateTenderPage extends Page {
     mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
     availableDays: Locator = this.page.locator('[aria-disabled="false"]');
+    docsTab: Locator =this.page.locator('[class*="CustomLabel_labelTitle"]').getByText('Документація');
+    docsTitle: Locator = this.page.locator('[class*="DocumentsChoosing_header"]');
+    docsClue1: Locator = this.page.locator('[class*="DocumentsChoosing_text1"]');
+    docsClue2: Locator = this.page.locator('[class*="DocumentsChoosing_text2"]');
+    uploadFileInput: Locator = this.page.locator('input[type="file"]');
+    uploadedFile: Locator = this.page.locator('[class*="DocumentsChoosing_filesWrapper"]');
+    deleteUploadedFileIcon: Locator = this.page.locator('[data-testid="deleteFile"]');
+    notValidFilePopUp: Locator = this.page.locator('[class*="NotValidImagePopup_wrap"]');
+    previousBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    addFileErrorMsg: Locator = this.page.locator('[data-testid="getFileDiv"]');
+    understoodPopUpBtn: Locator = this.page.locator('[class="ItemButtons_darkBlueBtn__juupv"]');
 
     async checkCreateTenderTabsTitles(activeTabNumber: number, createTenderTabsNames: string[]) {
         if(await this.createTenderPageTabsContainer.isVisible) {
@@ -85,14 +97,6 @@ class CreateTenderPage extends Page {
     async clearCreateTenderInput(inputLocator: Locator) {
         await inputLocator.clear();
     }
-
-    // async selectDateAndTime(day: string, time?: string) {
-    //     await this.page.locator('[class*="react-datepicker__day"][aria-disabled="false"]').getByText(day).click();
-  
-    //     if (time) {
-    //         await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).first().click();
-    //     }
-    // }
 
     async selectDateAndTime(dayIndex: number, time?: string) {
         await this.availableDays.nth(dayIndex).click();
@@ -154,6 +158,19 @@ class CreateTenderPage extends Page {
         await this.selectAdress()
         await this.page.waitForLoadState('load');
         await this.fillCreateTenderInput(this.descriptionInput, description);
+    }
+
+    async getFileChooser(timeout = 1000) {
+        const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+
+        await this.uploadDocsSection.click()
+        return fileChooserPromise;
+    }
+
+    async uploadFile(fileName: string) {
+        await this.uploadFileInput.focus();
+        await this.uploadFileInput.setInputFiles(path.resolve(`data/files/${fileName}`));
+        await this.page.waitForLoadState('load');
     }
 }
 

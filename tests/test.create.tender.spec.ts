@@ -180,15 +180,15 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     await createTenderPage.startDateInput.click()
     
     await expect(createTenderPage.DateCalendar).toBeVisible()
-    await expect(await createTenderPage.getPreviousStartDate(dateBeforToday)).toHaveAttribute('aria-disabled', 'true');
+    await expect((await createTenderPage.getPreviousStartDate(dateBeforToday)).last()).toHaveAttribute('aria-disabled', 'true');
 
     await createTenderPage.endDateInput.click();
-    await createTenderPage.selectDateAndTime(1, '00:00');
+    await createTenderPage.selectDateAndTime(1, '23:00');
 
     const selectedEndDate = await createTenderPage.endDateInput.inputValue();
 
     await expect(createTenderPage.incorrectEndDateErrorMsg).not.toBeVisible();
-    await expect(selectedEndDate.split('.')[0]).toBe(correctDate);
+    await expect(selectedEndDate.split('.')[0]).toBe(correctDate.padStart(2, '0'));
     await expect(createTenderPage.workPeriodTitle).toBeVisible();
 
     await createTenderPage.workPeriodInput.click();
@@ -285,3 +285,115 @@ test('Test Case: C785 Verify "Далі" button', async ({ createTenderPage }) =>
     await expect(createTenderPage.createTenderPageTabs.nth(1)).toHaveAttribute('aria-selected', 'true');
     await expect(createTenderPage.uploadDocsSection).toBeVisible();
 });
+
+test('Test case C786 Verify documents uploading', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await expect(createTenderPage.docsTitle.first()).toBeVisible();
+    await expect(createTenderPage.docsTitle.first()).toContainText(testData.titleTexts.tenderDocsTitle);
+    await expect(createTenderPage.docsTitle.first()).toContainText(testData.titleTexts.arrowSymbol);
+    await expect(createTenderPage.docsClue1).toHaveText(testData.clueTexts.tenderDocsClue1);
+    await expect(createTenderPage.docsClue2).toHaveText(testData.clueTexts.tenderDocsClue2);
+    await expect(createTenderPage.getFileChooser()).toBeDefined();
+
+    for(const fileName of testData.fileNames) {
+        await createTenderPage.uploadFile(fileName);
+
+        await expect(createTenderPage.uploadedFile).toBeVisible();
+        await expect(createTenderPage.uploadedFile).toHaveText(fileName)
+
+        await createTenderPage.deleteUploadedFileIcon.click();
+    }
+})
+
+test('Test case C787 Verify same documents uploading', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await expect(createTenderPage.getFileChooser()).toBeDefined();
+
+    await createTenderPage.uploadFile(testData.fileNames[0]);
+
+    await expect(createTenderPage.uploadedFile).toBeVisible();
+    await expect(createTenderPage.uploadedFile).toHaveText(testData.fileNames[0])
+
+    await createTenderPage.uploadFile(testData.fileNames[0]);
+
+    await expect(createTenderPage.notValidFilePopUp).toBeVisible();
+})
+
+test('Test case C788 Verify uploading of invalid file type', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await createTenderPage.uploadFile(testData.invalidFileNames.invalidFormat);
+
+    await expect(createTenderPage.notValidFilePopUp).toBeVisible();
+})
+
+test('Test case C789 Verify uploading of invalid file size', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await createTenderPage.uploadFile(testData.invalidFileNames.invalidSize);
+
+    await expect(createTenderPage.notValidFilePopUp).toBeVisible();
+})
+
+test('Test case C790 Verify docs deleting', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await expect(createTenderPage.getFileChooser()).toBeDefined();
+
+    const validFileIndex = Math.floor(Math.random() * testData.fileNames.length)
+
+    await createTenderPage.uploadFile(testData.fileNames[validFileIndex]);
+
+    await expect(createTenderPage.uploadedFile).toBeVisible();
+    await expect(createTenderPage.uploadedFile).toHaveText(testData.fileNames[validFileIndex]);
+
+    await createTenderPage.deleteUploadedFileIcon.click();
+
+    await expect(createTenderPage.uploadedFile).not.toBeVisible();
+})
+
+test('Test case C791 Verify "Назад" button', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+
+    await createTenderPage.previousBtn.click();
+
+    await createTenderPage.checkCreateTenderTabsTitles(1, testData['create tender tabs names']);
+})
+
+test('Test case C792 Verify "Далі" button', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+    await createTenderPage.nextBtn.click();
+
+    await expect(createTenderPage.addFileErrorMsg).toBeVisible();
+    await expect(createTenderPage.addFileErrorMsg).toHaveText(testData.errorMessages.addMin1File);
+
+    const validFileIndex = Math.floor(Math.random() * testData.fileNames.length)
+
+    await createTenderPage.uploadFile(testData.fileNames[validFileIndex]);
+    await createTenderPage.nextBtn.click();
+    await createTenderPage.checkCreateTenderTabsTitles(3, testData['create tender tabs names'])
+})
+
+test('Test case C827 Verify more then allowed number of docs', async({createTenderPage}) => {
+    await createTenderPage.docsTab.click();
+    
+    await expect(createTenderPage.getFileChooser()).toBeDefined();
+
+    for(let i = 0; i < 6; i++){
+        await createTenderPage.uploadFile(testData.fileNames[i]);
+    }
+
+    await expect(createTenderPage.notValidFilePopUp).toBeVisible();
+
+    await createTenderPage.understoodPopUpBtn.click();
+
+    const uploadedFiles = await createTenderPage.uploadedFile.all();
+
+    for(let i = 0; i < uploadedFiles.length; i++){
+        await expect(createTenderPage.uploadedFile.nth(i)).toBeVisible()
+    }
+
+    await expect(uploadedFiles.length).toBe(5)
+})
