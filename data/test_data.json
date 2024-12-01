@@ -77,6 +77,18 @@
         "Метр куб.",
         "Кілометр"
     ],
+    "myUnitsFilters": {
+        "category": {
+            "allCategories": "Всі категорії",
+            "building": "Будівельна техніка",
+            "civilEngineering": "Комунальна техніка",
+            "storage": "Складська техніка"
+        },
+        "sorting": {
+            "alpabetically": "По назві",
+            "dateTime": "По даті створення"
+        }
+    },
     "elementStates": {
         "favBtn": {
             "active": "#F73859",
