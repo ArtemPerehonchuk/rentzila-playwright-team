@@ -29,18 +29,14 @@ class ProductsPage extends Page {
         return unitText
     }
 
-    async clickFavoriteBtnOnUnit (index: number) {
+    getFavoriteBtnOnUnit (index: number) {
         const favBtn = this.getUnitCardByIndex(index).locator(this.favoriteBtn);
-        await favBtn.click();
+        return favBtn
     }
 
-    async verifyFavoriteStatusOnUnit (index: number, status: 'active' | 'inactive') {
-        const favStatusColor = await this.getUnitCardByIndex(index).locator(this.favoriteIndicator).getAttribute('stroke');
-        if (status === 'active') {
-            expect(favStatusColor).toEqual("#F73859");
-        } else if (status === 'inactive') {
-            expect(favStatusColor).toEqual("#404B69");
-        }
+    getFavoriteStatusOnUnit(index: number) {
+        const favStatusColor = this.getUnitCardByIndex(index).locator(this.favoriteIndicator);
+        return favStatusColor;
     }
 
     async clickFirstProduct() {

@@ -1,7 +1,11 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures";
+import testData from '../data/test_data.json' assert {type: 'json'};
+import { faker } from "@faker-js/faker";
 
 let adminAccessToken: string | null
+const LOGIN = process.env.VALID_EMAIL || ''
+const PASSWORD = process.env.VALID_PASSWORD || ''
 
 test.beforeAll(async ({ apiHelper }) => {
     adminAccessToken = await apiHelper.createAdminAccessToken();
@@ -13,7 +17,7 @@ test.describe('Favorite Unit Tests', async () => {
         let favUnitIds: number[] = await apiHelper.getFavoriteUnits(adminAccessToken);
         await apiHelper.removeUnitsFromFavorites(adminAccessToken, favUnitIds);
 
-        await homePage.loginUser(process.env.VALID_EMAIL || '', process.env.VALID_PASSWORD || '');
+        await homePage.loginUser(LOGIN, PASSWORD);
         await homePage.clickOnUserIcon();
         await homePage.clickOnProfileMyAnnouncementsItem();
         await profilePage.favoriteUnitsTab.click();
@@ -21,9 +25,9 @@ test.describe('Favorite Unit Tests', async () => {
 
     test('C300 - The "Обрані оголошення" page without "Обрані" units', async ({ page, ownerUnitsPage }) => {
         await expect(ownerUnitsPage.unitsEmptyTitle).toHaveText("У Вас поки немає обраних оголошень");
-        await expect(ownerUnitsPage.toProductsBtn).toHaveText("До списку оголошень");
+        await expect(ownerUnitsPage.emptyBlockBtn).toHaveText("До списку оголошень");
 
-        await ownerUnitsPage.toProductsBtn.click();
+        await ownerUnitsPage.emptyBlockBtn.click();
         await expect(page).toHaveURL("products/");
     });
 
@@ -31,21 +35,22 @@ test.describe('Favorite Unit Tests', async () => {
         await homePage.announcementsLink.click();
 
         const unitTitle = await productsPage.getTitleFromUnitCard(0);
-        await productsPage.clickFavoriteBtnOnUnit(0);
-        await productsPage.verifyFavoriteStatusOnUnit(0, 'active');
-
+        await productsPage.getFavoriteBtnOnUnit(0).click();
+        await expect(productsPage.getFavoriteStatusOnUnit(0)).toHaveAttribute('stroke',
+            testData.elementStates.favBtn.active);
         await homePage.clickOnUserIcon();
         await homePage.clickOnProfileMyAnnouncementsItem();
         await profilePage.favoriteUnitsTab.click();
 
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
-        await ownerUnitsPage.verifyFavoriteStatusOnUnit(unitTitle, 'active');
-
-        await ownerUnitsPage.clickFavoriteBtnOnUnit(unitTitle);
+        await expect(ownerUnitsPage.getFavoriteStatusOnUnit(unitTitle)).toHaveAttribute('stroke',
+            testData.elementStates.favBtn.active);
+        await ownerUnitsPage.getFavoriteBtnOnUnit(unitTitle).click();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).not.toBeVisible();
 
         await homePage.announcementsLink.click();
-        await productsPage.verifyFavoriteStatusOnUnit(0, 'inactive');
+        await expect(productsPage.getFavoriteStatusOnUnit(0)).toHaveAttribute('stroke',
+            testData.elementStates.favBtn.inactive);
     });
 
     test('C305 - "Пошук по назві" search field functionality', async ({ page, homePage, productsPage, profilePage, ownerUnitsPage }) => {
@@ -53,8 +58,8 @@ test.describe('Favorite Unit Tests', async () => {
 
         const unitTitle = await productsPage.getTitleFromUnitCard(0);
         const unitTitle2 = await productsPage.getTitleFromUnitCard(1);
-        await productsPage.clickFavoriteBtnOnUnit(0);
-        await productsPage.clickFavoriteBtnOnUnit(1);
+        await productsPage.getFavoriteBtnOnUnit(0).click();
+        await productsPage.getFavoriteBtnOnUnit(1).click();
 
         await homePage.clickOnUserIcon();
         await homePage.clickOnProfileMyAnnouncementsItem();
@@ -79,14 +84,13 @@ test.describe('Favorite Unit Tests', async () => {
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle2)).toBeVisible();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).not.toBeVisible();
 
-        let nonExistentName = 'тест1234567890'
+        let nonExistentName = faker.string.alpha({length: 15});
         await ownerUnitsPage.enterUnitSearch(nonExistentName);
-        let noUnitsFoundMsg = await ownerUnitsPage.unitsEmptyTitle.innerText();
-        let noUnitsFoundInfo = await ownerUnitsPage.unitsEmptyMsg.innerText();
-        expect(noUnitsFoundMsg).toEqual(`Оголошення за назвою "${nonExistentName}" не знайдені`);
-        expect(noUnitsFoundInfo).toEqual(`Ви можете змінити пошуковий запит або скинути всі фільтри`);
+        expect(ownerUnitsPage.unitsEmptyTitle).toHaveText(`Оголошення за назвою "${nonExistentName}" не знайдені`);
+        expect(ownerUnitsPage.unitsEmptyMsg).toHaveText(`Ви можете змінити пошуковий запит або скинути всі фільтри`);
 
-        await ownerUnitsPage.resetFiltersBtn.click();
+        await expect(ownerUnitsPage.emptyBlockBtn).toHaveText("Скинути фільтри");
+        await ownerUnitsPage.emptyBlockBtn.click();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle2)).toBeVisible();
         await expect(ownerUnitsPage.unitSearchInput).toHaveValue('');
@@ -143,15 +147,15 @@ test.describe('Favorite units search and sorting tests', async () => {
 
         await ownerUnitsPage.unitCategorySelect.click();
         await ownerUnitsPage.getSelectItemWithText(category).click();
-        await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category);
+        expect(await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category)).toBe(true);
 
         await ownerUnitsPage.unitCategorySelect.click();
         await ownerUnitsPage.getSelectItemWithText(category2).click();
-        await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category2);
+        expect(await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category2)).toBe(true);
 
         await ownerUnitsPage.unitCategorySelect.click();
         await ownerUnitsPage.getSelectItemWithText(category3).click();
-        await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category3);
+        expect(await ownerUnitsPage.verifyAllUnitsDisplayedWithCategory(category3)).toBe(true);
     });
 
     test('C744 - Check the "Очистити список" button functionality', async ({ ownerUnitsPage }) => {
@@ -174,7 +178,8 @@ test.describe('Favorite units search and sorting tests', async () => {
         numberOfUnitCards = await ownerUnitsPage.getUnitCardsLength();
         expect(numberOfUnitCards).toEqual(5);
 
-        await ownerUnitsPage.clearFavoritesIfVisible();
+        await ownerUnitsPage.clearFavoritesBtn.click();
+        await ownerUnitsPage.clearFavoritesPopupConfirmBtn.click();
 
         await expect(ownerUnitsPage.unitsEmptyTitle).toBeVisible();
     });

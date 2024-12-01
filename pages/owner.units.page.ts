@@ -19,13 +19,12 @@ class OwnerUnitsPage extends Page {
     favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
     clearFavoritesBtn = this.page.locator('button[class*="OwnerFavouriteUnitsPage_removeList_"]');
     clearFavoritesPopup = this.page.locator('[class*="DialogPopup_content_"]');
-    clearFavoritesPopupConfirmBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]', { hasText: 'Так' });
+    clearFavoritesPopupConfirmBtn = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
     clearFavoritesPopupCancelBtn = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
     clearFavoritesPopupCloseIcon = this.page.locator('[class*="PopupLayout_closeIcon_"]');
     unitsEmptyTitle = this.page.getByTestId('title');
     unitsEmptyMsg = this.page.getByTestId('descr');
-    toProductsBtn = this.page.getByTestId('emptyBlockButton');
-    resetFiltersBtn = this.page.getByTestId('emptyBlockButton').filter({ hasText: 'Скинути фільтри' });
+    emptyBlockBtn = this.page.getByTestId('emptyBlockButton');
     unitSearchInput = this.page.locator('div[data-testid="search"] input');
     paginationNumBtn = this.page.locator('a[class*="Pagination_page_"]');
     paginationPrevBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
@@ -49,9 +48,9 @@ class OwnerUnitsPage extends Page {
         return unitCard
     }
 
-    async clickFavoriteBtnOnUnit(title: string) {
+    getFavoriteBtnOnUnit(title: string) {
         const favBtn = this.getUnitCardByTitle(title).locator(this.favoriteBtn);
-        await favBtn.click();
+        return favBtn
     }
 
     async getCategoryOnUnit(index: number) {
@@ -61,48 +60,29 @@ class OwnerUnitsPage extends Page {
     }
 
     async verifyAllUnitsDisplayedWithCategory(expectedCategory: string) {
-        try {
-            const unitCardsCount = await this.getUnitCardsLength();
+        const unitCardsCount = await this.getUnitCardsLength();
 
-            if (unitCardsCount === 0) {
-                throw new Error("No unit cards found");
-            }
+        if (unitCardsCount === 0) {
+            console.warn(`No units found for category ${expectedCategory}`);
+            const isEmptyTitleCorrect = (await this.unitsEmptyTitle.innerText()) === `Оголошення в категорії "${expectedCategory}" не знайдені`;
+            const isEmptyMsgCorrect = (await this.unitsEmptyMsg.innerText()) === "Ви можете змінити пошуковий запит або скинути всі фільтри";
+            return isEmptyTitleCorrect && isEmptyMsgCorrect;
+        }
+        else {
             for (let i = 0; i < unitCardsCount; i++) {
                 const category = await this.getCategoryOnUnit(i);
-                expect(category).toBe(expectedCategory);
+                if (category !== expectedCategory) {
+                    console.warn(`Mismatched category: ${category}, expected ${expectedCategory}`);
+                    return false;
+                }
             }
-
-        } catch (error) {
-            if (error instanceof Error && error.message === "No unit cards found") {
-                console.warn(`No units found for category ${expectedCategory}`);
-                await expect(this.unitsEmptyTitle).toHaveText(`Оголошення в категорії "${expectedCategory}" не знайдені`);
-                await expect(this.unitsEmptyMsg).toHaveText("Ви можете змінити пошуковий запит або скинути всі фільтри");
-            } else {
-                throw error; 
-            }
+            return true;
         }
     }
 
-    async verifyFavoriteStatusOnUnit(title: string, status: 'active' | 'inactive') {
-        const favStatusColor = await this.getUnitCardByTitle(title).locator(this.favoriteIndicator).getAttribute('stroke');
-        if (status === 'active') {
-            expect(favStatusColor).toEqual("#F73859");
-        } else if (status === 'inactive') {
-            expect(favStatusColor).toEqual("#404B69");
-        }
-    }
-
-    async clearFavoritesIfVisible() {
-        try {
-            await this.clearFavoritesBtn.waitFor({ timeout: 3000 });
-            const isVisible = await this.clearFavoritesBtn.isVisible();
-
-            if (isVisible) {
-                await this.clearFavoritesBtn.click();
-                await this.clearFavoritesPopupConfirmBtn.click();
-            }
-            return isVisible;
-        } catch (error) { }
+    getFavoriteStatusOnUnit(title: string) {
+        const favStatusColor = this.getUnitCardByTitle(title).locator(this.favoriteIndicator);
+        return favStatusColor;
     }
 
     async enterUnitSearch(text: string, caseOption: 'uppercase' | 'lowercase' | 'paste' | 'default' = 'default') {
