@@ -3,7 +3,7 @@
         "without country code": "991234786",
         "withoutln": "099123478",
         "with-": "+380-99-123-47-86",
-        "with spaces" : "+380 99 123 47 86",
+        "with spaces": "+380 99 123 47 86",
         "with ()": "+380(99)1234786",
         "with () without country code": "(99)1234786",
         "11 numders": "+38099123478",
@@ -76,5 +76,11 @@
         "Метр кв.",
         "Метр куб.",
         "Кілометр"
-    ]
+    ],
+    "elementStates": {
+        "favBtn": {
+            "active": "#F73859",
+            "inactive": "#404B69"
+        }
+    }
 }

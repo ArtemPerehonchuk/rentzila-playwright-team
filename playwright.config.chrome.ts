@@ -21,6 +21,7 @@ export default defineConfig({
     baseURL: process.env.HOMEPAGE_URL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    permissions: ['clipboard-read', 'clipboard-write'],
   },
   projects: chromeProject,
 });

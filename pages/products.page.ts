@@ -8,12 +8,36 @@ class ProductsPage extends Page {
     }
     
     produtsList = this.page.locator('[data-testid="cardWrapper"]');
+    unitTitle = this.page.getByTestId('unitName');
+    unitCategory = this.page.locator('div[class*="OwnerUnitCard_category_"]');
+    favoriteBtn = this.page.getByTestId('favourite');
+    favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
     productFilterItem = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
     dropdownArrow = this.page.locator('[data-testid="rightArrow"]').nth(2);
     unitsContainer = this.page.locator('div[class*="MapPagination_units_container"]');
     constructionsCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
     othersCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
     searchInput = this.page.getByTestId('searchInput');
+
+    getUnitCardByIndex (index: number) {
+        return this.produtsList.nth(index);
+    }
+
+    async getTitleFromUnitCard (index: number) {
+        const unitCardTitle = this.getUnitCardByIndex(index).locator(this.unitTitle);
+        const unitText = await unitCardTitle.innerText();
+        return unitText
+    }
+
+    getFavoriteBtnOnUnit (index: number) {
+        const favBtn = this.getUnitCardByIndex(index).locator(this.favoriteBtn);
+        return favBtn
+    }
+
+    getFavoriteStatusOnUnit(index: number) {
+        const favStatusColor = this.getUnitCardByIndex(index).locator(this.favoriteIndicator);
+        return favStatusColor;
+    }
 
     async clickFirstProduct() {
         if(await this.produtsList.first().isVisible()) {
