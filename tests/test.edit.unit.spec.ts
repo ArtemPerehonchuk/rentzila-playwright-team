@@ -36,7 +36,7 @@ test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) =>
     await homepage.clickOnUserIcon();
     await homepage.clickOnProfileMyAnnouncementsItem();
     
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath.ownerUnit));
 
     await ownerUnitsPage.clickOnActiveAnnouncementsTab();
 
@@ -71,11 +71,11 @@ test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, 
     
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
 
     await editUnitPage.clickOnCancelUnitChangesBtn();
 
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath.ownerUnit));
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.clickOnSaveUnitChangesBtn();
@@ -413,7 +413,7 @@ test('Test case C535: Check "Місце розташування технічн�
 
     await editUnitPage.mapPopUpConfirmChoiseBtn.click();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
     await expect(editUnitPage.mapPopUp).not.toBeVisible();
     await expect(editUnitPage.vehicleLocation).toHaveText(choosenLocation);
 
@@ -538,7 +538,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.uploadPhotos(1);
 
-    const paymentMethods = testData['payment methods'];
+    const paymentMethods = testData.paymentMethods;
 
     for(let i = paymentMethods.length - 1; i >= 0; i--) {
         await editUnitPage.clickOnSelectPaymentMethodInput();
@@ -568,7 +568,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
         await unitDetailsPage.clickOnEditUnitBtn();
 
-        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
     }
 })
 
@@ -624,7 +624,7 @@ test('Test case C543:  Check "Вартість мінімального замо
         await editUnitPage.addPriceBtn.click();
     }
 
-    const priceOptions = testData['add price options'];
+    const priceOptions = testData.addPriceOptions;
     let additionalPriceItems;
 
     for(let i = 1; i < priceOptions.length; i ++) {

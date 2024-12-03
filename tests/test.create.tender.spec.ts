@@ -24,7 +24,7 @@ test('Test Case: C777 Verify body and tabs titles', async ({createTenderPage }) 
     await expect(createTenderPage.createTenderPageTitle).toBeVisible();
     await expect(createTenderPage.createTenderPageTitle).toHaveText(testData.titleTexts.createTender);
 
-    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, testData['create tender tabs names'])).toBeTruthy();
+    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, testData.createTenderTabsNames)).toBeTruthy();
 });
 
 test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }) => {
@@ -179,7 +179,7 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     
     await createTenderPage.startDateInput.click()
     
-    await expect(createTenderPage.DateCalendar).toBeVisible()
+    await expect(createTenderPage.dateCalendar).toBeVisible()
     await expect((await createTenderPage.getPreviousStartDate(dateBeforToday)).last()).toHaveAttribute('aria-disabled', 'true');
 
     await createTenderPage.endDateInput.click();
@@ -197,7 +197,7 @@ test('Test Case: C780 Verify tenders duration section', async ({ createTenderPag
     const difference = parseInt(workPeriodStartDay) - parseInt(selectedEndDate);
 
     await expect(difference).not.toBe(0);
-    await expect(createTenderPage.DateCalendar).toBeVisible();
+    await expect(createTenderPage.dateCalendar).toBeVisible();
 
     await createTenderPage.selectDateAndTime(0); 
 
@@ -265,7 +265,7 @@ test('Test Case: C784 Verify "Скасувати" button', async ({ page, create
     await createTenderPage.clickOnCancelBtn();
 
     await expect(dialogAppeared).toBe(true);
-    await expect(page).toHaveURL(new RegExp(testData.pagesURLPath['owner-tender']));
+    await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.ownerTender));
 });
 
 test('Test Case: C785 Verify "Далі" button', async ({ createTenderPage }) => {
@@ -359,7 +359,7 @@ test('Test case C791 Verify "Назад" button', async({createTenderPage}) => {
 
     await createTenderPage.previousBtn.click();
 
-    await createTenderPage.checkCreateTenderTabsTitles(1, testData['create tender tabs names']);
+    await createTenderPage.checkCreateTenderTabsTitles(1, testData.createTenderTabsNames);
 })
 
 test('Test case C792 Verify "Далі" button', async({createTenderPage}) => {
@@ -373,7 +373,7 @@ test('Test case C792 Verify "Далі" button', async({createTenderPage}) => {
 
     await createTenderPage.uploadFile(testData.fileNames[validFileIndex]);
     await createTenderPage.nextBtn.click();
-    await createTenderPage.checkCreateTenderTabsTitles(3, testData['create tender tabs names'])
+    await createTenderPage.checkCreateTenderTabsTitles(3, testData.createTenderTabsNames)
 })
 
 test('Test case C827 Verify more then allowed number of docs', async({createTenderPage}) => {

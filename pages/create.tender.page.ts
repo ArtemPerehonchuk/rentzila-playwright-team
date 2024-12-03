@@ -30,7 +30,7 @@ class CreateTenderPage extends Page {
     startDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').first();
     endDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').nth(1);
     incorrectEndDateErrorMsg: Locator = this.page.locator('[class*="PeriodOfProposals_errorTextVisible"]');
-    DateCalendar: Locator = this.page.locator('[class="react-datepicker__month-container"]');
+    dateCalendar: Locator = this.page.locator('[class="react-datepicker__month-container"]');
     workPeriodTitle: Locator = this.page.locator('[class*="DateContainer_title"]').nth(2);
     workPeriodInput: Locator = this.page.locator('[tabindex="999"]');
     workPeriodStartDate: Locator = this.page.locator('[aria-disabled="false"]').first();
@@ -43,7 +43,7 @@ class CreateTenderPage extends Page {
     mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
     availableDays: Locator = this.page.locator('[aria-disabled="false"]');
-    docsTab: Locator =this.page.locator('[class*="CustomLabel_labelTitle"]').getByText('Документація');
+    docsTab: Locator = this.page.locator('[class*="CustomLabel_labelTitle"]').nth(1);
     docsTitle: Locator = this.page.locator('[class*="DocumentsChoosing_header"]');
     docsClue1: Locator = this.page.locator('[class*="DocumentsChoosing_text1"]');
     docsClue2: Locator = this.page.locator('[class*="DocumentsChoosing_text2"]');

@@ -3,7 +3,7 @@ import Page from './page';
 import path from 'path';
 import testData from '../data/test.data.json' assert {type: 'json'};
 
-const photoFileNames = testData['photo file names']
+const photoFileNames = testData.photoFileNames
 
 class EditUnitPage extends Page {
 

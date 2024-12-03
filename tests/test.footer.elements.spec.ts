@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import testData from '../data/test.data.json' assert {type: 'json'}
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
-const contactUsFormInputValues = testData["contuct us form inputs"];
+const contactUsFormInputValues = testData.contuctUsFormInputs;
 
 test.beforeEach(async ({ page, homepage }) => {
     await homepage.navigate('/');
@@ -31,19 +31,19 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homepage.clickOnPrivacyPolicyLink();
 
-    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath["privacy-policy"]);
+    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath.privacyPolicy);
     await expect(privacyPolicyPage.privacyPolicyTitle).toBeVisible();
     await expect(privacyPolicyPage.privacyPolicyTitle).toHaveText(testData.titleTexts.privacyPolicy);
 
     await homepage.clickOnCookiePolicyLink();
 
-    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath["cookey-policy"]);
+    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath.cookeyPolicy);
     await expect(cookiePolicyPage.cookiePolicyTitle).toBeVisible()
     await expect(cookiePolicyPage.cookiePolicyTitle).toHaveText(testData.titleTexts.cookiePolicy);
 
     await homepage.clickOnTermsConditionsLink();
 
-    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath["terms-conditions"]);
+    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath.termsConditions);
     await expect(termsConditionsPage.termsConditionsTitle).toBeVisible()
     await expect(termsConditionsPage.termsConditionsTitle).toHaveText(testData.titleTexts.termsConditions);
 
@@ -60,7 +60,7 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homepage.clickOnTendersLink();
 
-    await expect(await tendersPage.getUrl()).toContain(testData.pagesURLPath["tenders-map"]);
+    await expect(await tendersPage.getUrl()).toContain(testData.pagesURLPath.tendersMap);
     await expect(tendersPage.searchInput).toBeVisible();
     await expect(await tendersPage.getSerchInputBgText()).toBe(testData.inputPlaceholderTexts.searchTenderInput);
 
@@ -72,7 +72,7 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
 test('test case C226: Verify "У Вас залишилися питання?" form', async ({ homepage, apiHelper }) => {
     const userName = faker.person.firstName();
-    const userPhone = contactUsFormInputValues["other correct phone"];
+    const userPhone = contactUsFormInputValues.otherCorrectPhone;
     
     await homepage.scrollToConsultationForm();
 
@@ -93,7 +93,7 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
 
     await expect(await homepage.getPhoneInputText()).toBe('+380');
 
-    await homepage.fillInput('phone', contactUsFormInputValues["correct phone"]);
+    await homepage.fillInput('phone', contactUsFormInputValues.correctPhone);
     await homepage.clearInput('name');
     await homepage.clickOnSubmitConsultationBtn();
 
@@ -101,21 +101,21 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
     await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(false);
 
     await homepage.fillInput('name', contactUsFormInputValues.test);
-    await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone with spaces"]);
+    await homepage.fillInput('phone', contactUsFormInputValues.incorrectPhoneWithSpaces);
     await homepage.clickOnSubmitConsultationBtn();
 
     await expect(homepage.consultationFormErrorMessage.first()).toBeVisible();
     await expect(homepage.consultationFormErrorMessage.first()).toHaveText(testData.errorMessages.phoneNumberWasNotValidated);
     await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', 'rgb(247, 56, 89)')
 
-    await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone same digits and spaces"]);
+    await homepage.fillInput('phone', contactUsFormInputValues.incorrectPhoneSameDigitsAndSpaces);
     await homepage.clickOnSubmitConsultationBtn();
 
     await expect(homepage.consultationFormErrorMessage.first()).toBeVisible();
     await expect(homepage.consultationFormErrorMessage.first()).toHaveText(testData.errorMessages.phoneNumberWasNotValidated);
     await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', testData.borderColors.errorColor)
 
-    await homepage.fillInput('phone', contactUsFormInputValues["other correct phone"]);
+    await homepage.fillInput('phone', contactUsFormInputValues.otherCorrectPhone);
     await homepage.clickOnSubmitConsultationBtn();
 
     await homepage.checkSuccessSubmitConsultationMsg();
@@ -123,7 +123,7 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
     await homepage.clearInput('name');
     await homepage.clearInput('phone');
     await homepage.fillInput('name', userName);
-    await homepage.fillInput('phone', contactUsFormInputValues["other correct phone"]);
+    await homepage.fillInput('phone', contactUsFormInputValues.otherCorrectPhone);
     await homepage.clickOnSubmitConsultationBtn();
 
     await homepage.checkSuccessSubmitConsultationMsg();

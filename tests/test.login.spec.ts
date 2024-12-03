@@ -5,9 +5,9 @@ const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const VALID_PHONE: string = process.env.VALID_PHONE || '';
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
-const incorrectPhoneNumbers = Object.values(testData["incorrect-phone-numbers"]);
-const incorrectEmails = Object.values(testData["incorrect-emails"]);
-const incorrectPasswords = Object.values(testData["incorrect-passwords"]);
+const incorrectPhoneNumbers = Object.values(testData.incorrectPhoneNumbers);
+const incorrectEmails = Object.values(testData.incorrectEmails);
+const incorrectPasswords = Object.values(testData.incorrectPasswords);
 const correctPhoneNumbers: string[] = [
         process.env.CORRECT_PHONE_NUMBERS_FULL || '',
         process.env.CORRECT_PHONE_NUMBERS_WITHOUT_PLUS || '',
@@ -173,7 +173,7 @@ test.describe('Positive test cases for login form', () => {
             await homepage.clickOnUserIcon();
             await homepage.clickOnMyProfileMenuItem();
 
-            await expect(await profilePage.getUrl()).toContain(testData.pagesURLPath["owner-cabinet"]);
+            await expect(await profilePage.getUrl()).toContain(testData.pagesURLPath.ownerCabinet);
             await expect(profilePage.profilePhoneInput).toBeVisible();
             await expect(await profilePage.getProfilePhoneInputValue()).toBe(VALID_PHONE);
 
