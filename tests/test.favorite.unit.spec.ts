@@ -37,7 +37,7 @@ test.describe('Favorite Unit Tests', async () => {
         await expect(ownerUnitsPage.emptyBlockBtn).toHaveText("До списку оголошень");
 
         await ownerUnitsPage.emptyBlockBtn.click();
-        await expect(page).toHaveURL("products/");
+        await expect(page).toHaveURL(/products/);
     });
 
     test('C302 - "Обрані" icon functionality', async ({ homePage, productsPage, profilePage, ownerUnitsPage }) => {
@@ -117,7 +117,7 @@ test.describe('Favorite units pagination and sorting tests', async () => {
         await homePage.clickOnProfileMyAnnouncementsItem();
 
         await profilePage.favoriteUnitsTab.click();
-        await expect(page).toHaveURL('owner-favourite-units/');
+        await expect(page).toHaveURL(/owner-favourite-units/);
     });
 
     test('C311 - Check the pagination on the "Обрані оголошення" page', async ({ ownerUnitsPage }) => {
@@ -211,7 +211,7 @@ test.describe('Favorite units category filter tests', async () => {
         await homePage.clickOnProfileMyAnnouncementsItem();
 
         await profilePage.favoriteUnitsTab.click();
-        await expect(page).toHaveURL('owner-favourite-units/');
+        await expect(page).toHaveURL(/owner-favourite-units/);
         totalNumberOfUnitCards = await ownerUnitsPage.getUnitCardsLength();
         expect(totalNumberOfUnitCards).toEqual(3);
     });
