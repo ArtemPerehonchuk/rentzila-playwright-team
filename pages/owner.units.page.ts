@@ -14,6 +14,7 @@ class OwnerUnitsPage extends Page {
     unitCards = this.page.locator('[class*="OwnerUnitCard_container"]');
     editUnitBtn = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
     editWaitingsUnitBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    firstWaitingsUnit = this.page.locator('[class*="OwnerUnitCard_container"]').first();
 
     async clickOnWaitingsAnnouncementsTab() {
         await this.waitingsAnnouncementsTab.click();
@@ -56,6 +57,10 @@ class OwnerUnitsPage extends Page {
             }
         }
         return editedUnitName;
+    }
+
+    async clickOnFirstWaitingsUnit() {
+        await this.firstWaitingsUnit.click();
     }
 }
 
