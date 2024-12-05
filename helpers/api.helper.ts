@@ -42,6 +42,9 @@ class ApiHelper {
         if(userAccessToken === null) {
             await this.request
                 .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
+                    headers: {
+                        ...this.defaultHeaders
+                    },
                     data: {
                         email: user_email,
                         password: user_password
@@ -162,20 +165,20 @@ class ApiHelper {
                 'Authorization': `Bearer ${accessUserToken}`,
                 ...this.defaultHeaders
             },
-            multipart: {
-                unit: unitId.toString(),
-                image: imageReadStream,
-                is_main: 'true'
-            }
             // multipart: {
             //     unit: unitId.toString(),
-            //     image: {
-            //         name: 'pexels-albinberlin-919073.jpg',
-            //         mimeType: 'image/jpeg',
-            //         buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
-            //     },
+            //     image: imageReadStream,
             //     is_main: 'true'
             // }
+            multipart: {
+                unit: unitId.toString(),
+                image: {
+                    name: 'pexels-albinberlin-919073.jpg',
+                    mimeType: 'image/jpeg',
+                    buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
+                },
+                is_main: 'true'
+            }
         });
 
         const responseData = await response.json();
