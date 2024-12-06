@@ -24,19 +24,15 @@ class ProductsPage extends Page {
     }
 
     async getTitleFromUnitCard (index: number) {
-        const unitCardTitle = this.getUnitCardByIndex(index).locator(this.unitTitle);
-        const unitText = await unitCardTitle.innerText();
-        return unitText
+        return this.getUnitCardByIndex(index).locator(this.unitTitle).innerText();
     }
 
     getFavoriteBtnOnUnit (index: number) {
-        const favBtn = this.getUnitCardByIndex(index).locator(this.favoriteBtn);
-        return favBtn
+        return this.getUnitCardByIndex(index).locator(this.favoriteBtn);
     }
 
     getFavoriteStatusOnUnit(index: number) {
-        const favStatusColor = this.getUnitCardByIndex(index).locator(this.favoriteIndicator);
-        return favStatusColor;
+        return this.getUnitCardByIndex(index).locator(this.favoriteIndicator);
     }
 
     async clickFirstProduct() {

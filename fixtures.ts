@@ -51,67 +51,54 @@ export const test = baseTest.extend<TestFixtures>({
     },
 
     productsPage: async ({ page }, use) => {
-        const productsPage = new ProductsPage(page);
-        await use(productsPage);
+        await use(new ProductsPage(page));
     },
 
     unitPage: async ({ page }, use) => {
-        const singleUnitPage = new UnitPage(page);
-        await use(singleUnitPage);
+        await use(new UnitPage(page));
     },
 
     privacyPolicyPage: async ({ page }, use) => {
-        const privacyPolicyPage = new PrivacyPolicyPage(page);
-        await use(privacyPolicyPage);
+        await use(new PrivacyPolicyPage(page));
     },
 
     cookiePolicyPage: async ({ page }, use) => {
-        const cookiePolicyPage = new CookiePolicyPage(page);
-        await use(cookiePolicyPage);
+        await use(new CookiePolicyPage(page));
     },
 
     termsAndConditionsPage: async ({ page }, use) => {
-        const termsAndConditionsPage = new TermsConditionsPage(page);
-        await use(termsAndConditionsPage);
+        await use(new TermsConditionsPage(page));
     },
 
     tendersPage: async ({ page }, use) => {
-        const tendersPage = new TendersPage(page);
-        await use(tendersPage);
+        await use(new TendersPage(page));
     },
 
     profilePage: async ({ page }, use) => {
-        const profilePage = new ProfilePage(page);
-        await use(profilePage);
+        await use(new ProfilePage(page));
     },
 
     ownerUnitsPage: async ({ page }, use) => {
-        const ownerUnitsPage = new OwnerUnitsPage(page);
-        await use(ownerUnitsPage);
+        await use(new OwnerUnitsPage(page));
     },
 
     createUnitPage: async ({ page }, use) => {
-        const createUnitPage = new CreateUnitPage(page);
-        await use(createUnitPage);
+        await use(new CreateUnitPage(page));
     },
 
     editUnitPage: async ({ page }, use) => {
-        const editUnitPage = new EditUnitPage(page);
-        await use(editUnitPage);
+        await use(new EditUnitPage(page));
     },
 
     photoTab: async ({ page }, use) => {
-        const photoTab = new PhotoTab(page);
-        await use(photoTab);
+        await use(new PhotoTab(page));
     },
 
     servicesTab: async ({ page }, use) => {
-        const servicesTab = new ServicesTab(page);
-        await use(servicesTab);
+        await use(new ServicesTab(page));
     },
 
     pricesTab: async ({ page }, use) => {
-        const pricesTab = new PricesTab(page);
-        await use(pricesTab);
+        await use(new PricesTab(page));
     },
 });

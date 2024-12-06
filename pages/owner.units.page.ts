@@ -36,8 +36,7 @@ class OwnerUnitsPage extends Page {
 
     getPaginationBtnWithIndex(index: number) {
         const number = index - 1;
-        const paginationBtn = this.paginationNumBtn.nth(number);
-        return paginationBtn
+        return this.paginationNumBtn.nth(number);
     }
 
     async verifyUnitsSortedByDateDescending() {
@@ -54,18 +53,19 @@ class OwnerUnitsPage extends Page {
     }
 
     getSelectItemWithText(text: string) {
-        const item = this.selectFieldItem.filter({ hasText: text });
-        return item
+        return this.selectFieldItem.filter({ hasText: text });
     }
 
     getUnitCardByTitle(title: string) {
-        const unitCard = this.unitCards.filter({ has: this.unitName.filter({ hasText: title }) });
-        return unitCard
+        return this.unitCards.filter({ has: this.unitName.filter({ hasText: title }) });
     }
 
     getFavoriteBtnOnUnit(title: string) {
-        const favBtn = this.getUnitCardByTitle(title).locator(this.favoriteBtn);
-        return favBtn
+        return this.getUnitCardByTitle(title).locator(this.favoriteBtn);
+    }
+
+    getFavoriteStatusOnUnit(title: string) {
+        return this.getUnitCardByTitle(title).locator(this.favoriteIndicator);
     }
 
     async getCategoryOnUnit(index: number) {
@@ -93,31 +93,6 @@ class OwnerUnitsPage extends Page {
             }
             return true;
         }
-    }
-
-    getFavoriteStatusOnUnit(title: string) {
-        const favStatusColor = this.getUnitCardByTitle(title).locator(this.favoriteIndicator);
-        return favStatusColor;
-    }
-
-    async enterUnitSearch(text: string, caseOption: 'uppercase' | 'lowercase' | 'paste' | 'default' = 'default') {
-        let formattedText = text;
-
-        if (caseOption == 'uppercase') {
-            formattedText = text.toUpperCase();
-        } else if (caseOption == 'lowercase') {
-            formattedText = text.toLowerCase();
-        } else if (caseOption == 'paste') {
-            await this.page.evaluate(async (text) => {
-                await navigator.clipboard.writeText(text);
-            }, text);
-
-            await this.unitSearchInput.clear();
-            await this.unitSearchInput.click();
-            await this.page.keyboard.press(process.platform === 'darwin' ? 'Meta+V' : 'Control+V');
-            return
-        }
-        await this.unitSearchInput.fill(formattedText);
     }
 
     async clickOnWaitingsAnnouncementsTab() {

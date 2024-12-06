@@ -82,21 +82,18 @@ test.describe('Favorite Unit Tests', async () => {
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle2)).toBeVisible();
 
-        // await ownerUnitsPage.enterUnitSearch("<>{};^'"); //special symbols can be entered on automation or manually by pasting
-        // await expect(ownerUnitsPage.unitSearchInput).toHaveValue('');
-
-        await ownerUnitsPage.enterUnitSearch(unitTitle);
+        await ownerUnitsPage.enterValueToInput(ownerUnitsPage.unitSearchInput, unitTitle);
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle2)).not.toBeVisible();
 
-        await ownerUnitsPage.enterUnitSearch(unitTitle2, 'paste');
+        await ownerUnitsPage.enterValueToInput(ownerUnitsPage.unitSearchInput, unitTitle2, 'paste');
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle2)).toBeVisible();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).not.toBeVisible();
 
         let nonExistentName = faker.string.alpha({length: 15});
-        await ownerUnitsPage.enterUnitSearch(nonExistentName);
-        expect(ownerUnitsPage.unitsEmptyTitle).toHaveText(`Оголошення за назвою "${nonExistentName}" не знайдені`);
-        expect(ownerUnitsPage.unitsEmptyMsg).toHaveText(`Ви можете змінити пошуковий запит або скинути всі фільтри`);
+        await ownerUnitsPage.enterValueToInput(ownerUnitsPage.unitSearchInput, nonExistentName);
+        await expect(ownerUnitsPage.unitsEmptyTitle).toHaveText(`Оголошення за назвою "${nonExistentName}" не знайдені`);
+        await expect(ownerUnitsPage.unitsEmptyMsg).toHaveText(`Ви можете змінити пошуковий запит або скинути всі фільтри`);
 
         await expect(ownerUnitsPage.emptyBlockBtn).toHaveText("Скинути фільтри");
         await ownerUnitsPage.emptyBlockBtn.click();

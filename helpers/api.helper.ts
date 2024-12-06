@@ -24,7 +24,7 @@ class ApiHelper {
     }
 
     async createAdminAccessToken() {
-        if (adminAccessToken === null) {
+        if (!adminAccessToken) {
             await this.request
                 .post(`${base_url}api/auth/jwt/create/`, {
                     data: {
@@ -39,7 +39,7 @@ class ApiHelper {
     }
 
     async createUserAccessToken() {
-        if (userAccessToken === null) {
+        if (!userAccessToken) {
             await this.request
                 .post(`${base_url}api/auth/jwt/create/`, {
                     data: {
