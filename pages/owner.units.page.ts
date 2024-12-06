@@ -17,6 +17,7 @@ class OwnerUnitsPage extends Page {
     editWaitingsUnitBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     favoriteBtn = this.page.locator('[data-testid="favourite"]');
     favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
+    unitCreationDate = this.page.locator('div[class*="OwnerUnitCard_dot_"]~div');
     clearFavoritesBtn = this.page.locator('button[class*="OwnerFavouriteUnitsPage_removeList_"]');
     clearFavoritesPopup = this.page.locator('[class*="DialogPopup_content_"]');
     clearFavoritesPopupConfirmBtn = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
@@ -30,12 +31,26 @@ class OwnerUnitsPage extends Page {
     paginationPrevBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
     paginationNextBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="next"]');
     unitCategorySelect = this.page.getByTestId('div_CustomSelect').nth(0);
-    selectFieldItem = this.page.getByTestId('item-customSelect')
+    unitSortingSelect = this.page.getByTestId('div_CustomSelect').nth(1);
+    selectFieldItem = this.page.getByTestId('item-customSelect');
 
     getPaginationBtnWithIndex(index: number) {
         const number = index - 1;
         const paginationBtn = this.paginationNumBtn.nth(number);
         return paginationBtn
+    }
+
+    async verifyUnitsSortedByDateDescending() {
+        const dateTexts = await this.unitCreationDate.allInnerTexts();
+
+        const parsedDates = dateTexts.map(dateText => {
+            const [day, month, year] = dateText.split('.').map(Number);
+            return new Date(year, month - 1, day);
+        });
+
+        const sortedDates = [...parsedDates].sort((a, b) => b.getTime() - a.getTime());
+
+        return parsedDates.every((date, index) => date.getTime() === sortedDates[index].getTime());
     }
 
     getSelectItemWithText(text: string) {
