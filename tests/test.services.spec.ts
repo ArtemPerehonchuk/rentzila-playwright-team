@@ -39,7 +39,7 @@ test('test case c212: Checking ""Послуги"" section on the main page', asy
 
         await productsPage.clickFirstProduct();
 
-        await expect(await unitPage.checkUnitIsVisible()).toBe(true);
+        await unitPage.checkUnitIsVisible();
 
         await unitPage.clickOnLogo();
 
@@ -74,7 +74,7 @@ test('test case c213: Checking ""Спецтехніка"" section on the main pa
 
         await productsPage.clickFirstProduct();
 
-        await expect(await unitPage.checkUnitIsVisible()).toBe(true);
+        await unitPage.checkUnitIsVisible();
 
         await unitPage.clickOnLogo();
 
