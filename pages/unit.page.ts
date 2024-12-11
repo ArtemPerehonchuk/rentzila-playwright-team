@@ -1,6 +1,5 @@
 import { Page as PlaywrightPage, expect } from '@playwright/test';
 import Page from './page';
-import categories from '../data/category_names.json' assert {type: 'json'};
 
 class UnitPage extends Page {
 
@@ -12,12 +11,9 @@ class UnitPage extends Page {
     unitServicesTypesContainer = this.page.locator('[itemprop="services"]');
     secondCategoryBreadCrumb = this.page.locator("span[data-testid='secondCategorySpan']");
 
-    async checkUnitIsVisible(isExist: boolean = true) {
-        if (isExist) {
-            await expect(this.unitServicesTitle).toBeVisible()
-            await expect(this.unitServicesTypesContainer).toBeVisible()
-            return true
-        } else return false
+    async checkUnitIsVisible() {
+        await expect(this.unitServicesTitle).toBeVisible()
+        await expect(this.unitServicesTypesContainer).toBeVisible()
     }
 }
 
