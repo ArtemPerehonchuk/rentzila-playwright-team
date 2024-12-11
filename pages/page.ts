@@ -1,4 +1,6 @@
 import { Page as PlaywrightPage, Locator, expect } from '@playwright/test';
+import * as fs from 'fs';
+import path from 'path';
 
 class Page {
   public page: PlaywrightPage;
@@ -37,6 +39,43 @@ class Page {
     }
 
     await locator.fill(text);
+  }
+
+  async refreshUntilElementVisible(locator: Locator, afterRefreshAction?: () => Promise<void>, maxRetries: number = 5) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+
+        await this.page.waitForLoadState('networkidle');
+        await locator.waitFor({ timeout: 1000 });
+        return;
+      } catch (error) {
+
+        console.warn(`Attempt ${attempt}/${maxRetries}. Refreshing the page.`);
+        await this.page.reload({ waitUntil: 'networkidle' });
+
+        if (afterRefreshAction) {
+          await afterRefreshAction();
+        }
+      }
+    }
+
+    throw new Error(`Locator not found after ${maxRetries} retries.`);
+  }
+
+  async downloadFile(downloadTriggerAction: () => Promise<void>, expectedFileName?: string): Promise<void> {
+    const [download] = await Promise.all([
+      this.page.waitForEvent('download'),
+      await downloadTriggerAction()
+    ]);
+
+    const filePath = await download.path();
+
+    expect(filePath).not.toBeNull();
+
+    if (expectedFileName) {
+      const suggestedFilename = download.suggestedFilename();
+      expect(suggestedFilename).toBe(expectedFileName);
+    }
   }
 }
 

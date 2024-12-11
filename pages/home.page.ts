@@ -56,7 +56,13 @@ class HomePage extends Page {
     closePopUpBtn = this.page.locator('[data-testid="crossButton"]');
     profileAnnouncementsDropDownMenuItem = this.page.locator('[data-testid="units"]');
     profileMyAnnouncementsItem = this.page.locator('[data-testid="units"] > ul > li:nth-child(1)');
+    tendersDropdownItem = this.page.getByTestId('tenders');
 
+    async goToMyTenders () {
+        await this.userIcon.click();
+        await this.tendersDropdownItem.click();
+    }
+    
     async scrollToServicesContainer() {
         await this.servicesContainer.scrollIntoViewIfNeeded();
     }

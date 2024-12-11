@@ -78,11 +78,18 @@
         "Кілометр"
     ],
     "myUnitsFilters": {
-        "category": {
+        "equipmentCategory": {
             "allCategories": "Всі категорії",
             "building": "Будівельна техніка",
             "civilEngineering": "Комунальна техніка",
             "storage": "Складська техніка"
+        },
+        "serviceCategory": {
+            "allCategories": "Всі категорії",
+            "farming": "Сільськогосподарські",
+            "building": "Будівельні",
+            "user": "Користувацькі",
+            "other": "Інші"
         },
         "sorting": {
             "alpabetically": "По назві",
@@ -93,6 +100,37 @@
         "favBtn": {
             "active": "#F73859",
             "inactive": "#404B69"
+        }
+    },
+    "ownerUnitsUI": {
+        "noFavoriteUnits": "У Вас поки немає обраних оголошень",
+        "toProductsBtn": "До списку оголошень",
+        "resetFiltersBtn": "Скинути фільтри",
+        "noResultsFoundMsg": "Ви можете змінити пошуковий запит або скинути всі фільтри"
+    },
+    "tenders": {
+        "stateLabel": {
+            "active": "Активний",
+            "closed": "Завершений"
+        },
+        "proposeBtn": "Подати пропозицію",
+        "editBtn": "Редагувати",
+        "closeBtn": "Завершити",
+        "deleteBtn": "Видалити",
+        "propositionsOpenLabel": "Прийом пропозицій",
+        "organiserText": "Організатор: ",
+        "propositionsText": "Кількість пропозицій: ",
+        "worksDateText": "Дата проведення робіт",
+        "locationText": "Місце проведення робіт: ",
+        "defaultLocation": "Київ, Київська область, Україна"
+    },
+    "apiRequestData": {
+        "defaultServiceName": "Прибирання снігу",
+        "serviceCategoryMap": {
+            "13": 2,
+            "37": 3,
+            "53": 4,
+            "132": 5
         }
     }
 }

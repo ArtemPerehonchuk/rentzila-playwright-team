@@ -14,6 +14,9 @@ import EditUnitPage from './pages/edit.unit.page';
 import PricesTab from './pages/prices.tab';
 import PhotoTab from './pages/photo.tab';
 import ServicesTab from './pages/services.tab';
+import OwnerUnitsUI from './page_elements/owner.units.ui'
+import TenderViewPage from './pages/tender.view.page'
+import OwnerTendersPage from './pages/owner.tenders.page'
 
 type TestFixtures = {
     homePage: HomePage;
@@ -31,6 +34,9 @@ type TestFixtures = {
     photoTab: PhotoTab;
     servicesTab: ServicesTab;
     pricesTab: PricesTab;
+    ownerUnitsUI: OwnerUnitsUI;
+    tenderViewPage: TenderViewPage;
+    ownerTendersPage: OwnerTendersPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -100,5 +106,17 @@ export const test = baseTest.extend<TestFixtures>({
 
     pricesTab: async ({ page }, use) => {
         await use(new PricesTab(page));
+    },
+
+    ownerUnitsUI: async ({ page }, use) => {
+        await use(new OwnerUnitsUI(page));
+    },
+
+    ownerTendersPage: async ({ page }, use) => {
+        await use(new OwnerTendersPage(page));
+    },
+
+    tenderViewPage: async ({ page }, use) => {
+        await use(new TenderViewPage(page));
     },
 });
