@@ -22,8 +22,11 @@ class Page {
     }
 
     async clickOnLogo() {
-      await this.logo.click({force: true});
-      await this.page.waitForTimeout(4000);
+      await this.logo.click();
+      await this.page.waitForLoadState('load')
+      await this.page.waitForLoadState('domcontentloaded')
+      await this.page.waitForLoadState('networkidle')
+      await this.page.waitForURL("https://dev.rentzila.com.ua/")
     }
   }
 

@@ -1,7 +1,7 @@
 import{ test as baseTest, expect, request, APIRequestContext } from '@playwright/test';
-import AdminMainPage from './pages/admin.main.page';
-import AdminUnitReviewPage from './pages/admin.unit.review.page';
-import AdminUnitsPage from './pages/admin.units.page';
+// import AdminMainPage from './pages/admin.main.page';
+// import AdminUnitReviewPage from './pages/admin.unit.review.page';
+// import AdminUnitsPage from './pages/admin.units.page';
 import CookiePolicyPage from './pages/cookie.policy.page';
 import CreateUnitPage from './pages/create.unit.page';
 import EditUnitPage from './pages/edit.unit.page';
@@ -23,9 +23,9 @@ import OwnerTendersPage from './pages/owner.tenders.page'
 
 type TestFixtures = {
     homepage: HomePage;
-    adminMainPage: AdminMainPage;
-    adminUnitReviewPage: AdminUnitReviewPage;
-    adminUnitsPage: AdminUnitsPage;
+    // adminMainPage: AdminMainPage;
+    // adminUnitReviewPage: AdminUnitReviewPage;
+    // adminUnitsPage: AdminUnitsPage;
     cookiePolicyPage: CookiePolicyPage;
     createUnitPage: CreateUnitPage;
     editUnitPage: EditUnitPage;
@@ -54,18 +54,18 @@ export const test = baseTest.extend<TestFixtures>({
         
         await use(homePage)
     },
-    adminMainPage: async({page}, use) => {
-        const adminMainPage = new AdminMainPage(page);   
-        await use(adminMainPage)
-    },
-    adminUnitReviewPage: async({page}, use) => {
-        const adminUnitReviewPage = new AdminUnitReviewPage(page);
-        await use(adminUnitReviewPage);
-    },
-    adminUnitsPage: async({page}, use) => {
-        const adminUnitsPage = new AdminUnitsPage(page);
-        await use(adminUnitsPage);
-    },
+    // adminMainPage: async({page}, use) => {
+    //     const adminMainPage = new AdminMainPage(page);   
+    //     await use(adminMainPage)
+    // },
+    // adminUnitReviewPage: async({page}, use) => {
+    //     const adminUnitReviewPage = new AdminUnitReviewPage(page);
+    //     await use(adminUnitReviewPage);
+    // },
+    // adminUnitsPage: async({page}, use) => {
+    //     const adminUnitsPage = new AdminUnitsPage(page);
+    //     await use(adminUnitsPage);
+    // },
     cookiePolicyPage: async({page}, use) => {
         const cookiePolicyPage = new CookiePolicyPage(page);
         await use(cookiePolicyPage);

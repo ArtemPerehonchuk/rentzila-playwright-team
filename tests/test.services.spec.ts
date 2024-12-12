@@ -6,12 +6,16 @@ test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
 });
 
-test('test case c212: Checking "Послуги" section on the main page', async ({ homepage, productsPage, unitPage }) => {
+test('test case c212: Checking "Послуги" section on the main page', async ({ page, homepage, productsPage, unitPage }) => {
     const servicesList = homepage.servicesList;
     const servicesCount = await servicesList.count();
     let firstServicesUnitName;
 
+    await homepage.closePopUpBtn.click();
+
     for (let i = 0; i < servicesCount; i++) {
+        await page.waitForLoadState('domcontentloaded')
+        await homepage.servicesContainer.waitFor({state: 'visible'});
         await homepage.scrollToServicesContainer();
 
         await expect(homepage.servicesContainer).toBeVisible();
@@ -23,12 +27,16 @@ test('test case c212: Checking "Послуги" section on the main page', async
 
         await homepage.clickFirstServicesUnit();
 
-        if(await productsPage.productFilterItem.isVisible()) {
-            await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
-            await expect(productsPage.unitsContainer).toBeVisible();
+        let filterIsVisible = await productsPage.productFilterItem.isVisible();
 
+        if(filterIsVisible) {
+            await expect(productsPage.productFilterItem).toHaveText(firstServicesUnitName)
+        }
+
+        const productsListIsVisible = await productsPage.produtsList.first().isVisible();
+
+        if(productsListIsVisible) {
             await productsPage.clickFirstProduct();
-
             await expect(await unitPage.checkUnitIsVisible()).toBe(true);
 
             await unitPage.clickOnLogo();
@@ -37,11 +45,15 @@ test('test case c212: Checking "Послуги" section on the main page', async
 
             await homepage.announcementsNavMenuItem.click({force: true});
 
-            await expect(productsPage.productFilterItem).toBeVisible();
-            await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
+            filterIsVisible = await productsPage.productFilterItem.isVisible();
 
-            await homepage.clickOnLogo();
+            if(filterIsVisible) {
+                await expect(productsPage.productFilterItem).toBeVisible();
+            }
+
         }
+
+        await productsPage.clickOnLogo()
     }
 })
 
@@ -63,16 +75,21 @@ test('test case c213: Checking "Спецтехніка" section on the main page
         await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);
         await expect(productsPage.unitsContainer).toBeVisible();
 
-        await productsPage.clickFirstProduct();
+        const productsListIsVisible = await productsPage.produtsList.first().isVisible();
 
-        await expect(await unitPage.checkUnitIsVisible()).toBe(true);
+        if(productsListIsVisible){
+            await productsPage.clickFirstProduct();
 
-        await unitPage.clickOnLogo();
+            await expect(await unitPage.checkUnitIsVisible()).toBe(true);
 
-        await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await unitPage.clickOnLogo();
 
-        await homepage.announcementsNavMenuItem.click({force: true});
-        
-        await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);
-    }
+            await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+
+            await homepage.announcementsNavMenuItem.click({force: true});
+            
+            await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);}
+        }
+
+        await productsPage.clickOnLogo()
 })

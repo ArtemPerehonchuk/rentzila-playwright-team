@@ -11,6 +11,7 @@ class OwnerUnitsPage extends Page {
     activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
     waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
     activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
+    createUntBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]')
     unitCards: Locator = this.page.locator('[class*="OwnerUnitCard_container"]');
     editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
     editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
@@ -38,7 +39,8 @@ class OwnerUnitsPage extends Page {
 
     async clickOnEditUnitBtn() {
         await this.editUnitBtn.first().click(); 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('load')
     }
 
     async clickOnEditWaitingsUnitBtn() {

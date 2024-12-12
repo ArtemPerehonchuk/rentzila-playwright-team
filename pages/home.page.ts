@@ -68,11 +68,16 @@ class HomePage extends Page {
 
     async clickFirstServicesUnit() {
         await this.servicesUnitsList.first().click({force: true});
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForLoadState('load')
+        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('networkidle')
     }
 
     async clickFirstSpecialEquipmentUnit() {
         await this.specialEquipmentsUnitsList.first().click()
+        await this.page.waitForLoadState('load')
+        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('networkidle')
     }
 
     async getFirstServicesUnitName(): Promise<string> {
@@ -260,7 +265,8 @@ class HomePage extends Page {
 
     async clickOnSubmitLoginFormBtn() {
         await this.submitLoginFormBtn.click();
-        await this.page.waitForTimeout(1000)
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForLoadState('networkidle')
     }
 
     async getLoginEmailOrPhoneInputValue() {
@@ -283,7 +289,7 @@ class HomePage extends Page {
     }
 
     async clickOnUserIcon() {
-        await this.userIcon.click();
+        await this.userIcon.click({force: true});
         await this.page.waitForLoadState('load');
     }
 
@@ -292,7 +298,8 @@ class HomePage extends Page {
     }
 
     async logout() {
-        await this.profileLogoutBtn.click();
+        await this.profileLogoutBtn.click({force: true});
+        await this.page.waitForLoadState('load')
     }
 
     async clickOnMyProfileMenuItem() {

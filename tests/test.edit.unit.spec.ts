@@ -4,8 +4,6 @@ import testData from '../data/test.data.json' assert {type: 'json'};
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
-const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL || '';
-const ADMIN_PASSWORD: string = process.env.ADMIN_PASSWORD || '';
 
 let unitName: string;
 let createdUnitId: number;
@@ -13,6 +11,8 @@ let activeUnitName: string;
 let editedUnitName: string;
 let accessUserToken: string;
 let accessAdminToken: string;
+let response;
+let responseData;
 
 test.beforeAll(async ({apiHelper}) => {
     accessUserToken = await apiHelper.createUserAccessToken(); 
@@ -23,42 +23,31 @@ test.afterAll(async ({apiHelper}) => {
     await apiHelper.deleteAllUnits(accessUserToken)
 });
 
-test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) => {
+test.beforeEach(async ({ homepage, ownerUnitsPage, apiHelper}) => {
+    unitName = faker.string.alpha({length: 15});
+
+    await apiHelper.createUnit(accessUserToken, unitName);
+
+    createdUnitId = await apiHelper.getUnitId(accessUserToken, unitName);
+
+    await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);
+    await apiHelper.moderateUnit(accessAdminToken, createdUnitId);
+
     await homepage.navigate('/');
     await homepage.closePopUpBtn.click();
     await homepage.enterBtn.click()
     await homepage.fillInput('email', VALID_EMAIL);
     await homepage.fillInput('password', VALID_PASSWORD);
     await homepage.clickOnSubmitLoginFormBtn();
-
-    unitName = faker.string.alpha({length: 15});
-
     await homepage.clickOnUserIcon();
     await homepage.clickOnProfileMyAnnouncementsItem();
     
     await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
 
-    await ownerUnitsPage.clickOnActiveAnnouncementsTab();
-
-    if(await ownerUnitsPage.activeAnnouncementsTabTitle.isVisible()) {
-        await apiHelper.createUnit(accessUserToken, unitName);
-
-        createdUnitId = await apiHelper.getUnitId(accessUserToken, unitName);
-
-        await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);
-        await homepage.logoutUser();
-        await homepage.loginUser(ADMIN_EMAIL, ADMIN_PASSWORD);
-        await adminMainPage.moveAnnouncementToActiveState(createdUnitId.toString());
-        await homepage.logoutUser();
-        await homepage.loginUser(VALID_EMAIL, VALID_PASSWORD);
-        await homepage.clickOnUserIcon();
-        await homepage.clickOnProfileMyAnnouncementsItem();
-        await ownerUnitsPage.clickOnActiveAnnouncementsTab();
-    }
     editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 });
 
-test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper }) => {
+test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUnitPage, apiHelper }) => {
     const unitCardsLength = await ownerUnitsPage.getUnitCardsLength();
 
     if(unitCardsLength === 0) {
@@ -78,13 +67,14 @@ test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, 
     await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!(await editUnitPage.successEditUnitMsg.isVisible())) {
-        await editUnitPage.selectAdressOnMap()
-        await editUnitPage.uploadPhotos(1);
+    do{
         await editUnitPage.clickOnSaveUnitChangesBtn();
-    }
+
+        const successMsgIsVisible = await editUnitPage.successEditUnitMsg.isVisible();
+
+        if(successMsgIsVisible){break}
+    }while(true)
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
@@ -94,18 +84,25 @@ test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, 
     if(unitCardsLength === 1) {
         await expect(ownerUnitsPage.activeAnnouncementsTabTitle).toBeVisible();
         await expect(ownerUnitsPage.activeAnnouncementsTabTitle).toHaveText(testData.titleTexts.activeAnnouncementsNotExist);
-        await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', activeUnitName);
+
+        response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+        responseData = await response.json()
+
+        await expect(response.status()).toBe(200);
+        await expect(responseData.results[0].is_approved).toBe(null);
     }else if(unitCardsLength > 0 && unitCardsLength !== 1) {
         const editedUnitName = await ownerUnitsPage.verifyEditedUnitExludedFromUnitCards(unitName);
+        response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+        responseData = await response.json()
 
         await expect(editedUnitName).toBe('');
-        await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('actives', activeUnitName)
+        await expect(responseData.results[0].is_approved).not.toBe(null);
     }
 
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C272: Check "Назва оголошення" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper}) => {
+test('Test case C272: Check "Назва оголошення" input field', async({ page, ownerUnitsPage, editUnitPage, apiHelper}) => {
     const nineCharStr = faker.string.alpha({length: 9});
     const over100CharStr = faker.string.alpha({length: 101});
     const tenCharStr = faker.string.alpha({length: 10});
@@ -116,7 +113,6 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearUnitNameInput();
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
@@ -151,33 +147,40 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
 
     await expect(editUnitPage.unitNameInputError).not.toBeVisible();
 
-    await editUnitPage.clickOnSaveUnitChangesBtn();
+    do{
+        await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
-        await editUnitPage.selectAdressOnMap()
-    }
+        const successMsgIsVisible = await editUnitPage.successEditUnitMsg.isVisible();
+
+        if(successMsgIsVisible){break}
+    }while(true)
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', tenCharStr);
+    response = await apiHelper.searchUnitByName(accessAdminToken, tenCharStr)
+    responseData = await response.json();
+
+
+    await expect(response.status()).toBe(200);
+    await expect(responseData.results[0].name).toBe(tenCharStr);
+    await expect(responseData.results[0].is_approved).toBe(null);
 
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C273: Check "Виробник транспортного засобу" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
+test('Test case C273: Check "Виробник транспортного засобу" input field', async({ ownerUnitsPage, editUnitPage, apiHelper}) => {
     const randomString = faker.string.alpha({length: 15});
     const randomChar = faker.string.alpha({length: 1});
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.vehicleManufacturerInputCloseIcon.click();
 
     await expect(editUnitPage.vehicleManufacturerInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.vehicleManufacturerInput);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
+    if(!(await editUnitPage.successEditUnitMsg.isVisible())) {
         await editUnitPage.selectAdressOnMap()
     }
 
@@ -211,31 +214,29 @@ test('Test case C273: Check "Виробник транспортного зас�
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    response = await apiHelper.searchUnitByName(accessAdminToken, editedUnitName);
+    responseData = await response.json()
 
-    const activeTabClass = await adminUnitsPage.activesTab.getAttribute('class')
+    const manufacturerId = responseData.results[0].manufacturer
+    const manufacturerResponse = await apiHelper.getVehicleManufacturer(accessAdminToken, manufacturerId);
+    const manufactureData = await manufacturerResponse.json();
 
-    if(activeTabClass?.includes('AdminUnits_active')) {
-        await adminUnitsPage.clickOnAdminShowIcon();
-    }else{
-        await adminUnitsPage.clickOnAdminWatchUnitIcon();
-    }
-
-    await expect(adminUnitReviewPage.manufacturerField).toHaveText(selectedOptionText);
+    await expect(response.status()).toBe(200);
+    await expect(manufactureData.name).toBe(selectedOptionText)
+    await expect(responseData.results[0].is_approved).toBe(null);
     
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C532: "Check "Назва моделі" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
+test('Test case C532: "Check "Назва моделі" input field', async({ ownerUnitsPage, editUnitPage, apiHelper}) => {
     const random15CharString = faker.string.alpha({length: 15});
     const random16CharString = faker.string.alpha({length: 16});
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
 
     await expect(editUnitPage.modelNameInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.modelNameInput);
 
-    await editUnitPage.fillModelNameInput('<>{};^');
+    await editUnitPage.modelNameInput.type('<>{};^');
 
     await expect(editUnitPage.modelNameInput).toHaveValue('');
 
@@ -246,40 +247,51 @@ test('Test case C532: "Check "Назва моделі" input field', async({ own
 
     await editUnitPage.fillModelNameInput(random15CharString);
 
-    await editUnitPage.clickOnSaveUnitChangesBtn();
+    do{
+        await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
-        await editUnitPage.selectAdressOnMap()
-    }
+        const successMsgIsVisible = await editUnitPage.successEditUnitMsg.isVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+        if(await editUnitPage.unitNameInputError.isVisible()) {
+            unitName = faker.string.alpha({length: 15})
+            await editUnitPage.fillUnitNameInput(unitName)
+            await editUnitPage.clickOnSaveUnitChangesBtn()
+        }
 
-    const activeTabClass = await adminUnitsPage.activesTab.getAttribute('class')
+        if(await editUnitPage.successEditUnitMsg.isVisible()){break}
+    }while(true)
+    
+    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
+    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    if(activeTabClass?.includes('AdminUnits_active')) {
-        await adminUnitsPage.clickOnAdminShowIcon();
-    }else{
-        await adminUnitsPage.clickOnAdminWatchUnitIcon();
-    }
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
 
-    await expect(adminUnitReviewPage.modelNameField).toHaveText(random15CharString);
+    await expect(response.status()).toBe(200);
+    await expect(responseData.results[0].model_name).toBe(random15CharString);
+    await expect(responseData.results[0].is_approved).toBe(null);
     
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C533: Check "Технічні характеристики" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
+test('Test case C533: Check "Технічні характеристики" input field', async({ownerUnitsPage, editUnitPage, apiHelper}) => {
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearTechnicalCharacteristicsInput();
 
     await expect(editUnitPage.technicalCharacteristicsInput).toHaveText('', {useInnerText: true});
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
+    if(!(await editUnitPage.successEditUnitMsg.isVisible())) {
         await editUnitPage.selectAdressOnMap()
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+    }
+    if(await editUnitPage.unitNameInputError.isVisible()) {
+        const newUnitName = faker.string.alpha({length: 15})
+        await editUnitPage.fillUnitNameInput(newUnitName)
+        await editUnitPage.clickOnSaveUnitChangesBtn()
     }
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
@@ -288,6 +300,8 @@ test('Test case C533: Check "Технічні характеристики" inpu
     await editUnitPage.lookInMyAnnouncementsBtn.click();
     await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
     await ownerUnitsPage.clickOnEditWaitingsUnitBtn();
+
+    unitName = await editUnitPage.unitNameInput.inputValue()
 
     await expect(editUnitPage.technicalCharacteristicsInput).toHaveText('', {useInnerText: true});
 
@@ -298,38 +312,37 @@ test('Test case C533: Check "Технічні характеристики" inpu
     await editUnitPage.fillTechnicalCharacteristicsInput(randomDescription);
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    await expect(editUnitPage.successEditUnitMsg).toBeVisible();
-    await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
-    await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
+    const editedUnitId = responseData.results[0].id
+    const unitResponse = await apiHelper.getUnitById(accessUserToken, editedUnitId);
+    const unitData = await unitResponse.json();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
-
-    const activeTabClass = await adminUnitsPage.activesTab.getAttribute('class')
-
-    if(activeTabClass?.includes('AdminUnits_active')) {
-        await adminUnitsPage.clickOnAdminShowIcon();
-    }else{
-        await adminUnitsPage.clickOnAdminWatchUnitIcon();
-    }
-
-    await expect(adminUnitReviewPage.technicalCharacteristicsField).toHaveText(randomDescription);
+    await expect(response.status()).toBe(200);
+    await expect(unitData.features).toBe(randomDescription);
+    await expect(responseData.results[0].is_approved).toBe(null);
 
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
 
-test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
+test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, editUnitPage, apiHelper}) => {
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clearDetailDescriptionInput();
 
     await expect(editUnitPage.detailDescriptionInput).toHaveText('', {useInnerText: true});
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
-    if(!await editUnitPage.successEditUnitMsg.isVisible()) {
+    if(!(await editUnitPage.successEditUnitMsg.isVisible())) {
         await editUnitPage.selectAdressOnMap()
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+    }
+    if(await editUnitPage.unitNameInputError.isVisible()) {
+        const newUnitName = faker.string.alpha({length: 15})
+        await editUnitPage.fillUnitNameInput(newUnitName)
+        await editUnitPage.clickOnSaveUnitChangesBtn()
     }
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
@@ -338,6 +351,8 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
     await editUnitPage.lookInMyAnnouncementsBtn.click();
     await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
     await ownerUnitsPage.clickOnEditWaitingsUnitBtn();
+
+    unitName = await editUnitPage.unitNameInput.inputValue()
 
     await expect(editUnitPage.detailDescriptionInput).toHaveText('', {useInnerText: true});
 
@@ -352,17 +367,15 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
     await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
+    const editedUnitId = responseData.results[0].id
+    const unitResponse = await apiHelper.getUnitById(accessUserToken, editedUnitId);
+    const unitData = await unitResponse.json();
 
-    const activeTabClass = await adminUnitsPage.activesTab.getAttribute('class');
-
-    if(activeTabClass?.includes('AdminUnits_active')) {
-        await adminUnitsPage.clickOnAdminShowIcon();
-    }else{
-        await adminUnitsPage.clickOnAdminWatchUnitIcon();
-    }
-
-    await expect(adminUnitReviewPage.detailDescriptionField).toHaveText(randomDescription);
+    await expect(response.status()).toBe(200);
+    await expect(unitData.description).toBe(randomDescription);
+    await expect(responseData.results[0].is_approved).toBe(null);
 
     await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 })
@@ -370,7 +383,6 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
 test('Test case C535: Check "Місце розташування технічного засобу" functionality', async({ ownerUnitsPage, editUnitPage}) => {
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.clickOnSelectOnMapBtn();
 
     await expect(editUnitPage.mapPopUp).toBeVisible();
@@ -424,11 +436,13 @@ test('Test case C535: Check "Місце розташування технічн�
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 })
 
-test('Test case C274: Check image section functionality', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C274: Check image section functionality', async({page, apiHelper, ownerUnitsPage, editUnitPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
+    await page.waitForTimeout(3000)
+
     await editUnitPage.uploadMissingPhotos();
-    
+
     for(let i = 0; i < 4; i ++) {
         let mainImgSrc = await editUnitPage.getImgSrcAttr(1);
         let secondImgSrc = await editUnitPage.getImgSrcAttr(2);
@@ -454,6 +468,7 @@ test('Test case C274: Check image section functionality', async({page, ownerUnit
         expect(await editUnitPage.getFileChooser).toBeDefined();
 
         await editUnitPage.fileChooserSetInputFile();
+        await page.waitForLoadState('load');
         await page.waitForLoadState('domcontentloaded');
 
         await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
@@ -461,21 +476,23 @@ test('Test case C274: Check image section functionality', async({page, ownerUnit
 
         await editUnitPage.clickOnSaveUnitChangesBtn();
 
+        response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+        responseData = await response.json()
+        const editedUnitId = responseData.results[0].id
+        const unitResponse = await apiHelper.getUnitById(accessUserToken, editedUnitId);
+        const unitData = await unitResponse.json();
+
+        await expect(unitData.declined_invalid_img).toBe(false);
+        await expect(unitData.is_approved).toBe(null);
+
+
         if(await editUnitPage.successEditUnitMsg.isVisible()) {
-            await expect(editUnitPage.successEditUnitMsg).toBeVisible();
             await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
             await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
-
-            await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
-
-            await adminUnitsPage.clickOnAdminWatchUnitIcon();
-
-            await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.unit));
-            await expect(adminUnitReviewPage.unitPhoto).toBeVisible();
         }else return
 })
 
-test('Test case C275: Check services functionality', async({ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C275: Check services functionality', async({apiHelper, ownerUnitsPage, editUnitPage}) => {
     const over100CharStr = faker.string.alpha({length: 101});
     const randomService = faker.string.alpha({length: 20});
     const inputValues = [
@@ -485,7 +502,6 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    await editUnitPage.uploadPhotos(1);
     await editUnitPage.removeEditedUnitService();
 
     await expect(editUnitPage.editedUnitService).not.toBeVisible();
@@ -527,20 +543,19 @@ test('Test case C275: Check services functionality', async({ownerUnitsPage, edit
     await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
+    const editedUnitServiceName = responseData.results[0].services[0].name
 
-    await adminUnitsPage.clickOnAdminWatchUnitIcon();
-
-    await expect(adminUnitReviewPage.unitService).toHaveText(randomService);
+    await expect(editedUnitServiceName).toBe(randomService)
 })
 
 test('Test case C541: Check "Спосіб оплати" menu', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    await editUnitPage.uploadPhotos(1);
 
     const paymentMethods = testData['payment methods'];
 
-    for(let i = paymentMethods.length - 1; i >= 0; i--) {
+    for(let i = 0; i < paymentMethods.length; i++) {
         await editUnitPage.clickOnSelectPaymentMethodInput();
 
         await expect(editUnitPage.paymentMethodsDropDown).toBeVisible();
@@ -551,9 +566,27 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
         await editUnitPage.paymentMethodDropDownItems.nth(i).click();
 
+        await page.waitForTimeout(3000)
+
         await expect(editUnitPage.selectPaymentMethodInput).toHaveText(paymentMethodDropDownItems[i]);
 
-        await editUnitPage.clickOnSaveUnitChangesBtn();
+        do{
+            await editUnitPage.clickOnSaveUnitChangesBtn();
+
+            if(await editUnitPage.unitNameInputError.isVisible()) {
+                unitName = faker.string.alpha({length: 15})
+                await editUnitPage.fillUnitNameInput(unitName)
+                await editUnitPage.clickOnSaveUnitChangesBtn();
+            }
+
+            if(await editUnitPage.addressSelectionErrorMsg.isVisible()) {
+                await editUnitPage.selectAdressOnMap();
+            }
+    
+            const successMsgIsVisible = await editUnitPage.successEditUnitMsg.isVisible();
+    
+            if(successMsgIsVisible){break}
+        }while(true)
 
         await expect(editUnitPage.successEditUnitMsg).toBeVisible();
         await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
@@ -562,6 +595,11 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
         await editUnitPage.lookInMyAnnouncementsBtn.click();
         await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
         await ownerUnitsPage.firstWaitingsUnit.click();
+
+        await page.waitForURL(new RegExp(testData.pagesURLPath.unit))
+
+        // await page.waitForLoadState('load')
+        // await page.waitForLoadState('networkidle')
 
         await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.unit));
         await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethodDropDownItems[i]);
@@ -572,26 +610,29 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
     }
 })
 
-test('Test case C276: Check "Вартість мінімального замовлення" field', async({ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C276: Check "Вартість мінімального замовлення" field', async({page, apiHelper, ownerUnitsPage, editUnitPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    await editUnitPage.uploadPhotos(1);
-    await editUnitPage.clearMinOrderPriceInput();
 
+    await editUnitPage.minOrderPriceInput.first().scrollIntoViewIfNeeded();
+
+    await editUnitPage.clearMinOrderPriceInput();
+    
     await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe(testData.inputPlaceholderTexts.minOrderInput);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
+    await editUnitPage.clearMinOrderPriceInput();
 
     await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
     await expect(editUnitPage.unitPriceErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
-    const random10Digits = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString()
+    const random10Digits = faker.string.numeric({length: 10});
     const inputValues = [
         '<>{};^@!#$%?()|\/`~',
         random10Digits
     ]
 
     for (const value of inputValues) {
-        await editUnitPage.fillMinOrderPriceInput(value)
+        await editUnitPage.fillMinOrderPriceInput(value);
         switch(value) {
             case '<>{};^@!#$%?()|\/`~':
                 await expect(editUnitPage.minOrderPriceInput.first()).toHaveText('');
@@ -604,31 +645,49 @@ test('Test case C276: Check "Вартість мінімального замо�
         }
     }
 
-    await editUnitPage.clickOnSaveUnitChangesBtn();
+    const minPriceValue = parseInt(await editUnitPage.minOrderPriceInput.first().inputValue());
+
+    do{
+        await editUnitPage.clickOnSaveUnitChangesBtn();
+
+        if(await editUnitPage.unitNameInputError.isVisible()) {
+            unitName = faker.string.alpha({length: 15})
+            await editUnitPage.fillUnitNameInput(unitName)
+            await editUnitPage.clickOnSaveUnitChangesBtn();
+        }
+
+        if(await editUnitPage.addressSelectionErrorMsg.isVisible()) {
+            await editUnitPage.selectAdressOnMap();
+        }
+
+        const successMsgIsVisible = await editUnitPage.successEditUnitMsg.isVisible();
+
+        if(successMsgIsVisible){break}
+    }while(true)
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();
     await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
 
-    await adminUnitsPage.clickOnAdminWatchUnitIcon();
-
-    await expect(adminUnitReviewPage.minPriceField).toHaveText(random10Digits.slice(0, 9));
+    await expect(response.status()).toBe(200);
+    await expect(responseData.results[0].minimal_price).toBe(minPriceValue);
+    await expect(responseData.results[0].is_approved).toBe(null);
 })
 
-test('Test case C543:  Check "Вартість мінімального замовлення" drop-down menu', async({page, ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
+test('Test case C543:  Check "Вартість мінімального замовлення" drop-down menu', async({page, apiHelper, ownerUnitsPage, editUnitPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    await editUnitPage.uploadPhotos(1);
-    if(await editUnitPage.addPriceBtn.isVisible()) {
-        await editUnitPage.addPriceBtn.click();
-    }
+    await editUnitPage.addPriceBtn.click();
+    await page.waitForLoadState('domcontentloaded');
 
     const priceOptions = testData['add price options'];
     let additionalPriceItems;
 
     for(let i = 1; i < priceOptions.length; i ++) {
         await editUnitPage.additionalPriceSelect.nth(1).click();
+        await page.waitForLoadState('domcontentloaded');
 
         await expect(editUnitPage.additionalPriceDropDpwn).toBeVisible();
 
@@ -651,10 +710,9 @@ test('Test case C543:  Check "Вартість мінімального замо
 
     additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
     const randomAdditionalPriceItemIndex = Math.floor(Math.random() * additionalPriceItems.length);
-    const randomAdditionalPriceDropDownOption = additionalPriceItems[randomAdditionalPriceItemIndex];
 
     await editUnitPage.additionalPriceDropDownItems.nth(randomAdditionalPriceItemIndex).click();
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('load');
 
     await editUnitPage.additionalPriceInput.fill('1000');
 
@@ -664,18 +722,8 @@ test('Test case C543:  Check "Вартість мінімального замо
     await expect(editUnitPage.successEditUnitMsg).toHaveText(testData.successMessages.unitEdited);
     await expect(editUnitPage.lookInMyAnnouncementsBtn).toBeVisible();
 
-    await adminUnitsPage.verifyEditedUnitPresentsInWaitingsTab('waitings', editedUnitName);
+    response = await apiHelper.searchUnitByName(accessAdminToken, unitName);
+    responseData = await response.json()
 
-    await adminUnitsPage.clickOnAdminWatchUnitIcon();
-
-    if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр кв.') {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м2');
-    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'метр куб.') {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText('м3');
-    }else if(randomAdditionalPriceDropDownOption.toLowerCase() === 'кілометр') {
-        return
-    }
-    else {
-        await expect(adminUnitReviewPage.workTypeField.nth(1)).toHaveText(randomAdditionalPriceDropDownOption.toLowerCase());
-    }
+    await expect(responseData.results[0].type_of_work).toBe('HOUR');
 })

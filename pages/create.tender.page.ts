@@ -86,14 +86,6 @@ class CreateTenderPage extends Page {
         await inputLocator.clear();
     }
 
-    // async selectDateAndTime(day: string, time?: string) {
-    //     await this.page.locator('[class*="react-datepicker__day"][aria-disabled="false"]').getByText(day).click();
-  
-    //     if (time) {
-    //         await this.page.locator('[class*="react-datepicker__time-list-item"]').getByText(time).first().click();
-    //     }
-    // }
-
     async selectDateAndTime(dayIndex: number, time?: string) {
         await this.availableDays.nth(dayIndex).click();
   

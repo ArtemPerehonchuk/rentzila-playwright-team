@@ -52,17 +52,18 @@ class EditUnitPage extends Page {
     serviceNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
     createServiceBth: Locator = this.page.locator('[data-testid="btn-addNewItem"]');
     servicesDropDownItems: Locator = this.page.locator('[class*="ServicesUnitFlow_searchListItem"]');
-    selectPaymentMethodInput: Locator = this.page.locator('[data-testid="div_CustomSelect"]');
+    selectPaymentMethodInput: Locator = this.page.locator('[class*="PricesUnitFlow_methodSelectWrapper"] > [data-testid="div_CustomSelect"]');
     paymentMethodsDropDown: Locator = this.page.locator('[data-testid="listItems-customSelect"]');
-    paymentMethodDropDownItems: Locator = this.page.locator('[data-testid="item-customSelect"]');
+    paymentMethodDropDownItems: Locator = this.page.locator('[data-testid="item-customSelect"] > span');
     minOrderPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]');
     unitPriceErrorMsg: Locator = this.page.locator('[data-testid="div_required_RowUnitPrice"]');
-    addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]').getByText('Додати вартість');
     additionalPriceSelect: Locator = this.page.locator('[data-testid="div_CustomSelect"]');
     additionalPriceDropDpwn: Locator = this.page.locator('[data-testid="listItems-customSelect"]');
     additionalPriceDropDownItems: Locator = this.page.locator('[data-testid="item-customSelect"]');
     selectTimeInput: Locator = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
     additionalPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
+    addressSelectionErrorMsg: Locator = this.page.locator('[class*="AddressSelectionBlock_errorTextVisible"]')
 
     async clickOnCancelUnitChangesBtn() {
         await this.cancelUnitChangesBtn.click({force: true});
@@ -74,11 +75,9 @@ class EditUnitPage extends Page {
     }
 
     async clickOnSaveUnitChangesBtn() {
-        await this.page.waitForLoadState('load');
-        await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
+        await this.page.waitForLoadState('domcontentloaded');
         await this.saveUnitChangesBtn.click({force: true});
-        await this.page.waitForLoadState('load');
-        // await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(3000)
     }
 
     async clearUnitNameInput() {
@@ -112,7 +111,9 @@ class EditUnitPage extends Page {
     }
 
     async fillModelNameInput(value: string) {
-        await this.modelNameInput.fill(value)
+        await this.modelNameInput.clear();
+        await this.modelNameInput.fill(value);
+        await this.page.waitForLoadState('networkidle')
     }
 
     async clearModelNameInput() {
@@ -126,9 +127,8 @@ class EditUnitPage extends Page {
     async fillTechnicalCharacteristicsInput(value: string) {
         await this.clearTechnicalCharacteristicsInput();
         await this.technicalCharacteristicsInput.click();
-        await this.technicalCharacteristicsInput.type(value);
+        await this.technicalCharacteristicsInput.fill(value);
         await this.page.waitForLoadState('load');
-        // await this.page.waitForTimeout(1000);
     }
 
     async getDetailDescriptionInputText() {
@@ -138,7 +138,8 @@ class EditUnitPage extends Page {
     async fillDetailDescriptionInput(value: string) {
         await this.clearDetailDescriptionInput();
         await this.detailDescriptionInput.click();
-        await this.detailDescriptionInput.type(value);
+        await this.detailDescriptionInput.fill(value);
+        await this.page.waitForLoadState('load')
     }
 
     async clearDetailDescriptionInput() {
@@ -191,6 +192,7 @@ class EditUnitPage extends Page {
         await this.clickOnSelectOnMapBtn();
         await this.clickOnMap();
         await this.mapPopUpConfirmChoiseBtn.click()
+        await this.page.waitForLoadState('load')
         await this.clickOnSaveUnitChangesBtn();
     }
 
@@ -221,7 +223,7 @@ class EditUnitPage extends Page {
             let photoFileNameIndex = Math.floor(Math.random() * 15)
             await this.editedUnitImageBlocks.nth(i).focus();
             await this.editedUnitUploadFileInput.setInputFiles(path.resolve(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`));
-            await this.page.waitForLoadState('load');
+            await this.page.waitForTimeout(3000)
         }
     }
 
@@ -264,12 +266,12 @@ class EditUnitPage extends Page {
         await this.uploadPhotoPlusIcon.first().click();
     }
 
-    async getFileChooser(timeout = 500) {
-        const [fileChooser] = await Promise.all([
-            this.page.waitForEvent('filechooser', { timeout }),
-            this.clickOnUploadPhotoPlusIcon()
-        ]);
-        return fileChooser;
+    async getFileChooser(timeout = 5000) {
+        const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+
+        await this.clickOnUploadPhotoPlusIcon();
+
+        return await fileChooserPromise;;
     }
 
     async fileChooserSetInputFile() {
@@ -287,7 +289,9 @@ class EditUnitPage extends Page {
     }
 
     async clickOnSelectPaymentMethodInput() {
-        await this.selectPaymentMethodInput.click({force: true});
+        await this.selectPaymentMethodInput.waitFor({state: 'attached'});
+        await this.selectPaymentMethodInput.waitFor({state: 'visible'});
+        await this.selectPaymentMethodInput.click();
         await this.page.waitForTimeout(2000);
     }
 
@@ -296,7 +300,7 @@ class EditUnitPage extends Page {
     }
 
     async fillMinOrderPriceInput(value: any) {
-        await this.minOrderPriceInput.first().type(value)
+        await this.minOrderPriceInput.first().type(value);
     }
 }
 

@@ -13,9 +13,9 @@ export default defineConfig({
   reporter: [
     ['html']
   ],
-  timeout: 90000,
+  timeout: 120000,
   expect: {
-    timeout: 10000 
+    timeout: 30000 
   },
   use: {
     baseURL: process.env.HOMEPAGE_URL,

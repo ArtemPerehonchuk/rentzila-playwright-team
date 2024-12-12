@@ -101,6 +101,8 @@ class CreateUnitPage extends Page {
         await this.clearSectionInput(sectionInputLocator);
         await sectionInputLocator.click();
         await sectionInputLocator.fill(value);
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForLoadState('load');
     }
 
     async clearSectionInput(sectionInputLocator: Locator) {
@@ -290,6 +292,8 @@ class CreateUnitPage extends Page {
     
             await this.page.mouse.click(randomX, randomY);
             await this.page.waitForLoadState('load');
+            await this.page.waitForLoadState('domcontentloaded');
+            await this.page.waitForLoadState('networkidle');
             const address = await this.addressLine.innerText();
             return address
         }

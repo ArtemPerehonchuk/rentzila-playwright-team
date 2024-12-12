@@ -31,16 +31,6 @@ class ProductsPage extends Page {
         }else {}
     }
 
-    async filtersAreChecked(unitName: string) {
-        const dropdownCheckBox = this.page.locator('label', { hasText: unitName });
-        if (!await dropdownCheckBox.isVisible()) {
-            await this.dropdownArrow.click();
-            await this.page.waitForLoadState('domcontentloaded');
-        }
-        await expect(dropdownCheckBox).toBeChecked();
-        return true
-    }
-
     async clickOnDropdownArrow() {
         await this.dropdownArrow.click();
     }

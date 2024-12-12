@@ -65,7 +65,7 @@ class PricesTab extends Page {
         await inputLocator.clear();
     }
 
-    async fillInput(inputLocator: Locator, value: any) {
+    async fillPricesTabInput(inputLocator: Locator, value: any) {
         await inputLocator.fill(value)
     }
 
