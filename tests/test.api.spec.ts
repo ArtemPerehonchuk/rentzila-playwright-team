@@ -53,7 +53,7 @@ test('Verify creating unit through the API request', async( {page} ) => {
 
     await expect(uploadPhotoResponse.status()).toBe(201)
 
-    await expect(ownerUnitsPage.firstUnitName).toHaveText(unitName);
+    await expect(ownerUnitsPage.unitName.first()).toHaveText(unitName);
 
     const deleteUnitResponse  = await apiHelper.deleteUnit(accessUserToken, createdUnitId);
 

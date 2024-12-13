@@ -3,7 +3,7 @@
         "without country code": "991234786",
         "withoutln": "099123478",
         "with-": "+380-99-123-47-86",
-        "with spaces" : "+380 99 123 47 86",
+        "with spaces": "+380 99 123 47 86",
         "with ()": "+380(99)1234786",
         "with () without country code": "(99)1234786",
         "11 numders": "+38099123478",
@@ -83,5 +83,23 @@
     ],
     "photoIndexes" : [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
-    ]
+    ],
+    "myUnitsFilters": {
+        "category": {
+            "allCategories": "Всі категорії",
+            "building": "Будівельна техніка",
+            "civilEngineering": "Комунальна техніка",
+            "storage": "Складська техніка"
+        },
+        "sorting": {
+            "alpabetically": "По назві",
+            "dateTime": "По даті створення"
+        }
+    },
+    "elementStates": {
+        "favBtn": {
+            "active": "#F73859",
+            "inactive": "#404B69"
+        }
+    }
 }

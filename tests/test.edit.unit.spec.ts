@@ -570,7 +570,7 @@ test('Test case C541: Check ""Спосіб оплати"" menu', async({page}) =
     
         await editUnitPage.clickOnLookInMyAnnouncementsBtn();
         await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
-        await ownerUnitsPage.clickOnFirstWaitingsUnit();
+        await ownerUnitsPage.unitCards.first().click();
     
         await expect(page).toHaveURL(/unit/);
         await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethod);

@@ -1,11 +1,13 @@
-import { APIRequestContext } from '@playwright/test';
+import { APIRequestContext, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
 
+const base_url: string = process.env.HOMEPAGE_URL || '';
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
 const user_password: string = process.env.VALID_PASSWORD || '';
+const user_id: string = process.env.USER_ID || '';
 
 let adminAccessToken: any = null;
 let userAccessToken: any = null;
@@ -22,9 +24,9 @@ class ApiHelper {
     }
 
     async createAdminAccessToken() {
-        if(adminAccessToken === null) {
+        if (!adminAccessToken) {
             await this.request
-                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
+                .post(`${base_url}api/auth/jwt/create/`, {
                     data: {
                         email: admin_email,
                         password: admin_password
@@ -37,9 +39,9 @@ class ApiHelper {
     }
 
     async createUserAccessToken() {
-        if(userAccessToken === null) {
+        if (!userAccessToken) {
             await this.request
-                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
+                .post(`${base_url}api/auth/jwt/create/`, {
                     data: {
                         email: user_email,
                         password: user_password
@@ -54,29 +56,29 @@ class ApiHelper {
     async getUserDetails() {
         const accessAdminToken = await this.createAdminAccessToken();
         await this.request
-              .get(`${process.env.HOMEPAGE_URL}api/backcall/`, {
+            .get(`${base_url}api/backcall/`, {
                 headers: {
                     Authorization: `Bearer ${accessAdminToken}`
                 }
-              })
-              .then(async (response) => {
+            })
+            .then(async (response) => {
                 user = await response.json();
-              }) 
+            })
 
         return user
     }
 
-    async createUnit(accessUserToken: string, unitName: string) {
+    async createUnit(accessUserToken: string, unitName: string, category: number = 360, returnIdOnly: boolean = false) {
         const modelName = faker.lorem.word();
         const firstName = faker.person.firstName();
         const lastName = faker.person.lastName();
         const description = faker.lorem.sentence();
         const feature = faker.lorem.sentence();
         const phoneNumber = `+38099${faker.string.numeric(7)}`;
-        const price = faker.number.int({min: 1000, max: 10000});
+        const price = faker.number.int({ min: 1000, max: 10000 });
 
         const response = await this.request
-              .post('https://dev.rentzila.com.ua/api/units/', {
+            .post(`${base_url}api/units/`, {
                 headers: {
                     Authorization: `Bearer ${accessUserToken}`,
                     ...this.defaultHeaders
@@ -85,7 +87,7 @@ class ApiHelper {
                     "name": `${unitName}`,
                     "first_name": `${firstName}`,
                     "last_name": `${lastName}`,
-                
+
                     "declined_incomplete": false,
                     "declined_censored": false,
                     "declined_incorrect_price": false,
@@ -103,57 +105,75 @@ class ApiHelper {
                     "phone": `${phoneNumber}`,
                     "minimal_price": price,
                     "money_value": "UAH",
-                    
+
                     "payment_method": "CASH_OR_CARD",
-                   
+
                     "lat": 50.438306372578765,
                     "lng": 30.608596801757816,
-                   
+
                     "count": 1,
-                   
+
                     "is_approved": null,
                     "is_archived": false,
                     "manufacturer": 1107,
-                    "owner": 1776,
-                    "category": 360,
+                    "owner": user_id,
+                    "category": category,
                     "services": [
                         118
                     ]
 
-                  })
-              })
+                })
+            })
 
-            unit = await response.json();
+        unit = await response.json();
 
-            return { response, unit }
+        return returnIdOnly ? unit.id : { response, unit };
     }
 
     async getUnitsList(accessUserToken: string) {
         const response = await this.request
-            .get('https://dev.rentzila.com.ua/api/units/', {
-            headers: {
-                Authorization: `Bearer ${accessUserToken}`,
-                ...this.defaultHeaders
+            .get(`${base_url}api/units/`, {
+                headers: {
+                    Authorization: `Bearer ${accessUserToken}`,
+                    ...this.defaultHeaders
                 }
             })
         const responseData = await response.json();
 
         return responseData;
     }
+    async setUnitsActiveStatus(token: string, unitIds: number[]) {
+        for (const unitId of unitIds) {
+            const response = await this.request.patch(`${base_url}api/crm/units/${unitId}/moderate/`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    is_approved: true
+                }
+            });
+
+            expect(response.status()).toBe(200);
+
+            const updatedResponse = await response.json();
+            expect(updatedResponse.is_approved).toBe(true);
+        }
+    }
 
     async deleteUnit(accessUserToken: string, unitId: any) {
-        const response = await this.request.delete(`https://dev.rentzila.com.ua/api/units/${unitId}/`, {
+        const response = await this.request.delete(`${base_url}api/units/${unitId}/`, {
             headers: {
                 Authorization: `Bearer ${accessUserToken}`,
                 ...this.defaultHeaders
             }
         });
-    
+
         return response;
     }
 
     async uploadUnitPhoto(accessUserToken: string, unitId: number) {
-        const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
+        const response = await this.request.post(`${base_url}api/unit-images/`, {
             headers: {
                 'Authorization': `Bearer ${accessUserToken}`,
             },
@@ -169,8 +189,8 @@ class ApiHelper {
         });
 
         const responseData = await response.json();
-    
-        return {response, responseData};
+
+        return { response, responseData };
     }
 
     async getUnitId(accessToken: string, unitName: string) {
@@ -179,7 +199,7 @@ class ApiHelper {
 
         unitsList.results.forEach((unit: any) => {
 
-            if(unit.name === unitName) {
+            if (unit.name === unitName) {
                 createdUnitId = unit.id
             }
         })
@@ -188,9 +208,83 @@ class ApiHelper {
 
     async deleteAllUnits(accessToken: string) {
         const unitsList = await this.getUnitsList(accessToken);
-        for(const unit of unitsList.results) {
-            if(unit.owner === 1776) {
+        for (const unit of unitsList.results) {
+            if (unit.owner === user_id) {
                 await this.deleteUnit(accessToken, unit.id)
+            }
+        }
+    }
+
+    async getUnitIds(limit: number): Promise<number[]> {
+        const unitIds: number[] = [];
+        let currentPage = 1;
+
+        while (unitIds.length < limit) {
+            const response = await this.request.get(`${base_url}api/units/?page=${currentPage}`);
+            expect(response.status()).toBe(200);
+
+            const responseBody = await response.json();
+
+            const approvedUnits = responseBody.results.filter((unit: { is_approved: boolean }) => unit.is_approved === true);
+            const approvedUnitIds = approvedUnits.map((unit: { id: number }) => unit.id);
+
+            unitIds.push(...approvedUnitIds);
+
+            if (!responseBody.next) {
+                break;
+            }
+
+            currentPage++;
+        }
+
+        return unitIds.slice(0, limit);
+    }
+
+    async addUnitsToFavorites(accessToken: string | null, unitIds: number[]) {
+        for (const unitId of unitIds) {
+            const response = await this.request.post(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            expect(response.status()).toBe(201);
+        }
+    }
+
+    async getFavoriteUnits(accessToken: string | null): Promise<number[]> {
+        const response = await this.request.get(`${base_url}api/auth/users/${user_id}/favourite-units/`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        const favoriteUnitIds = responseBody.units.map((unit: { id: number }) => unit.id);
+
+        return favoriteUnitIds;
+    }
+
+    async removeUnitsFromFavorites(accessToken: string | null, unitIds: number[]) {
+        for (const unitId of unitIds) {
+            try {
+                const response = await this.request.delete(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        Connection: 'close',
+                    },
+                });
+
+                expect(response.status()).toBe(204);
+
+            } catch (error: any) {
+                if (error.message.includes('aborted') || error.message.includes('closed')) {
+                    continue;
+                } else {
+                    throw error;
+                }
             }
         }
     }
