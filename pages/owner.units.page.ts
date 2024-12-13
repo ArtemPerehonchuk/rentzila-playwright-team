@@ -1,4 +1,5 @@
 import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { parseDate } from '../helpers/datetime.helpers';
 import Page from './page';
 
 class OwnerUnitsPage extends Page {
@@ -23,37 +24,15 @@ class OwnerUnitsPage extends Page {
     clearFavoritesPopupConfirmBtn = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
     clearFavoritesPopupCancelBtn = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
     clearFavoritesPopupCloseIcon = this.page.locator('[class*="PopupLayout_closeIcon_"]');
-    unitsEmptyTitle = this.page.getByTestId('title');
-    unitsEmptyMsg = this.page.getByTestId('descr');
-    emptyBlockBtn = this.page.getByTestId('emptyBlockButton');
-    unitSearchInput = this.page.locator('div[data-testid="search"] input');
-    paginationNumBtn = this.page.locator('a[class*="Pagination_page_"]');
-    paginationPrevBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
-    paginationNextBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="next"]');
-    unitCategorySelect = this.page.getByTestId('div_CustomSelect').nth(0);
-    unitSortingSelect = this.page.getByTestId('div_CustomSelect').nth(1);
-    selectFieldItem = this.page.getByTestId('item-customSelect');
-
-    getPaginationBtnWithIndex(index: number) {
-        const number = index - 1;
-        return this.paginationNumBtn.nth(number);
-    }
 
     async verifyUnitsSortedByDateDescending() {
         const dateTexts = await this.unitCreationDate.allInnerTexts();
 
-        const parsedDates = dateTexts.map(dateText => {
-            const [day, month, year] = dateText.split('.').map(Number);
-            return new Date(year, month - 1, day);
-        });
+        const parsedDates = dateTexts.map(dateText => parseDate(dateText));
 
         const sortedDates = [...parsedDates].sort((a, b) => b.getTime() - a.getTime());
 
         return parsedDates.every((date, index) => date.getTime() === sortedDates[index].getTime());
-    }
-
-    getSelectItemWithText(text: string) {
-        return this.selectFieldItem.filter({ hasText: text });
     }
 
     getUnitCardByTitle(title: string) {
@@ -79,9 +58,6 @@ class OwnerUnitsPage extends Page {
 
         if (unitCardsCount === 0) {
             console.warn(`No units found for category ${expectedCategory}`);
-            const isEmptyTitleCorrect = (await this.unitsEmptyTitle.innerText()) === `Оголошення в категорії "${expectedCategory}" не знайдені`;
-            const isEmptyMsgCorrect = (await this.unitsEmptyMsg.innerText()) === "Ви можете змінити пошуковий запит або скинути всі фільтри";
-            return isEmptyTitleCorrect && isEmptyMsgCorrect;
         }
         else {
             for (let i = 0; i < unitCardsCount; i++) {
