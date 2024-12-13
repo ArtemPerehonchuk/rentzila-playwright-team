@@ -44,7 +44,6 @@
         "test": "Test"
     },
     "photo file names": [
-        "pexels-albinberlin-919073",
         "pexels-alex-amorales-321095-909907",
         "pexels-alexgtacar-745150-1592384",
         "pexels-cesarperez209-733745",
@@ -61,6 +60,11 @@
         "pexels-sarmad-mughal-94606-305070",
         "pexels-trace-707046"
     ],
+    "payment methods": [
+        "Готівкою / на картку",
+        "Безготівковий розрахунок (без ПДВ)",
+        "Безготівковий розрахунок (з ПДВ)"
+    ],
     "incorrect prices": {
         "space in middle": "123 456",
         "space in end": "123456 ",
@@ -76,6 +80,9 @@
         "Метр кв.",
         "Метр куб.",
         "Кілометр"
+    ],
+    "photoIndexes" : [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
     ],
     "myUnitsFilters": {
         "category": {

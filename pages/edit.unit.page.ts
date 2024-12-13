@@ -1,5 +1,11 @@
 import { Page as PlaywrightPage, expect } from '@playwright/test';
 import Page from './page';
+import testData from '../data/test_data.json' assert {type: 'json'};
+import { faker } from '@faker-js/faker';
+import getPhotoPath from '../helpers/helper';
+
+const photoFileNames = testData['photo file names']
+const photoIndexes = testData.photoIndexes;
 
 class EditUnitPage extends Page {
 
@@ -32,6 +38,33 @@ class EditUnitPage extends Page {
     mapPopUpLocation = this.page.locator('[data-testid="address"]');
     mapPopUpConfirmChoiseBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
     vehicleLocation = this.page.locator('[data-testid="mapLabel"]');
+    editedUnitImageBlocks = this.page.locator('[data-testid="imageBlock"]');
+    editedUnitImages = this.page.locator('[data-testid="unitImage"]')
+    editedUnitDeleteImgIcons = this.page.locator('[data-testid="deleteImage"]');
+    editedUnitUploadFileInput = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
+    uploadPhotoErrorPopUp = this.page.locator('[data-testid="content"] > [class*="PopupLayout_header"]');
+    uploadPhotoErrorPopUpCloseButton = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    uploadTo12PhotosErrorMsg = this.page.locator('[data-testid="description"]');
+    uploadPhotoPlusIcon = this.page.locator('[data-testid="clickImage"]');
+    mainImgLable = this.page.locator('[data-testid="mainImageLabel"]');
+    editedUnitService = this.page.locator('[class*="ServicesUnitFlow_serviceText"]');
+    editedUnitServiceCloseIcon = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
+    addServiceErrorMsg = this.page.locator('[data-testid="add-info"]');
+    serviceInput = this.page.locator('[class*="ServicesUnitFlow_searchInput"] > input');
+    serviceNotFoundMsg = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    createServiceBth = this.page.locator('[data-testid="btn-addNewItem"]');
+    servicesDropDownItems = this.page.locator('[class*="ServicesUnitFlow_searchListItem"]');
+    selectPaymentMethodInput = this.page.locator('[data-testid="div_CustomSelect"]');
+    paymentMethodsDropDown = this.page.locator('[data-testid="listItems-customSelect"]');
+    paymentMethodDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
+    minOrderPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]');
+    unitPriceErrorMsg = this.page.locator('[data-testid="div_required_RowUnitPrice"]');
+    addPriceBtn = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    additionalPriceSelect = this.page.locator('[data-testid="div_CustomSelect"]');
+    additionalPriceDropDpwn = this.page.locator('[data-testid="listItems-customSelect"]');
+    additionalPriceDropDownItems = this.page.locator('[data-testid="item-customSelect"]');
+    selectTimeInput = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
+    additionalPriceInput = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
 
     async clickOnCancelUnitChangesBtn() {
         await this.cancelUnitChangesBtn.click({force: true});
@@ -46,7 +79,7 @@ class EditUnitPage extends Page {
         await this.page.waitForLoadState('load');
         await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
         await this.saveUnitChangesBtn.click({force: true});
-        await this.page.waitForTimeout(1500);
+        await this.page.waitForLoadState('load');
     }
 
     async clickOnLookInMyAnnouncementsBtn() {
@@ -71,11 +104,11 @@ class EditUnitPage extends Page {
     }
 
     async getVehicleManufacturerInputText() {
-        return await this.vehicleManufacturerInput.inputValue();
+        return this.vehicleManufacturerInput.inputValue();
     }
 
     async getVehicleManufacturerInputSelectedOptionText() {
-        return await this.vehicleManufacturerInputSelectedOption.innerText();
+        return this.vehicleManufacturerInputSelectedOption.innerText();
     }
 
     async clearVehicleManufacturerInput() {
@@ -107,7 +140,7 @@ class EditUnitPage extends Page {
     }
 
     async getDetailDescriptionInputText() {
-        return await this.detailDescriptionInput.innerText(); 
+        return this.detailDescriptionInput.innerText(); 
     }
 
     async fillDetailDescriptionInput(value: string) {
@@ -147,7 +180,7 @@ class EditUnitPage extends Page {
     }
 
     async getMapPopUpLocationText() {
-        return await this.mapPopUpLocation.innerText();
+        return this.mapPopUpLocation.innerText();
     } 
     
     async clickOnMap() {
@@ -171,6 +204,117 @@ class EditUnitPage extends Page {
         await this.clickOnMap();
         await this.clickOnMapPopUpConfirmChoiseBtn()
         await this.clickOnSaveUnitChangesBtn();
+    }
+
+    async clickOnEditedUnitDeleteImgIcon(index: number) {
+        await this.editedUnitDeleteImgIcons.nth(index).click();
+    }
+
+    async getEditedUnitUploadedPhotosCount() {
+        let uploadedImagesCount = 0;
+        const unitImageBlocks = await this.editedUnitImageBlocks.all();
+
+        for(const unitImg of unitImageBlocks) {
+            const isDraggable = await unitImg.getAttribute('draggable');
+            if(isDraggable === 'true') {
+                uploadedImagesCount++;
+            }
+        }
+
+        return uploadedImagesCount;
+    }
+
+    async getEditedUnitName() {
+        return this.unitNameInput.inputValue();
+    }
+
+    async uploadPhotos(numberOfPhotos: number) {   
+        for(let i = 0; i < numberOfPhotos; i++) {
+            const randomPhotoFileName = faker.helpers.arrayElement(photoFileNames);
+
+            await this.editedUnitImageBlocks.nth(i).focus();
+            await this.editedUnitUploadFileInput.setInputFiles(getPhotoPath(randomPhotoFileName));
+            await this.page.waitForLoadState('load');
+        }
+    }
+
+    async uploadMissingPhotos() {
+        let retryCount = 0;
+    
+        while (retryCount < 3) {
+            const uploadedImages = await this.getEditedUnitUploadedPhotosCount();
+            if (uploadedImages < 4) {
+                await this.uploadPhotos(4 - uploadedImages); 
+            } else {
+                return; 
+            }
+
+            if (await this.uploadPhotoErrorPopUpCloseButton.isVisible()) {
+                await this.uploadPhotoErrorPopUpCloseButton.click();
+            }
+
+            retryCount++;
+        }
+    }
+
+    async getImgSrcAttr(numberOfImage: number) {
+        return this.editedUnitImages.nth(numberOfImage - 1).getAttribute('src');
+    }
+
+    async hoverOnFirstImg() {
+        await this.editedUnitImageBlocks.first().hover({force: true});
+        await this.page.waitForSelector('[data-testid="deleteImage"]')
+    }
+
+    async clickOnUploadPhotoPlusIcon() {
+        await this.uploadPhotoPlusIcon.first().click();
+    }
+
+    async getFileChooser(timeout = 5000) {
+        const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+
+        await this.clickOnUploadPhotoPlusIcon();
+
+        return await fileChooserPromise;;
+    }
+
+    async fileChooserSetInputFile() {
+        const fileChooser = await this.getFileChooser();
+        const photoFileNameIndex = faker.helpers.arrayElement(photoIndexes)
+        await fileChooser.setFiles(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`);
+    }
+
+    async removeEditedUnitService() {
+        await this.editedUnitServiceCloseIcon.click();
+    }
+
+    async fillServiceInput(value: string) {
+        await this.serviceInput.fill(value);
+    }
+
+    async clickOnCreateServiceBtn() {
+        await this.createServiceBth.click();
+    }
+
+    async clickOnSelectPaymentMethodInput() {
+        await this.selectPaymentMethodInput.click({force: true});
+        await this.page.waitForLoadState('load')
+    }
+
+    async clearMinOrderPriceInput() {
+        await this.minOrderPriceInput.first().clear();
+    }
+
+    async fillMinOrderPriceInput(value: string) {
+        await this.minOrderPriceInput.first().type(value)
+    }
+
+    async clickOnAddPriceBtn() {
+        await this.addPriceBtn.click();
+    }
+
+    async clickOnAdditionalPriceSelect() {
+        await this.additionalPriceSelect.nth(1).click();
     }
 }
 
