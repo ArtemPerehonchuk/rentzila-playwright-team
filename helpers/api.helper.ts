@@ -3,11 +3,14 @@ import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
 import FormData from 'form-data';
 import path from 'path';
+import { createTenderData } from '../helpers/tender.body'
 
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
 const user_password: string = process.env.VALID_PASSWORD || '';
+
+const tenderData = createTenderData();
 
 let adminAccessToken: any = null;
 let userAccessToken: any = null;
@@ -167,41 +170,12 @@ class ApiHelper {
                 image: imageReadStream,
                 is_main: 'true'
             }
-            // multipart: {
-            //     unit: unitId.toString(),
-            //     image: {
-            //         name: 'pexels-albinberlin-919073.jpg',
-            //         mimeType: 'image/jpeg',
-            //         buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
-            //     },
-            //     is_main: 'true'
-            // }
         });
 
         const responseData = await response.json();
-        // const status = await response.status()
-        // console.log('upload status: ', status)
     
         return response;
     }
-
-    // async uploadUnitPhoto(accessUserToken: string, unitId: number, isMain: boolean = true) {
-    //         const form = new FormData();
-
-    //         form.append('unit', unitId.toString());
-    //         form.append('image', fs.createReadStream('./data/photo/pexels-albinberlin-919073.jpg')); 
-    //         form.append('is_main', isMain.toString());
-
-    //         const response = await this.request.post('https://dev.rentzila.com.ua/api/unit-images/', {
-    //             headers: {
-    //                 'Authorization': `Bearer ${accessUserToken}`,
-    //                 ...form.getHeaders() 
-    //             },
-    //             data: form 
-    //         });
-    
-    //         return response;
-    // }
 
     async getUnitId(accessToken: string, unitName: string) {
         const unitsList = await this.getUnitsList(accessToken);
@@ -223,6 +197,64 @@ class ApiHelper {
                 await this.deleteUnit(accessToken, unit.id)
             }
         }
+    }
+
+    async createTender(accessToken: string) {
+        const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/tenders/`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                ...this.defaultHeaders
+            },
+            data: tenderData
+        })
+
+        const createdTender = await response.json()
+        return createdTender
+    }
+
+    async addFileToTender(accessToken: string, tenderId: number, tenderName: string) {
+        const filePath = path.resolve('./data/photo/pexels-albinberlin-919073.jpg');
+        const imageReadStream = fs.createReadStream(filePath);
+
+        const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/tender/attachment-file/`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            multipart: {
+                name: tenderName,
+                tender: tenderId,
+                attachment_file: imageReadStream
+            }
+        });
+
+        return response
+    }
+
+    async moderateTenderStatus(accessAdminToken: string, tenderId: number, tenderStatus: 'approved' | 'moderation' | 'declined') {
+        const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/crm/tenders/${tenderId}/moderate/`, {
+            headers: {
+                'Authorization': `Bearer ${accessAdminToken}`,
+                ... this.defaultHeaders
+            },
+            params: { status: tenderStatus },
+        })
+
+        // console.log('status: ', response.status())
+        // console.log('response ', await response.json())
+        // console.log('Full response: ', await response.text());
+    }
+
+    async getTenderById(accessToken: string, tenderId: number){
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/tender/${tenderId}/`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                ... this.defaultHeaders
+            },
+        })
+
+        console.log('tender: ', await response.json())
+
+        return response
     }
 }
 

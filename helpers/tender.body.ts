@@ -1,10 +1,12 @@
-
+import { faker } from '@faker-js/faker'
 
 export const createTenderData = () => {
     const startProposeDate = new Date();
     const endProposeDate = new Date();
     const startTenderDate = new Date();
     const endTenderDate = new Date();
+    const tenderName = faker.lorem.words({min: 3, max: 4});
+    const tenderDescription = faker.lorem.sentences({min: 3, max: 4});
 
     startProposeDate.setDate(startProposeDate.getDate() + 1)
     endProposeDate.setDate(startProposeDate.getDate() + 2);
@@ -12,8 +14,8 @@ export const createTenderData = () => {
     endTenderDate.setDate(startProposeDate.getDate() + 20);
 
     const tenderData = {
-        name: 'New Construction Project',
-        description: 'This is a detailed description of the tender for a new construction project.',
+        name: tenderName,
+        description: tenderDescription,
         lat: 50.4501,
         lng: 30.5234,
         amount_of_work: '1000 square meters',
@@ -27,9 +29,9 @@ export const createTenderData = () => {
         end_propose_date: endProposeDate.toISOString(),
         start_tender_date: startTenderDate.toISOString(),
         end_tender_date: endTenderDate.toISOString(),
-        customer: 1776, // Replace with dynamic customer ID
-        category: 5, // Replace with dynamic category ID
-        services: [438], // Replace with relevant service IDs
+        customer: 1776, 
+        category: 5, 
+        services: [438], 
         is_moderated: false,
       };
     
