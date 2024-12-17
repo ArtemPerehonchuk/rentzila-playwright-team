@@ -68,10 +68,6 @@ class CreateTenderPage extends Page {
         }else return false
     }
 
-    async fillCreateTenderInput(inputLocator: Locator, inputValue: string) {
-        await inputLocator.fill(inputValue);
-    }
-
     async copyPasteValue(inputLocator: Locator) {
         await inputLocator.waitFor({ state: 'visible' });
         await inputLocator.click();
@@ -134,18 +130,18 @@ class CreateTenderPage extends Page {
     }
 
     async fillRequiredFields(tenderName: string, letter: string, budget: string, description: string) {
-        await this.fillCreateTenderInput(this.tenderNameInput, tenderName);
-        await this.fillCreateTenderInput(this.tenderServiceInput, letter);
+        await this.tenderNameInput.fill(tenderName);
+        await this.tenderServiceInput.fill(letter);
         await this.seviceDropDownOptions.first().click();
         await this.endDateInput.click();
         await this.selectDateAndTime(1, '00:00');
         await this.workPeriodInput.click();
         await this.selectDateAndTime(0);
         await this.selectDateAndTime(1);
-        await this.fillCreateTenderInput(this.budgetInput, budget);
+        await this.budgetInput.fill(budget);
         await this.selectAdress()
         await this.page.waitForLoadState('load');
-        await this.fillCreateTenderInput(this.descriptionInput, description);
+        await this.descriptionInput.fill(description);
     }
 }
 

@@ -61,14 +61,6 @@ class PricesTab extends Page {
         return await this.priceOfMinOrderInput.getAttribute('placeholder');
     }
 
-    async clearInput(inputLocator: Locator) {
-        await inputLocator.clear();
-    }
-
-    async fillPricesTabInput(inputLocator: Locator, value: any) {
-        await inputLocator.fill(value)
-    }
-
     async getInputValue(inputLocator: Locator) {
         return await inputLocator.inputValue();
     }

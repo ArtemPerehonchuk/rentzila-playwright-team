@@ -10,7 +10,7 @@ test.beforeEach(async ({ page, homepage }) => {
 });
 
 test('test case C214: Verify that all elements on the footer are displayed and all links are clickable', async ({homepage, privacyPolicyPage, cookiePolicyPage, termsConditionsPage, productsPage, tendersPage }) => {
-    await homepage.scrollToFooter();
+    await homepage.footerContainer.scrollIntoViewIfNeeded();
 
     await expect(homepage.footerContainer).toBeVisible();
 

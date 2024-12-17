@@ -90,7 +90,7 @@ test('test case C296: Verify category (Категорія) section', async( {cre
     await expect(createUnitPage.categoriesPopUp).toBeVisible();
     await expect(createUnitPage.categoriesPopUpTitle).toHaveText(testData.titleTexts.categoriesPopUp);
 
-    await createUnitPage.clickOnCategoriesPopUpCloseBtn();
+    await createUnitPage.categoriesPopUpCloseBtn.click();
 
     await expect(createUnitPage.categoriesPopUp).not.toBeVisible();
 

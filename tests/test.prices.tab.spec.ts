@@ -80,8 +80,8 @@ test('Test case C418: Verify "Вартість мінімального замо
     await expect(currentInputValue).toBe(tenDigitNumber.slice(0, tenDigitNumber.length -1));
 
     for(const incorrectPrice of incorrectPrices) {
-        await pricesTab.clearInput(pricesTab.priceOfMinOrderInput)
-        await pricesTab.fillPricesTabInput(pricesTab.priceOfMinOrderInput, incorrectPrice)
+        await pricesTab.priceOfMinOrderInput.clear()
+        await pricesTab.priceOfMinOrderInput.fill(incorrectPrice)
         const inputValue = await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput);
 
         if(incorrectPrice.includes('1')) {
@@ -137,7 +137,7 @@ test('Test case C482: Verify adding price for service', async({pricesTab}) => {
 
     const tenDigitNumber = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString();
 
-    await pricesTab.fillPricesTabInput(pricesTab.addPriceInput, tenDigitNumber)
+    await pricesTab.addPriceInput.fill(tenDigitNumber)
 
     let currentInputValue = await pricesTab.getInputValue(pricesTab.addPriceInput);
 
@@ -152,8 +152,8 @@ test('Test case C482: Verify adding price for service', async({pricesTab}) => {
     await expect(currentInputValue).toBe(tenDigitNumber.slice(0, tenDigitNumber.length -1));
     
     for(const incorrectPrice of incorrectPrices) {
-        await pricesTab.clearInput(pricesTab.addPriceInput);
-        await pricesTab.fillPricesTabInput(pricesTab.addPriceInput, incorrectPrice);
+        await pricesTab.addPriceInput.clear();
+        await pricesTab.addPriceInput.fill(incorrectPrice);
 
         const inputValue = await pricesTab.getInputValue(pricesTab.addPriceInput);
 
@@ -174,7 +174,7 @@ test('Test case C482: Verify adding price for service', async({pricesTab}) => {
 
     const nineDigitNumber = (faker.number.int({ min: 100000000, max: 999999999 })).toString();
 
-    await pricesTab.fillPricesTabInput(pricesTab.addPriceInput, nineDigitNumber);
+    await pricesTab.addPriceInput.fill(nineDigitNumber);
 
     currentInputValue = await pricesTab.getInputValue(pricesTab.addPriceInput);
 
@@ -226,11 +226,11 @@ test('Test case C489: Verify "Далі" button', async({createUnitPage, pricesTa
 })
 
 test('Test case C596: Verify adding an invalid price in the "Вартість мінімального замовлення" input', async({pricesTab, createUnitPage}) => {
-    await pricesTab.fillPricesTabInput(pricesTab.priceOfMinOrderInput, '0');
+    await pricesTab.priceOfMinOrderInput.fill('0');
 
     await expect(await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput)).toBe('');
 
-    await pricesTab.fillPricesTabInput(pricesTab.priceOfMinOrderInput, '1');
+    await pricesTab.priceOfMinOrderInput.fill('1');
 
     await expect(await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput)).toBe('1');
 
@@ -240,13 +240,13 @@ test('Test case C596: Verify adding an invalid price in the "Вартість м
     await expect(pricesTab.priceOfMinOrderInputError).toHaveText(testData.errorMessages.minPriceLess1000);
     await expect(pricesTab.priceOfMinOrderInputContainer).toHaveCSS('border-color', testData.borderColors.errorColor);
 
-    await pricesTab.clearInput(pricesTab.priceOfMinOrderInput);
+    await pricesTab.priceOfMinOrderInput.clear();
 
     await expect(pricesTab.priceOfMinOrderInputError).toBeVisible();
     await expect(pricesTab.priceOfMinOrderInputError).toHaveText(testData.errorMessages.requiredField);
     await expect(pricesTab.priceOfMinOrderInputContainer).toHaveCSS('border-color', testData.borderColors.redColor);
 
-    await pricesTab.fillPricesTabInput(pricesTab.priceOfMinOrderInput, '1000');
+    await pricesTab.priceOfMinOrderInput.fill('1000');
 
     await expect(await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput)).toBe('1000');
     await expect(pricesTab.priceOfMinOrderInputError).not.toBeVisible();
@@ -270,8 +270,8 @@ test('Test case C636: Verify the data entry in the "Вартість мінім�
     await expect(currentInputValue).toBe(tenDigitNumber.slice(0, tenDigitNumber.length -1));
 
     for(const incorrectPrice of incorrectPrices) {
-        await pricesTab.clearInput(pricesTab.priceOfMinOrderInput)
-        await pricesTab.fillPricesTabInput(pricesTab.priceOfMinOrderInput, incorrectPrice)
+        await pricesTab.priceOfMinOrderInput.clear()
+        await pricesTab.priceOfMinOrderInput.fill(incorrectPrice)
         const inputValue = await pricesTab.getInputValue(pricesTab.priceOfMinOrderInput);
 
         if(incorrectPrice.includes('1')) {
@@ -324,8 +324,8 @@ test('Test case C638: Verify the data entry in the "Вартість Ваших 
     await expect(pricesTab.selectAddPriceOptionDropDown).toBeVisible();
 
     for(const incorrectPrice of incorrectPrices) {
-        await pricesTab.clearInput(pricesTab.addPriceInput);
-        await pricesTab.fillPricesTabInput(pricesTab.addPriceInput, incorrectPrice);
+        await pricesTab.addPriceInput.clear();
+        await pricesTab.addPriceInput.fill(incorrectPrice);
 
         const inputValue = await pricesTab.getInputValue(pricesTab.addPriceInput);
 
@@ -346,7 +346,7 @@ test('Test case C638: Verify the data entry in the "Вартість Ваших 
 
     const nineDigitNumber = (faker.number.int({ min: 100000000, max: 999999999 })).toString();
 
-    await pricesTab.fillPricesTabInput(pricesTab.addPriceInput, nineDigitNumber);
+    await pricesTab.addPriceInput.fill(nineDigitNumber);
 
     let currentInputValue = await pricesTab.getInputValue(pricesTab.addPriceInput);
 

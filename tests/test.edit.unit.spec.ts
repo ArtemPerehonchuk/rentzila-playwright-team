@@ -113,7 +113,7 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.clearUnitNameInput();
+    await editUnitPage.unitNameInput.clear();
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.unitNameInputError).toBeVisible();
@@ -141,7 +141,7 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
         }
     }
 
-    await editUnitPage.clearUnitNameInput();
+    await editUnitPage.unitNameInput.clear();  
 
     await editUnitPage.fillUnitNameInput(tenCharStr);
 
@@ -278,7 +278,7 @@ test('Test case C533: Check "Технічні характеристики" inpu
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.clearTechnicalCharacteristicsInput();
+    await editUnitPage.technicalCharacteristicsInput.clear();
 
     await expect(editUnitPage.technicalCharacteristicsInput).toHaveText('', {useInnerText: true});
 
@@ -329,7 +329,7 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
     const randomDescription = faker.lorem.sentence();
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.clearDetailDescriptionInput();
+    await editUnitPage.detailDescriptionInput.clear();
 
     await expect(editUnitPage.detailDescriptionInput).toHaveText('', {useInnerText: true});
 
@@ -383,7 +383,7 @@ test('Test case C534: Check "Опис" input field', async({ ownerUnitsPage, edi
 test('Test case C535: Check "Місце розташування технічного засобу" functionality', async({ ownerUnitsPage, editUnitPage}) => {
 
     await ownerUnitsPage.clickOnEditUnitBtn();
-    await editUnitPage.clickOnSelectOnMapBtn();
+    await editUnitPage.selectOnMapBtn.click();
 
     await expect(editUnitPage.mapPopUp).toBeVisible();
     
@@ -439,8 +439,6 @@ test('Test case C535: Check "Місце розташування технічн�
 test('Test case C274: Check image section functionality', async({page, apiHelper, ownerUnitsPage, editUnitPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    await page.waitForTimeout(3000)
-
     await editUnitPage.uploadMissingPhotos();
 
     for(let i = 0; i < 4; i ++) {
@@ -468,7 +466,6 @@ test('Test case C274: Check image section functionality', async({page, apiHelper
         expect(await editUnitPage.getFileChooser).toBeDefined();
 
         await editUnitPage.fileChooserSetInputFile();
-        await page.waitForLoadState('load');
         await page.waitForLoadState('domcontentloaded');
 
         await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
@@ -502,7 +499,7 @@ test('Test case C275: Check services functionality', async({apiHelper, ownerUnit
     ];
 
     await ownerUnitsPage.clickOnEditUnitBtn(); 
-    await editUnitPage.removeEditedUnitService();
+    await editUnitPage.editedUnitServiceCloseIcon.click();
 
     await expect(editUnitPage.editedUnitService).not.toBeVisible();
 
@@ -512,7 +509,7 @@ test('Test case C275: Check services functionality', async({apiHelper, ownerUnit
     await expect(editUnitPage.addServiceErrorMsg).toHaveText(testData.errorMessages.addMin1Service);
 
     for(const inputValue of inputValues) {
-        await editUnitPage.fillServiceInput(inputValue);
+        await editUnitPage.serviceInput.fill(inputValue);
 
         switch(inputValue) {
             case '<>{};^':
@@ -598,13 +595,10 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
         await page.waitForURL(new RegExp(testData.pagesURLPath.unit))
 
-        // await page.waitForLoadState('load')
-        // await page.waitForLoadState('networkidle')
-
         await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.unit));
         await expect(unitDetailsPage.unitsPaymentMethod).toHaveText(paymentMethodDropDownItems[i]);
 
-        await unitDetailsPage.clickOnEditUnitBtn();
+        await unitDetailsPage.editUnitBtn.click();
 
         await expect(page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
     }
@@ -615,12 +609,12 @@ test('Test case C276: Check "Вартість мінімального замо�
 
     await editUnitPage.minOrderPriceInput.first().scrollIntoViewIfNeeded();
 
-    await editUnitPage.clearMinOrderPriceInput();
+    await editUnitPage.minOrderPriceInput.clear();
     
     await expect(await editUnitPage.minOrderPriceInput.first().getAttribute('placeholder')).toBe(testData.inputPlaceholderTexts.minOrderInput);
 
     await editUnitPage.clickOnSaveUnitChangesBtn();
-    await editUnitPage.clearMinOrderPriceInput();
+    await editUnitPage.minOrderPriceInput.clear();
 
     await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
     await expect(editUnitPage.unitPriceErrorMsg).toHaveText(testData.errorMessages.requiredField);
@@ -632,7 +626,7 @@ test('Test case C276: Check "Вартість мінімального замо�
     ]
 
     for (const value of inputValues) {
-        await editUnitPage.fillMinOrderPriceInput(value);
+        await editUnitPage.minOrderPriceInput.type(value);
         switch(value) {
             case '<>{};^@!#$%?()|\/`~':
                 await expect(editUnitPage.minOrderPriceInput.first()).toHaveText('');

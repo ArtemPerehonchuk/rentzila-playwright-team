@@ -80,10 +80,6 @@ class EditUnitPage extends Page {
         await this.page.waitForTimeout(3000)
     }
 
-    async clearUnitNameInput() {
-        await this.unitNameInput.first().clear();
-    }
-
     async fillUnitNameInput(value: string) {
         await this.unitNameInput.first().fill(value);
         await this.page.waitForLoadState('load')
@@ -120,34 +116,18 @@ class EditUnitPage extends Page {
         await this.modelNameInput.clear();
     }
 
-    async clearTechnicalCharacteristicsInput() {
-        await this.technicalCharacteristicsInput.clear();
-    }
-
     async fillTechnicalCharacteristicsInput(value: string) {
-        await this.clearTechnicalCharacteristicsInput();
+        await this.technicalCharacteristicsInput.clear();
         await this.technicalCharacteristicsInput.click();
         await this.technicalCharacteristicsInput.fill(value);
         await this.page.waitForLoadState('load');
     }
 
-    async getDetailDescriptionInputText() {
-        return await this.detailDescriptionInput.innerText(); 
-    }
-
     async fillDetailDescriptionInput(value: string) {
-        await this.clearDetailDescriptionInput();
+        await this.detailDescriptionInput.clear();
         await this.detailDescriptionInput.click();
         await this.detailDescriptionInput.fill(value);
         await this.page.waitForLoadState('load')
-    }
-
-    async clearDetailDescriptionInput() {
-        await this.detailDescriptionInput.clear();
-    }
-
-    async clickOnSelectOnMapBtn() {
-        await this.selectOnMapBtn.click();
     }
 
     async getMapZoomValue() {
@@ -189,7 +169,7 @@ class EditUnitPage extends Page {
     }
 
     async selectAdressOnMap() {
-        await this.clickOnSelectOnMapBtn();
+        await this.selectOnMapBtn.click();
         await this.clickOnMap();
         await this.mapPopUpConfirmChoiseBtn.click()
         await this.page.waitForLoadState('load')
@@ -280,27 +260,11 @@ class EditUnitPage extends Page {
         await fileChooser.setFiles(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`);
     }
 
-    async removeEditedUnitService() {
-        await this.editedUnitServiceCloseIcon.click();
-    }
-
-    async fillServiceInput(value: string) {
-        await this.serviceInput.fill(value);
-    }
-
     async clickOnSelectPaymentMethodInput() {
         await this.selectPaymentMethodInput.waitFor({state: 'attached'});
         await this.selectPaymentMethodInput.waitFor({state: 'visible'});
         await this.selectPaymentMethodInput.click();
         await this.page.waitForTimeout(2000);
-    }
-
-    async clearMinOrderPriceInput() {
-        await this.minOrderPriceInput.first().clear();
-    }
-
-    async fillMinOrderPriceInput(value: any) {
-        await this.minOrderPriceInput.first().type(value);
     }
 }
 

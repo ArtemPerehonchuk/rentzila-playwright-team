@@ -24,7 +24,7 @@ test.beforeEach(async ({ homepage, createUnitPage, photoTab }) => {
 test('Text case: 410: Verify creating new service', async ( {servicesTab} ) => {
     const notExistingService = faker.string.alpha({length: 15});
 
-    await servicesTab.fillServicesTabInput(notExistingService);
+    await servicesTab.servicesTabInput.fill(notExistingService);
 
     await expect(servicesTab.serviceNotFoundMessage).toBeVisible();
     await expect(servicesTab.createServiceBtn).toBeVisible();
@@ -40,7 +40,7 @@ test('Text case: 410: Verify creating new service', async ( {servicesTab} ) => {
 test('Text case: 411: Verify choosing multiple services', async ( {servicesTab} ) => {
     const randomLetter = faker.string.alpha({length: 1});
 
-    await servicesTab.fillServicesTabInput(randomLetter);
+    await servicesTab.servicesTabInput.fill(randomLetter);
 
     const serviceSerchItemsTexts = await servicesTab.getServiceSearchItemTexts();
     const serviceSearchItems = await servicesTab.servicesOptions.all();
@@ -66,7 +66,7 @@ test('Text case: 412: Verify removing variants from choosed list', async ( {serv
     const randomLetter = faker.string.alpha({length: 1});
     const randomNumber = 2 + Math.floor(Math.random() * 4)
 
-    await servicesTab.fillServicesTabInput(randomLetter);
+    await servicesTab.servicesTabInput.fill(randomLetter);
 
     for(let i = randomNumber - 1; i >= 0; i--) {
         await servicesTab.servicesOptions.nth(1).click();
@@ -75,7 +75,7 @@ test('Text case: 412: Verify removing variants from choosed list', async ( {serv
     const choosenItemsLength = (await servicesTab.getChoosenItems()).length;
 
     for(let i = choosenItemsLength - 1; i >= 0; i--) {
-        await servicesTab.clickOnRemoveChoosenItemIcon(i);
+        await servicesTab.removeChoosenItemIcon.nth(i).click;
         await expect(servicesTab.serviceChoosenItem).not.toBeVisible();
         if(i === 0) {
             await expect(servicesTab.chosenServicesTitle).not.toBeVisible();
@@ -107,11 +107,11 @@ test('Text case: 414: Verify "Далі" button', async ( {createUnitPage, servic
 });
 
 test('Text case: 591: Verify "Послуги" input with invalid data', async ( {servicesTab} ) => {
-    await servicesTab.fillServicesTabInput('<>{};^');
+    await servicesTab.servicesTabInput.fill('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 
-    await servicesTab.typeValueInServicesTabInput('<>{};^');
+    await servicesTab.servicesTabInput.type('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 });
@@ -127,22 +127,22 @@ test('Text case: 592: Verify "Послуги" input choosin of existing service'
 
     let randomChar = faker.string.alpha({length: 1});
 
-    await servicesTab.fillServicesTabInput(randomChar);
+    await servicesTab.servicesTabInput.fill(randomChar);
 
     await expect(servicesTab.servicesOptionsDropDown).toBeVisible();
 
-    await servicesTab.clearServicesTabInput()
-    await servicesTab.fillServicesTabInput('буріння');
+    await servicesTab.servicesTabInput.clear()
+    await servicesTab.servicesTabInput.fill('буріння');
 
     await expect(await servicesTab.getSelectedService()).toBe('Буріння');
 
-    await servicesTab.fillServicesTabInput('БУРІННЯ');
+    await servicesTab.servicesTabInput.fill('БУРІННЯ');
 
     await expect(await servicesTab.getSelectedService()).toBe('Буріння');
 
     randomChar = faker.string.alpha({length: 1});
 
-    await servicesTab.fillServicesTabInput(randomChar);
+    await servicesTab.servicesTabInput.fill(randomChar);
     
     const selectedService = await servicesTab.getSelectedService();
 
@@ -157,17 +157,17 @@ test('Text case: 592: Verify "Послуги" input choosin of existing service'
 });
 
 test('Text case: 632: Verify entering spesial characters in the "Послуги" input', async ( {servicesTab} ) => {
-    await servicesTab.fillServicesTabInput('<>{};^');
+    await servicesTab.servicesTabInput.fill('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 
-    await servicesTab.fillServicesTabInput('Буріння<>{};^');
+    await servicesTab.servicesTabInput.fill('Буріння<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('Буріння');
     await expect(servicesTab.servicesOptionsDropDown).toBeVisible();
 
-    await servicesTab.clearServicesTabInput();
-    await servicesTab.typeValueInServicesTabInput('<>{};^');
+    await servicesTab.servicesTabInput.clear();
+    await servicesTab.servicesTabInput.type('<>{};^');
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 });
@@ -176,7 +176,7 @@ test('Text case: 633: Verify data length for "Послуги" input field', asyn
     const randomChar = faker.string.alpha();
     const random101Char = faker.string.alpha({length: 101});
 
-    await servicesTab.fillServicesTabInput(randomChar);
+    await servicesTab.servicesTabInput.fill(randomChar);
 
     const serviceSerchItemsTexts = await servicesTab.getServiceSearchItemTexts();
 
@@ -186,11 +186,11 @@ test('Text case: 633: Verify data length for "Послуги" input field', asyn
         await expect(option.toLowerCase()).toContain(randomChar.toLowerCase());
     }
 
-    await servicesTab.clearServicesTabInput();
+    await servicesTab.servicesTabInput.clear();
 
     await expect(await servicesTab.getServicesTabInputValue()).toBe('');
 
-    await servicesTab.fillServicesTabInput(random101Char);
+    await servicesTab.servicesTabInput.fill(random101Char);
 
     const inputValueLength = await servicesTab.getServicesInputValueLength();
     const currentInputValue = await servicesTab.getServicesTabInputValue();
@@ -200,7 +200,7 @@ test('Text case: 633: Verify data length for "Послуги" input field', asyn
 });
 
 test('Text case: 634: Verify the search function is not sensitive to upper or lower case', async ( {servicesTab} ) => {
-    await servicesTab.fillServicesTabInput('риття');
+    await servicesTab.servicesTabInput.fill('риття');
 
     await expect(servicesTab.servicesOptionsDropDown).toBeVisible();
 
@@ -210,7 +210,7 @@ test('Text case: 634: Verify the search function is not sensitive to upper or lo
         await expect(text).toContain('Риття');
     }
 
-    await servicesTab.fillServicesTabInput('РИТТЯ');
+    await servicesTab.servicesTabInput.fill('РИТТЯ');
 
     await expect(servicesTab.servicesOptionsDropDown).toBeVisible();
 

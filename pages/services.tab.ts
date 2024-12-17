@@ -34,10 +34,6 @@ class ServicesTab extends Page {
        return selectedService;
     }
 
-    async fillServicesTabInput(value: string) {
-        await this.servicesTabInput.fill(value);
-    }
-
     async getServiceNotFoundMessageText() {
         return await this.serviceNotFoundMessage.innerText();    
     }
@@ -50,16 +46,8 @@ class ServicesTab extends Page {
         return await this.serviceChoosenItem.all()
     }
 
-    async clickOnRemoveChoosenItemIcon(index: number) {
-        await this.removeChoosenItemIcon.nth(index).click();
-    }
-
     async getServicesTabInputValue() {
         return await this.servicesTabInput.inputValue();
-    }
-
-    async typeValueInServicesTabInput(value: string) {
-        await this.servicesTabInput.type(value);
     }
 
     async getServicesParagraphTitleText() {
@@ -68,10 +56,6 @@ class ServicesTab extends Page {
 
     async getServiceTabInputBgText() {
         return await this.servicesTabInput.getAttribute('placeholder');
-    }
-
-    async clearServicesTabInput() {
-        await this.servicesTabInput.clear();
     }
 
     async getChosenItemText() {

@@ -39,7 +39,6 @@ class OwnerUnitsPage extends Page {
 
     async clickOnEditUnitBtn() {
         await this.editUnitBtn.first().click(); 
-        await this.page.waitForLoadState('domcontentloaded')
         await this.page.waitForLoadState('load')
     }
 

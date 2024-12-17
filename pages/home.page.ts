@@ -68,15 +68,11 @@ class HomePage extends Page {
 
     async clickFirstServicesUnit() {
         await this.servicesUnitsList.first().click({force: true});
-        await this.page.waitForLoadState('load')
-        await this.page.waitForLoadState('domcontentloaded')
         await this.page.waitForLoadState('networkidle')
     }
 
     async clickFirstSpecialEquipmentUnit() {
         await this.specialEquipmentsUnitsList.first().click()
-        await this.page.waitForLoadState('load')
-        await this.page.waitForLoadState('domcontentloaded')
         await this.page.waitForLoadState('networkidle')
     }
 
@@ -86,10 +82,6 @@ class HomePage extends Page {
 
     async getFirstSpecialEquipmentsUnitName(): Promise<string> {
         return await this.specialEquipmentsUnitsList.first().innerText();
-    }
-
-    async scrollToFooter() {
-        await this.footerContainer.scrollIntoViewIfNeeded();
     }
 
     async clickOnPrivacyPolicyLink() {
@@ -265,7 +257,6 @@ class HomePage extends Page {
 
     async clickOnSubmitLoginFormBtn() {
         await this.submitLoginFormBtn.click();
-        await this.page.waitForLoadState('domcontentloaded');
         await this.page.waitForLoadState('networkidle')
     }
 

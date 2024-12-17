@@ -102,7 +102,6 @@ class CreateUnitPage extends Page {
         await sectionInputLocator.click();
         await sectionInputLocator.fill(value);
         await this.page.waitForLoadState('domcontentloaded');
-        await this.page.waitForLoadState('load');
     }
 
     async clearSectionInput(sectionInputLocator: Locator) {
@@ -184,10 +183,6 @@ class CreateUnitPage extends Page {
         return await this.vehicleManufacturerInput.inputValue();
     }
 
-    async clickOnCategoriesPopUpCloseBtn() {
-        await this.categoriesPopUpCloseBtn.click();
-    }
-
     async clickOutsidePopup() {
         await this.page.waitForSelector('[class*="NavbarCatalog_wrapper"]', { state: 'visible' });
         await this.page.click('[class*="NavbarCatalog_wrapper"]', { force: true });
@@ -264,7 +259,7 @@ class CreateUnitPage extends Page {
 
     async clickOnSelectOnMapBtn() {
         await this.selectOnMapBtn.click();
-        await this.page.waitForTimeout(2000)
+        await this.page.waitForSelector('[data-testid="div-mapPopup"]')
     }
 
     async getMapPopUpAddressLineText() {
@@ -281,7 +276,7 @@ class CreateUnitPage extends Page {
     
     async clickOnMapPopUpSubmitBtn() {
         await this.mapPopUpSubmitBtn.click({force: true});
-        await this.page.waitForTimeout(2000)
+        await this.page.waitForSelector('[data-testid="mapLabel"]')
     }
 
     async clickOnMapAndGetAddress() {
@@ -291,8 +286,6 @@ class CreateUnitPage extends Page {
             const randomY = mapContainerSize.y + Math.random() * mapContainerSize.height;
     
             await this.page.mouse.click(randomX, randomY);
-            await this.page.waitForLoadState('load');
-            await this.page.waitForLoadState('domcontentloaded');
             await this.page.waitForLoadState('networkidle');
             const address = await this.addressLine.innerText();
             return address

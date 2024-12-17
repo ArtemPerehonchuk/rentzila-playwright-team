@@ -34,7 +34,7 @@ test('Test case C384: Verify same images uploading', async( {photoTab} ) => {
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'true');
 
-    await photoTab.clickOutsidePopUp();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'true');
@@ -64,7 +64,7 @@ test('Test case C401: Verify uploading of invalid file type', async( {photoTab} 
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 
     await photoTab.uploadIncorrectFileType();
-    await photoTab.clickOutsidePopUp();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
@@ -91,7 +91,7 @@ test('Test case C405: Verify uploading of invalid size file', async( {photoTab} 
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 
     await photoTab.uploadIncorrectFileSize();
-    await photoTab.clickOutsidePopUp();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');

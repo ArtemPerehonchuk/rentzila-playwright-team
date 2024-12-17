@@ -31,10 +31,6 @@ class ProductsPage extends Page {
         }else {}
     }
 
-    async clickOnDropdownArrow() {
-        await this.dropdownArrow.click();
-    }
-
     async checkCategoriesCheckboxesAreChecked() {
         if(await this.productFilterItem.isVisible()) {
             await expect(this.constructionsCheckBox).toBeChecked();

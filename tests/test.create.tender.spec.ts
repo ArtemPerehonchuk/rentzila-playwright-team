@@ -53,7 +53,7 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
 
     for(const inputValue of inputValues) {
         await createTenderPage.clearCreateTenderInput(createTenderPage.tenderNameInput)
-        await createTenderPage.fillCreateTenderInput(createTenderPage.tenderNameInput, inputValue);
+        await createTenderPage.tenderNameInput.fill(inputValue);
         await createTenderPage.nextBtn.click();
 
         switch(inputValue) {
@@ -76,7 +76,7 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
                 await expect(filledValue.length).toBe(70);
 
                 await createTenderPage.copyPasteValue(createTenderPage.tenderNameInput);
-                await createTenderPage.fillCreateTenderInput(createTenderPage.tenderNameInput, randomLetter)
+                await createTenderPage.tenderNameInput.fill(randomLetter)
 
                 await expect(filledValue.length).toBe(70);
                 break
@@ -118,7 +118,7 @@ test('Test Case: C779 Verify service section', async ({ createTenderPage }) => {
     ]
 
     for(const inputValue of inputValues) {
-        await createTenderPage.fillCreateTenderInput(createTenderPage.tenderServiceInput, inputValue);
+        await createTenderPage.tenderServiceInput.fill(inputValue);
 
         switch(inputValue) {
             
@@ -214,13 +214,13 @@ test('Test Case: C781 Verify announced price section', async ({ createTenderPage
     await expect(createTenderPage.budgetInputErrorMsg).toBeVisible();
     await expect(createTenderPage.budgetInputErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
-    await createTenderPage.fillCreateTenderInput(createTenderPage.budgetInput, 'a"`{}<>;^');
+    await createTenderPage.budgetInput.fill('a"`{}<>;^');
 
     await expect(createTenderPage.budgetInput).toHaveValue('');
 
     const random10CharNumber = faker.number.int({min: 1000000000, max: 9999999999});
 
-    await createTenderPage.fillCreateTenderInput(createTenderPage.budgetInput, random10CharNumber.toString());
+    await createTenderPage.budgetInput.fill(random10CharNumber.toString());
     
 
     await expect((await createTenderPage.budgetInput.inputValue()).length).toBe(9);
@@ -235,18 +235,18 @@ test('Test Case: C783 Verify additional info section', async ({ page, createTend
 
     const random39Char = faker.string.alpha({length: 39});
 
-    await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, random39Char);
+    await createTenderPage.descriptionInput.fill(random39Char);
 
     await expect(createTenderPage.descriptionInputErrorMsg).toBeVisible();
     await expect(createTenderPage.descriptionInputErrorMsg).toContainText(testData.errorMessages.tenderDescriptionLess40Symbols);
     
-    await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, '<>{};^');
+    await createTenderPage.descriptionInput.fill('<>{};^');
     
     await expect(createTenderPage.descriptionInput).toHaveText('');
 
     const random40Char = faker.string.alpha({length: 40});
 
-    await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, random40Char);
+    await createTenderPage.descriptionInput.fill(random40Char);
 
     await expect(createTenderPage.descriptionInputErrorMsg).not.toBeVisible();
     await expect(createTenderPage.descriptionInput).toHaveText(random40Char);

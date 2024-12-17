@@ -41,10 +41,6 @@ class PhotoTab extends Page {
         return await this.invalidPhotoPopUp.innerText();
     }
 
-    async clickOutsidePopUp() {
-        await this.elementOutsidePopUp.click({force: true});
-    }
-
     async uploadIncorrectFileType() {
             await this.imageBlocks.nth(0).focus();
             await this.uploadFileInput.setInputFiles(path.resolve('data/test.txt'));
