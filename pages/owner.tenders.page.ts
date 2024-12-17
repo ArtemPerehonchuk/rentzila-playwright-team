@@ -8,6 +8,9 @@ class OwnerTendersPage extends Page {
     }
 
     createTenderBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]');
+    rejectedTab: Locator  = this.page.locator('button[id*="Відхилені"]');
+    rejectedTenders: Locator = this.page.locator('[data-testid="tenderLink"]');
+    editBtn: Locator = this.page.locator('[class*="CurrentTenderButtons_fillBtn"]')
 }
 
 export default OwnerTendersPage;

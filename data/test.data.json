@@ -38,7 +38,8 @@
         "owner-tender": "/owner-tenders-page/",
         "owner-unit": "/owner-units-page/",
         "edit-unit": "/edit-unit/",
-        "unit": "/unit/"
+        "unit": "/unit/",
+        "editTender": "/edit-tender/"
     },
     "contuct us form inputs": {
         "correct phone": "+380506743060",
@@ -170,5 +171,13 @@
         "next": "Далі",
         "addPrice": "Додати вартість",
         "createService": "Створити послугу"
-    }
+    },
+    "strWithSymbols": {
+        ">": "test>",
+        "<": "test<",
+        ";": "test;",
+        "{": "test{",
+        "}": "test}"
+    },
+    "restrictedSymbols": "><;{}^"
 }

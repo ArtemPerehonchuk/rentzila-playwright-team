@@ -20,6 +20,7 @@ import UnitPage from './pages/unit.page';
 import ApiHelper from './helpers/api.helper';
 import CreateTenderPage from './pages/create.tender.page';
 import OwnerTendersPage from './pages/owner.tenders.page'
+import EditTenderPage from './pages/edit.tender.page'
 
 type TestFixtures = {
     homepage: HomePage;
@@ -43,6 +44,7 @@ type TestFixtures = {
     apiHelper: ApiHelper;
     createTenderPage: CreateTenderPage;
     ownerTendersPage: OwnerTendersPage;
+    editTenderPage: EditTenderPage;
 }
 
 export const test = baseTest.extend<TestFixtures>({
@@ -135,6 +137,10 @@ export const test = baseTest.extend<TestFixtures>({
         const ownerTendersPage = new OwnerTendersPage(page);
         await use(ownerTendersPage);
     },
+    editTenderPage: async({page}, use) => {
+        const editTenderPage = new EditTenderPage(page);
+        await use(editTenderPage)
+    }
 });
 
 export { expect };

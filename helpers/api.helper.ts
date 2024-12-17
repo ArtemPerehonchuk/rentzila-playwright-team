@@ -256,6 +256,17 @@ class ApiHelper {
 
         return response
     }
+
+    async deleteTenderById(accessToken: string, tenderId: number){
+        const response = await this.request.delete(`${process.env.HOMEPAGE_URL}api/crm/tenders/${tenderId}/`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                ... this.defaultHeaders
+            },
+        })
+
+        return response
+    }
 }
 
 export default ApiHelper;

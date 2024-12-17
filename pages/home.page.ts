@@ -331,7 +331,7 @@ class HomePage extends Page {
         await this.fillInput('email', email);
         await this.fillInput('password', password);
         await this.submitLoginFormBtn.click();
-        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForLoadState('domcontentloaded')
     }
 
     async clickOnProfileTendersItem() {

@@ -16,6 +16,7 @@
     "test:api": "playwright test tests/test.api.spec.ts",
     "test:edit-unit": "playwright test tests/test.edit.unit.spec.ts --workers=1",
     "test:create-tender": "playwright test tests/test.create.tender.spec.ts --workers=1",
+    "test:edit-rejected-tender":  "playwright test tests/test.edit.rejected.tender.spec.ts --workers=1",
     "test:generate-report": "playwright show-report test-results/html/index.html"
   },
   "keywords": [
@@ -27,7 +28,7 @@
     "typescript"
   ],
   "author": "Artem Perehonchuk",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@playwright/test": "^1.47.0",
     "dotenv": "^16.4.5",
