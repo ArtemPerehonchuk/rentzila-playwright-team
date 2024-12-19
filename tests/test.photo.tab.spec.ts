@@ -1,26 +1,13 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page';
-import PhotoTab from '../pages/photo.tab';
-import ServicesTab from '../pages/services.tab'
+import { test, expect } from "../fixtures";
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-let photoTab: PhotoTab;
-let servicesTab: ServicesTab;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-    photoTab = new PhotoTab(page);
-    servicesTab = new ServicesTab(page);
-
+test.beforeEach(async ({ homepage, createUnitPage }) => {
     await homepage.navigate('/');
-    await homepage.clickOnClosePopUpBtn();
-    await homepage.clickOnCreateUnitBtn();
+    await homepage.closePopUpBtn.click();
+    await homepage.createUnitBtn.click();
     await homepage.fillInput('email', VALID_EMAIL);
     await homepage.fillInput('password', VALID_PASSWORD);
     await homepage.clickOnSubmitLoginFormBtn();
@@ -31,23 +18,23 @@ test.beforeEach(async ({ page }) => {
     await createUnitPage.clickOnNextBtn();
 });
 
-test('Test case C384: Verify same images uploading', async( {page} ) => {
+test('Test case C384: Verify same images uploading', async( {photoTab} ) => {
     await photoTab.uploadTwoSamePhotos();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(photoTab.invalidPhotoPopUp).toHaveText('Ви не можете завантажити двічі один файл.');
+    await expect(photoTab.invalidPhotoPopUp).toHaveText(testData.errorMessages.uploadingTheSamePhotosIsNotAllowed);
 
-    await photoTab.clickOnClosePopUpBtn();
+    await photoTab.closePopUpBtn.click();
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'true');
 
     await photoTab.uploadTwoSamePhotos();
-    await photoTab.clickOnSubmitPopUpBtn();
+    await photoTab.submitPopUpBtn.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'true');
 
-    await photoTab.clickOutsidePopUp();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'true');
@@ -55,13 +42,13 @@ test('Test case C384: Verify same images uploading', async( {page} ) => {
     await photoTab.deleteUploadedImg(1);
 }) 
 
-test('Test case C401: Verify uploading of invalid file type', async( {page} ) => {
+test('Test case C401: Verify uploading of invalid file type', async( {photoTab} ) => {
     await photoTab.uploadIncorrectFileType();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain('Формат зображення не підтримується');
+    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(testData.errorMessages.incorrectFileFormat);
 
-    await photoTab.clickOnClosePopUpBtn();
+    await photoTab.closePopUpBtn.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
 
@@ -69,51 +56,51 @@ test('Test case C401: Verify uploading of invalid file type', async( {page} ) =>
 
     await photoTab.uploadIncorrectFileType();
 
-    await expect(photoTab.submitPopUpBtn).toHaveText('Зрозуміло');
+    await expect(photoTab.submitPopUpBtn).toHaveText(testData.buttonNames.understood);
 
-    await photoTab.clickOnSubmitPopUpBtn();
+    await photoTab.submitPopUpBtn.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 
     await photoTab.uploadIncorrectFileType();
-    await photoTab.clickOutsidePopUp();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 })
 
-test('Test case C405: Verify uploading of invalid size file', async( {page} ) => {
+test('Test case C405: Verify uploading of invalid size file', async( {photoTab} ) => {
     await photoTab.uploadIncorrectFileSize();
 
     await expect(photoTab.invalidPhotoPopUp).toBeVisible();
-    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain('Ви не можете завантажити файл більше 20 МВ');
+    await expect(await photoTab.getInvalidPhotoPopUpText()).toContain(testData.errorMessages.more20MbFile);
 
-    await photoTab.clickOnClosePopUpBtn();
-
-    await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
-    await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
-
-    await photoTab.uploadIncorrectFileSize();
-
-    await expect(photoTab.submitPopUpBtn).toHaveText('Зрозуміло');
-
-    await photoTab.clickOnSubmitPopUpBtn();
+    await photoTab.closePopUpBtn.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 
     await photoTab.uploadIncorrectFileSize();
-    await photoTab.clickOutsidePopUp();
+
+    await expect(photoTab.submitPopUpBtn).toHaveText(testData.buttonNames.understood);
+
+    await photoTab.submitPopUpBtn.click();
+
+    await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
+    await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
+
+    await photoTab.uploadIncorrectFileSize();
+    await photoTab.elementOutsidePopUp.click();
 
     await expect(photoTab.invalidPhotoPopUp).not.toBeVisible();
     await expect(photoTab.imageBlocks.first()).toHaveAttribute('draggable', 'false');
 })
 
-test('Test case 390: Verify ""Назад"" button', async({ page }) => {
-    await expect(photoTab.prevBtn).toHaveText('Назад');
+test('Test case 390: Verify "Назад" button', async({ photoTab, createUnitPage }) => {
+    await expect(photoTab.prevBtn).toHaveText(testData.buttonNames.previous);
 
-    await photoTab.clickOnPrevBtn();
+    await photoTab.prevBtn.click();
 
     await createUnitPage.checkCreateUnitTabsTitles(1);
     await expect(createUnitPage.categoriesDropDown).toBeVisible();
@@ -125,28 +112,28 @@ test('Test case 390: Verify ""Назад"" button', async({ page }) => {
     await expect(createUnitPage.addressSelectionInput).toBeVisible();
 })
 
-test('Test case 393: Verify ""Далі"" button', async({ page }) => {
-    await expect(createUnitPage.nextBtn).toHaveText('Далі');
+test('Test case 393: Verify "Далі" button', async({ createUnitPage, photoTab, servicesTab }) => {
+    await expect(createUnitPage.nextBtn).toHaveText(testData.buttonNames.next);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(photoTab.uploadPhotoClueLine).toBeVisible();
-    await expect(photoTab.uploadPhotoClueLine).toHaveCSS('color', 'rgb(247, 56, 89)');
+    await expect(photoTab.uploadPhotoClueLine).toHaveCSS('color', testData.borderColors.errorColor);
 
     await photoTab.uploadPhoto();
     await createUnitPage.clickOnNextBtn();
 
-    await expect(createUnitPage.createUnitTitle).toHaveText('Створити оголошення');
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await createUnitPage.checkCreateUnitTabsTitles(3);
     await expect(servicesTab.servicesTabTitle).toBeVisible();
     await expect(servicesTab.servicesTabInput).toBeVisible();
 })
 
-test('Test case C593: Verify image uploading', async( {page}) => {
+test('Test case C593: Verify image uploading', async( {photoTab}) => {
     await expect(photoTab.photoTabTitle).toBeVisible
-    await expect(await photoTab.getPhotoTabTitleText()).toContain('Фото технічного засобу');
-    await expect(await photoTab.getPhotoTabTitleText()).toContain('*');
-    await expect(await photoTab.getUploadPhotoClueLineText()).toContain('Додайте в оголошення від 1 до 12 фото технічного засобу розміром до 20 МВ у форматі .jpg, .jpeg, .png. Перше фото буде основним');
+    await expect(await photoTab.getPhotoTabTitleText()).toContain(testData.titleTexts.photoTabTitle);
+    await expect(await photoTab.getPhotoTabTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await photoTab.getUploadPhotoClueLineText()).toContain(testData.errorMessages.uploadImages);
     await photoTab.checkFileChooserIsDisplayed();  
 
     await photoTab.uploadToTwelvePhotos(1);
@@ -159,7 +146,7 @@ test('Test case C593: Verify image uploading', async( {page}) => {
     await photoTab.deleteUploadedImg(imageBlocksItems.length)
 })
 
-test('Test case C594: Verify image moving', async( {page}) => {
+test('Test case C594: Verify image moving', async({photoTab}) => {
     await photoTab.uploadToTwelvePhotos(2);
 
     const imageBlockItems = await photoTab.imageBlocks.all();
@@ -184,7 +171,7 @@ test('Test case C594: Verify image moving', async( {page}) => {
     await photoTab.deleteUploadedImg(imageBlocksItems.length)
 })
 
-test('Test case C595: Verify image deleting', async( {page}) => {
+test('Test case C595: Verify image deleting', async( {page, photoTab}) => {
     await photoTab.uploadToTwelvePhotos(1);
 
     const imageBlocksItems = await photoTab.imageBlocks.all();

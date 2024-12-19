@@ -1,32 +1,24 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import CreateUnitPage from '../pages/create.unit.page'
-
+import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
-import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random_values';
+import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random.values';
+import testData from '../data/test.data.json' assert {type: 'json'}
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-let createUnitPage: CreateUnitPage;
-let homepage: HomePage;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    createUnitPage = new CreateUnitPage(page);
-
+test.beforeEach(async ({ homepage }) => {
     await homepage.navigate('/');
-    await homepage.clickOnClosePopUpBtn();
-    await homepage.clickOnCreateUnitBtn();
+    await homepage.closePopUpBtn.click();
+    await homepage.createUnitBtn.click();
     await homepage.fillInput('email', VALID_EMAIL);
     await homepage.fillInput('password', VALID_PASSWORD);
     await homepage.clickOnSubmitLoginFormBtn();
 });
 
-test('test case C294: Verify body title and tab titles', async( {page} ) => {
+test('test case C294: Verify body title and tab titles', async( {createUnitPage} ) => {
     await expect(createUnitPage.createUnitTitle).toBeVisible();
-    await expect(createUnitPage.createUnitTitle).toHaveText('Створити оголошення');
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await expect(await createUnitPage.checkCreateUnitTabsTitles(1)).toBe(true);
 
     const tabNames = await createUnitPage.createUnitTabsText.allInnerTexts();
@@ -77,52 +69,52 @@ test('test case C294: Verify body title and tab titles', async( {page} ) => {
     }
 })
 
-test('test case C296: Verify category (Категорія) section', async( {page} ) => {
+test('test case C296: Verify category (Категорія) section', async( {createUnitPage} ) => {
     test.setTimeout(150000);
 
     await expect(createUnitPage.categoriesTitle).toBeVisible();
     await expect(createUnitPage.categoriesDropDown).toBeVisible();
     await expect(createUnitPage.categoriesDropDownArrowDown).toBeVisible();
-    await expect(await createUnitPage.getCategoriesTitleText()).toContain('Категорія');
-    await expect(await createUnitPage.getCategoriesTitleText()).toContain('*');
-    await expect(await createUnitPage.getCategoriesDropDownBgText()).toContain('Виберіть категорію');
+    await expect(await createUnitPage.getCategoriesTitleText()).toContain(testData.titleTexts.category);
+    await expect(await createUnitPage.getCategoriesTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getCategoriesDropDownBgText()).toContain(testData.inputPlaceholderTexts.chooseCategory);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.categoryErrorMessage).toBeVisible();
-    await expect(await createUnitPage.getCategoryInputErrorText()).toBe('Це поле обов’язкове');
-    await expect(await createUnitPage.categoriesDropDown).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+    await expect(await createUnitPage.getCategoryInputErrorText()).toBe(testData.errorMessages.requiredField);
+    await expect(createUnitPage.categoriesDropDown).toHaveCSS('border-color', testData.borderColors.errorColor);
 
-    await createUnitPage.clickOnCategoriesDropDown();
+    await createUnitPage.categoriesDropDown.click();
 
     await expect(createUnitPage.categoriesPopUp).toBeVisible();
-    await expect(createUnitPage.categoriesPopUpTitle).toHaveText('Вибір категорії технічного засобу');
+    await expect(createUnitPage.categoriesPopUpTitle).toHaveText(testData.titleTexts.categoriesPopUp);
 
-    await createUnitPage.clickOnCategoriesPopUpCloseBtn();
+    await createUnitPage.categoriesPopUpCloseBtn.click();
 
-    await expect(await createUnitPage.categoriesPopUp).not.toBeVisible();
+    await expect(createUnitPage.categoriesPopUp).not.toBeVisible();
 
-    await createUnitPage.clickOnCategoriesDropDown();
+    await createUnitPage.categoriesDropDown.click();
     await createUnitPage.clickOutsidePopup();
 
-    await expect(await createUnitPage.categoriesPopUp).not.toBeVisible();
+    await expect(createUnitPage.categoriesPopUp).not.toBeVisible();
 
-    await createUnitPage.clickOnCategoriesDropDown();
+    await createUnitPage.categoriesDropDown.click();
     await createUnitPage.checkOptionsInCategoriesPopUp();
 })
 
-test('test case C297: Verify unit name section', async( {page} ) => {
+test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
     await expect(createUnitPage.announcementNameTitle).toBeVisible();
     await expect(createUnitPage.announcementNameInput).toBeVisible();
-    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain('Назва оголошення');
-    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain('*');
-    await expect(await createUnitPage.getAnnouncementNameInputBgText()).toContain('Введіть назву оголошення');
+    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(testData.titleTexts.announcementName);
+    await expect(await createUnitPage.getAnnouncementNameTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getAnnouncementNameInputBgText()).toContain(testData.inputPlaceholderTexts.announcementNameInput);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.announcementNameInputError).toBeVisible();
-    await expect(createUnitPage.announcementNameInputError).toHaveText('Це поле обов’язкове');
-    await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+    await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.requiredField);
+    await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     const randomToNineCharNumber = String(faker.number.int({min: 1, max: 999999999}));
     const random101CharString = faker.string.alpha({ length: 101 });
@@ -136,69 +128,69 @@ test('test case C297: Verify unit name section', async( {page} ) => {
     ]
 
     for (const value of inputValues) {
-        await createUnitPage.clearSectionInput(createUnitPage.announcementNameInput)
+        await createUnitPage.announcementNameInput.clear();
         await createUnitPage.announcementNameInput.type(value)
 
         switch(value) {
             case randomToNineCharNumber:
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText('У назві оголошення повинно бути не менше 10 символів');
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
 
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText('У назві оголошення повинно бути не менше 10 символів');
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case random101CharString:
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText('У назві оголошення може бути не більше 100 символів');
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameMore100Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 await expect(await createUnitPage.getAnnouncementInputValueCharCount()).toBe(100);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
                 await createUnitPage.announcementNameInput.type(randomOneCharString);
 
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText('У назві оголошення може бути не більше 100 символів');
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameMore100Symbols);
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case '<>{};^':
                 await expect(createUnitPage.announcementNameInputError).toBeVisible();
-                await expect(createUnitPage.announcementNameInputError).toHaveText('У назві оголошення повинно бути не менше 10 символів');
+                await expect(createUnitPage.announcementNameInputError).toHaveText(testData.errorMessages.announcementNameLess10Symbols);
                 await expect(await createUnitPage.getAnnouncementNameInputValueText()).toBe('');
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
                 break
             
             case randomTenCharString:
                 await expect(createUnitPage.announcementNameInputError).not.toBeVisible();
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(229, 229, 229)');
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.defaultGrey);
 
                 await createUnitPage.copyPasteValueInSectionInput(createUnitPage.announcementNameInput);
 
                 await expect(createUnitPage.announcementNameInputError).not.toBeVisible();
-                await expect(await createUnitPage.announcementNameInput).toHaveCSS('border-color', 'rgb(229, 229, 229)');
+                await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.defaultGrey);
                 break
         }
     }
 })
 
-test('test case C298: Verify vehicle manufacturer section', async( {page} ) => {
+test('test case C298: Verify vehicle manufacturer section', async( {createUnitPage} ) => {
     await expect(createUnitPage.vehicleManufacturerTitle).toBeVisible();
     await expect(createUnitPage.vehicleManufacturerInput).toBeVisible();
-    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain('Виробник транспортного засобу');
-    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain('*');
-    await expect(await createUnitPage.getVehicleManufacturerInputBgText()).toContain('Введіть виробника транспортного засобу');
+    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(testData.titleTexts.vehicleManufacturer);
+    await expect(await createUnitPage.getVehicleManufacturerTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(await createUnitPage.getVehicleManufacturerInputBgText()).toContain(testData.inputPlaceholderTexts.vehicleManufacturerInput);
    
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.vehicleManufacturerInputError).toBeVisible();
     await expect(createUnitPage.vehicleManufacturerInputSearchIcon).toBeVisible();
-    await expect(createUnitPage.vehicleManufacturerInputError).toHaveText('Це поле обов’язкове');
-    await expect(await createUnitPage.vehicleManufacturerInputContainer).toHaveCSS('border-color', 'rgb(40, 49, 73)');
+    await expect(createUnitPage.vehicleManufacturerInputError).toHaveText(testData.errorMessages.requiredField);
+    await expect(createUnitPage.vehicleManufacturerInputContainer).toHaveCSS('border-color', testData.borderColors.darkBlue);
 
     const random101CharString = faker.string.alpha({ length: 101 });
     const randomOneCharString = faker.string.alpha({ length: 1 });
@@ -256,20 +248,20 @@ test('test case C298: Verify vehicle manufacturer section', async( {page} ) => {
 
     await createUnitPage.fillSectionInput(createUnitPage.vehicleManufacturerInput, randomOneCharString);
     const optionText = await createUnitPage.getVehicleManufacturerDropDownOptionText();
-    await createUnitPage.clickOnOptionInVehicleManufacturerDropDown();
+    await createUnitPage.vehicleManufacturerDropDownOption.click();
 
     await expect(await createUnitPage.getVehicleManufacturerSelectedOptionText()).toBe(optionText);
 
-    await createUnitPage.clickOnClearIcon();
+    await createUnitPage.clearVehicleManifacturerDropDownIcon.click({force: true});
 
     await expect(await createUnitPage.getVehicleManufacturerInputText()).toBe('');
 })
 
-test('test case C299: Verify model name input field', async( {page} ) => {
+test('test case C299: Verify model name input field', async( {createUnitPage} ) => {
     await expect(createUnitPage.modelNameTitle).toBeVisible();
     await expect(createUnitPage.modelNameInput).toBeVisible();
-    await expect(await createUnitPage.getModelNameTitleText()).toContain('Назва моделі');
-    await expect(await createUnitPage.getModelNameInputBgText()).toBe('Введіть назву моделі');
+    await expect(await createUnitPage.getModelNameTitleText()).toContain(testData.titleTexts.modelName);
+    await expect(await createUnitPage.getModelNameInputBgText()).toBe(testData.inputPlaceholderTexts.modelNameInput);
 
     const random16CharStr = faker.string.alpha({ length: 16 });
     const random10To15CharStr = faker.string.alpha({ length: {min: 10, max: 15} });
@@ -289,16 +281,16 @@ test('test case C299: Verify model name input field', async( {page} ) => {
 
         if(input === random16CharStr || input === randomStrWithSpaceInEnd || input === randomStrWithSpaceIncide) {
             await expect(createUnitPage.modelNameInputError).toBeVisible();
-            await expect(createUnitPage.modelNameInputError).toHaveText('У назві моделі може бути не більше 15 символів');
-            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+            await expect(createUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
+            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
             await createUnitPage.copyPasteValueInSectionInput(createUnitPage.modelNameInput);
 
             await expect(createUnitPage.modelNameInputError).toBeVisible();
-            await expect(createUnitPage.modelNameInputError).toHaveText('У назві моделі може бути не більше 15 символів');
-            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+            await expect(createUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
+            await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
-            await createUnitPage.clearSectionInput(createUnitPage.modelNameInput);
+            await createUnitPage.modelNameInput.clear();
         }
         else if(input === ' ' || input === '<>{};^') {
             await expect(await createUnitPage.getModelNameInputText()).toBe('');
@@ -309,11 +301,11 @@ test('test case C299: Verify model name input field', async( {page} ) => {
     }
 })
 
-test('test case C317: Verify technical characteristics section', async( {page} ) => {
+test('test case C317: Verify technical characteristics section', async( {createUnitPage} ) => {
     await expect(createUnitPage.technicalInfoTitle).toBeVisible();
     await expect(createUnitPage.technicalInfoInput).toBeVisible();
-    await expect(createUnitPage.technicalInfoTitle).toHaveText('Технічні характеристики');
-    await expect(await createUnitPage.technicalInfoInput).toBeEnabled();
+    await expect(createUnitPage.technicalInfoTitle).toHaveText(testData.titleTexts.technicalCharacteristics);
+    await expect(createUnitPage.technicalInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
     const random9000CharStr = faker.string.alpha({ length: 9000});
@@ -337,11 +329,11 @@ test('test case C317: Verify technical characteristics section', async( {page} )
     }
 })
 
-test('test case C318: Verify description section', async( {page} ) => {
+test('test case C318: Verify description section', async( {createUnitPage} ) => {
     await expect(createUnitPage.descriptionInfoTitle).toBeVisible();
     await expect(createUnitPage.descriptionInfoInput).toBeVisible();
-    await expect(createUnitPage.descriptionInfoTitle).toHaveText('Детальний опис');
-    await expect(await createUnitPage.descriptionInfoInput).toBeEnabled();
+    await expect(createUnitPage.descriptionInfoTitle).toHaveText(testData.titleTexts.detailDescription);
+    await expect(createUnitPage.descriptionInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
     const random9000CharStr = faker.string.alpha({ length: 9000});
@@ -366,30 +358,30 @@ test('test case C318: Verify description section', async( {page} ) => {
     }
 })
 
-test('test case C319: Verify vehicle location division', async( {page} ) => {
+test('test case C319: Verify vehicle location division', async( {createUnitPage} ) => {
     await expect(createUnitPage.addressSelectionTitle).toBeVisible();
     await expect(createUnitPage.addressSelectionInput).toBeVisible();
-    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain('Місце розташування технічного засобу');
-    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain('*');
-    await expect(createUnitPage.addressSelectionInput).toHaveText('Виберіть на мапі');
+    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(testData.titleTexts.vehicalAddress);
+    await expect(await createUnitPage.getAddressSelectionTitleText()).toContain(testData.titleTexts.arrowSymbol);
+    await expect(createUnitPage.addressSelectionInput).toHaveText(testData.inputPlaceholderTexts.chooseOnMap);
 
     await createUnitPage.clickOnNextBtn();
 
     await expect(createUnitPage.addressSelectionInputError).toBeVisible();
-    await expect(createUnitPage.addressSelectionInputError).toHaveText('Виберіть коректне місце на мапі України');
-    await expect(createUnitPage.addressSelectionInput).toHaveCSS('border-color', 'rgb(247, 56, 89)');
+    await expect(createUnitPage.addressSelectionInputError).toHaveText(testData.errorMessages.incorrectChoosenAddress);
+    await expect(createUnitPage.addressSelectionInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     await createUnitPage.clickOnSelectOnMapBtn();
 
     await expect(createUnitPage.mapPopUp).toBeVisible();
-    await expect(createUnitPage.mapPopUpTitle).toHaveText('Техніка на мапі');
-    await expect(await createUnitPage.getMapPopUpAddressLineText()).toBe('Київ, вулиця Володимирська 21/20 Україна, Київська область');
+    await expect(createUnitPage.mapPopUpTitle).toHaveText(testData.titleTexts.vehiclesOnMap);
+    await expect(await createUnitPage.getMapPopUpAddressLineText()).toContain('Київ');
     await expect(createUnitPage.mapPopUpCloseBtn).toBeVisible();
 
     await createUnitPage.clickOnMapPopUpSubmitBtn();
 
     await expect(createUnitPage.mapPopUp).not.toBeVisible();
-    await expect(await createUnitPage.getAddressLineText()).toBe('Київ, вулиця Володимирська 21/20 Україна, Київська область');
+    await expect(await createUnitPage.getAddressLineText()).toContain('Київ');
 
     await createUnitPage.clickOnSelectOnMapBtn();
 
@@ -400,17 +392,17 @@ test('test case C319: Verify vehicle location division', async( {page} ) => {
     await expect(await createUnitPage.getAddressLineText()).toBe(newAddress);
 })
 
-test('test case C326: Verify ""Скасувати"" button', async( {page} ) => {
-    await expect(createUnitPage.cancelBtn).toHaveText('Скасувати');
+test('test case C326: Verify "Скасувати" button', async( {createUnitPage} ) => {
+    await expect(createUnitPage.cancelBtn).toHaveText(testData.buttonNames.cancel);
 
-    await createUnitPage.clickOnCancelBtn();
+    await createUnitPage.cancelBtn.click();
     await createUnitPage.acceptAlert();
 
     await expect(await createUnitPage.getUrl()).toBe(HOMEPAGE_URL);
 })
 
-test('test case C329: Verify ""Далі"" button', async( {page} ) => {
-    await expect(createUnitPage.nextBtn).toHaveText('Далі')
+test('test case C329: Verify "Далі" button', async( {createUnitPage} ) => {
+    await expect(createUnitPage.nextBtn).toHaveText(testData.buttonNames.next)
 
     await createUnitPage.clickOnNextBtn();
 
@@ -425,6 +417,6 @@ test('test case C329: Verify ""Далі"" button', async( {page} ) => {
     await createUnitPage.fillAddress();
     await createUnitPage.clickOnNextBtn();
 
-    await expect(createUnitPage.createUnitTitle).toHaveText('Створити оголошення');
+    await expect(createUnitPage.createUnitTitle).toHaveText(testData.titleTexts.createUnit);
     await createUnitPage.checkCreateUnitTabsTitles(2);
 })

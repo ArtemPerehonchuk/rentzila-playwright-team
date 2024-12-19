@@ -1,8 +1,8 @@
 import { APIRequestContext, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
+import path from 'path';
 
-const base_url: string = process.env.HOMEPAGE_URL || '';
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
@@ -41,7 +41,10 @@ class ApiHelper {
     async createUserAccessToken() {
         if (!userAccessToken) {
             await this.request
-                .post(`${base_url}api/auth/jwt/create/`, {
+                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
+                    headers: {
+                        ...this.defaultHeaders
+                    },
                     data: {
                         email: user_email,
                         password: user_password
@@ -173,24 +176,22 @@ class ApiHelper {
     }
 
     async uploadUnitPhoto(accessUserToken: string, unitId: number) {
-        const response = await this.request.post(`${base_url}api/unit-images/`, {
+
+        const imagePath = path.resolve('data/photo/', 'pexels-albinberlin-919073.jpg');
+        const imageReadStream = fs.createReadStream(imagePath);
+
+        const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/unit-images/`, {
             headers: {
-                'Authorization': `Bearer ${accessUserToken}`,
+                Authorization: `Bearer ${accessUserToken}`
             },
             multipart: {
                 unit: unitId.toString(),
-                image: {
-                    name: 'pexels-albinberlin-919073.jpg',
-                    mimeType: 'image/jpg',
-                    buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
-                },
+                image: imageReadStream,
                 is_main: 'true'
             }
         });
 
-        const responseData = await response.json();
-
-        return { response, responseData };
+        return response;
     }
 
     async getUnitId(accessToken: string, unitName: string) {
@@ -213,6 +214,53 @@ class ApiHelper {
                 await this.deleteUnit(accessToken, unit.id)
             }
         }
+    }
+
+    async moderateUnit(accessAdminToken: string, unitId: number) {
+        const response = await this.request.patch(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/moderate/`, {
+            headers: {
+                Authorization: `Bearer ${accessAdminToken}`,
+                ...this.defaultHeaders
+            },
+            data: {
+                "is_approved": true,
+            }
+        })
+
+        return response
+    }
+
+    async searchUnitByName(accessToken: string, unitName: string) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/units/?search=${unitName}`, {
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            ...this.defaultHeaders
+            }
+        })
+
+        return response
+    }
+
+    async getVehicleManufacturer(accessToken: string, manufacturerId: number) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/manufacturers/${manufacturerId}/`, {
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            ...this.defaultHeaders
+            }
+        })
+
+        return response
+    }
+
+    async getUnitById(accessAdminToken: string, unitId: number) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/`, {
+            headers: {
+                Authorization: `Bearer ${accessAdminToken}`,
+                ...this.defaultHeaders
+            }
+        })
+
+        return response
     }
 
     async getUnitIds(limit: number): Promise<number[]> {

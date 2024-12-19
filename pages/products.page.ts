@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 
 class ProductsPage extends Page {
@@ -7,17 +7,17 @@ class ProductsPage extends Page {
         super(page);
     }
     
-    produtsList = this.page.locator('[data-testid="cardWrapper"]');
+    produtsList: Locator = this.page.locator('[data-testid="cardWrapper"]');
     unitTitle = this.page.getByTestId('unitName');
     unitCategory = this.page.locator('div[class*="OwnerUnitCard_category_"]');
     favoriteBtn = this.page.getByTestId('favourite');
     favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
-    productFilterItem = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
-    dropdownArrow = this.page.locator('[data-testid="rightArrow"]').nth(2);
-    unitsContainer = this.page.locator('div[class*="MapPagination_units_container"]');
-    constructionsCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
-    othersCheckBox = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
-    searchInput = this.page.getByTestId('searchInput');
+    productFilterItem: Locator = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
+    dropdownArrow: Locator = this.page.locator('[data-testid="rightArrow"]').nth(2);
+    unitsContainer: Locator = this.page.locator('div[class*="MapPagination_units_container"]');
+    constructionsCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
+    othersCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
+    searchInput: Locator = this.page.getByTestId('searchInput');
 
     getUnitCardByIndex (index: number) {
         return this.produtsList.nth(index);
@@ -47,22 +47,8 @@ class ProductsPage extends Page {
         
             await this.produtsList.first().click({force: true});
             await navigationPromise;
-            await this.page.waitForTimeout(3000)
+            await this.page.waitForLoadState('networkidle')
         }else {}
-    }
-
-    async filtersAreChecked(unitName: string) {
-        const dropdownCheckBox = this.page.locator('label', { hasText: unitName });
-        if (!await dropdownCheckBox.isVisible()) {
-            await this.dropdownArrow.click();
-            await this.page.waitForLoadState('domcontentloaded');
-        }
-        await expect(dropdownCheckBox).toBeChecked();
-        return true
-    }
-
-    async clickOnDropdownArrow() {
-        await this.dropdownArrow.click();
     }
 
     async checkCategoriesCheckboxesAreChecked() {

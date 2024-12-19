@@ -1,4 +1,6 @@
-import { Page as PlaywrightPage, Locator, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
+
+const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || ''
 
 class Page {
   public page: PlaywrightPage;
@@ -21,7 +23,8 @@ class Page {
 
   async clickOnLogo() {
     await this.logo.click();
-    await this.page.waitForTimeout(2000);
+      await this.page.waitForLoadState('networkidle')
+      await this.page.waitForURL(`${process.env.HOMEPAGE_URL}`)
   }
 
   async enterValueToInput(locator: Locator, text: string, caseOption: 'paste' | 'default' = 'default') {

@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class UnitDetailsPage extends Page {
@@ -6,12 +6,8 @@ class UnitDetailsPage extends Page {
         super(page)
     }
 
-    unitsPaymentMethod = this.page.locator('[class*="ImageWithDescription_paymentMethod"]');
-    editUnitBtn = this.page.locator('[class*="CurrentUnitButtons_emptyBtn"]');
-
-    async clickOnEditUnitBtn() {
-        await this.editUnitBtn.click();
-    }
+    unitsPaymentMethod: Locator = this.page.locator('[class*="ImageWithDescription_paymentMethod"]');
+    editUnitBtn: Locator = this.page.locator('[class*="CurrentUnitButtons_emptyBtn"]');
 }
 
 export default UnitDetailsPage;
