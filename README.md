@@ -15,107 +15,91 @@ This project contains end-to-end tests for the Rentzila web site using Playwrigh
 
    ```bash
    git clone https://github.com/ArtemPerehonchuk/rentzila-playwright-tests.git
-
    ```
+
 2. Navigate to the project directory:
 
-    ```bash
-    cd rentzila-playwright-tests
-    ````
+   ```bash
+   cd rentzila-playwright-tests
+   ```
 
 3. Install Playwright:
 
-    ```bash
-    npx playwright install
-    ```
+   ```bash
+   npx playwright install
+   ```
 
 4. Install dependencies:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 5. Create an .env file:
 
-    In the project root directory, create an .env file by copying the example.env file:
+   In the project root directory, create an .env file by copying the example.env file:
 
-    ```bash
-    cp example.env .env
-    ```
-    Then, update the .env file with your specific environment variables, such as credentials and homepage URL.
+   ```bash
+   cp example.env .env
+   ```
+
+   Then, update the .env file with your specific environment variables, such as credentials and homepage URL.
 
 ## Running Tests
-1. Run All Tests:
-To run all tests using the default browser configuration:
 
-    ```bash
-    npm run test
-    ```
+### Using Bash Script
 
-2. To run specific test file:
+1. **Run All Tests:**
+   To run all tests using the default configuration:
 
-- Run tests for services:
+   ```bash
+   ./run-tests.sh all
+   ```
 
-    ```bash
-    npm run test:services
-    ```
+2. **Run Specific Test Files:**
+   To run a specific test file:
 
-- Run tests for footer elements:
+   ```bash
+   ./run-tests.sh tests/test.login.spec.ts
+   ```
 
-    ```bash
-    npm run test:footer-elements
-    ```
+3. **Run Tests by Category:**
+   To run tests based on a keyword (e.g., "services"):
 
-- Run tests for login:
+   ```bash
+   ./run-tests.sh services
+   ```
 
-    ```bash
-    npm run test:login
-    ```
+4. **Customize Execution:**
+   Pass additional Playwright options such as workers or projects:
 
-- Run tests for main info tab on create unit page:
+   ```bash
+   ./run-tests.sh all --workers=1 --project=firefox
+   ```
 
-    ```bash
-    npm run test:unit-page-main-info-tab
-    ```
+### Using npm Scripts
 
-- Run tests for photo tab on create unit page:
+1. Run all tests:
 
-    ```bash
-    npm run test:photo-tab
-    ```
+   ```bash
+   npm run test
+   ```
 
-- Run tests for prices tab on create unit page:
+2. Run specific tests or categories:
 
-    ```bash
-    npm run test:prices-tab
-    ```
+   ```bash
+   npm run test:run services
+   ```
 
-- Run tests for services tab on create unit page:
+3. Open test report:
 
-    ```bash
-    npm run test:services-tab
-    ```
-
-- Run tests for creating unit using API:
-
-    ```bash
-    npm run test:api
-    ```
-
-- Run tests for edit unit functionality:
-
-    ```bash
-    npm run test:edit-unit
-    ```
-
-- Run tests for create tender functionality:
-
-    ```bash
-    npm run test:create-tender
-    ```
+   ```bash
+   npm run test:report
+   ```
 
 ## GitHub Pages
 
 View report on GitHub Pages:
 
-https://artemperehonchuk.github.io/rentzila-playwright-team/
+[GitHub Pages Report](https://artemperehonchuk.github.io/rentzila-playwright-team/)
+

@@ -34,8 +34,8 @@ jobs:
       - name: Install Chromium browser only
         run: npx playwright install chromium
 
-      - name: Run tests
-        run: npm run test -- --reporter=html
+      - name: Run all tests
+        run: ./run-tests.sh all --reporter=html
 
       - name: Deploy report to GitHub Pages
         if: always()

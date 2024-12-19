@@ -5,18 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
-    "test:services": "playwright test tests/test.services.spec.ts",
-    "test:login": "playwright test tests/test.login.spec.ts",
-    "test:footer-elements": "playwright test tests/test.footer.elements.spec.ts",
-    "test:unit-page-main-info-tab": "playwright test tests/test.unit.page.spec.ts",
-    "test:photo-tab": "playwright test tests/test.photo.tab.spec.ts",
-    "test:prices-tab": "playwright test tests/test.prices.tab.spec.ts",
-    "test:services-tab": "playwright test tests/test.services.tab.spec.ts",
-    "test:api": "playwright test tests/test.api.spec.ts",
-    "test:edit-unit": "playwright test tests/test.edit.unit.spec.ts --workers=1",
-    "test:create-tender": "playwright test tests/test.create.tender.spec.ts --workers=1",
-    "test:generate-report": "playwright show-report test-results/html/index.html"
+    "test": "./run-tests.sh all",
+    "test:run": "./run-tests.sh",
+    "test:report": "playwright show-report"
   },
   "keywords": [
     "playwright",

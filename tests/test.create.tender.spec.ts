@@ -111,47 +111,36 @@ test('Test Case: C779 Verify service section', async ({ createTenderPage }) => {
 
     const randomLetter = faker.string.alpha({length: 1});
     const random101Char = faker.string.alpha({length: 101});
-    const inputValues = [
-        randomLetter,
-        random101Char,
-        '{}<>;^',
-    ]
+    const specialSymbols = '{}<>;^'
 
-    for(const inputValue of inputValues) {
-        await createTenderPage.fillCreateTenderInput(createTenderPage.tenderServiceInput, inputValue);
+    await createTenderPage.fillCreateTenderInput(createTenderPage.tenderServiceInput, random101Char);
 
-        switch(inputValue) {
-            
-            case random101Char:
-                const filledValue = await createTenderPage.tenderServiceInput.inputValue();
+    const filledValue = await createTenderPage.tenderServiceInput.inputValue();
 
-                await expect(filledValue.length).toBe(100);
-                await expect(await createTenderPage.serviceNotFoundMsg.innerText()).toContain(`На жаль, послугу “${random101Char.charAt(0).toUpperCase() + random101Char.slice(1, -1)}“ не знайдено в нашій базі.`)
-                break
+    await expect(filledValue.length).toBe(100);
+    await expect(await createTenderPage.serviceNotFoundMsg.innerText()).toContain(`На жаль, послугу “${random101Char.charAt(0).toUpperCase() + random101Char.slice(1, -1)}“ не знайдено в нашій базі.`)
 
-            case '{}<>;^':
-                await expect(createTenderPage.tenderServiceInput).toHaveValue('');
-                break 
 
-            case randomLetter:
-                const dropDownOptions = await createTenderPage.seviceDropDownOptions.allInnerTexts();
-                await expect(createTenderPage.servicesDropDown).toBeVisible();
-                
-                for(const option of dropDownOptions) {
-                    await expect(option.toLowerCase()).toContain(randomLetter.toLowerCase());
-                }
-                
-                const firstOption = await createTenderPage.seviceDropDownOptions.first().innerText();
+    await createTenderPage.fillCreateTenderInput(createTenderPage.tenderServiceInput, specialSymbols);
+    await expect(createTenderPage.tenderServiceInput).toHaveValue('');
 
-                await createTenderPage.seviceDropDownOptions.first().click();
 
-                await expect(createTenderPage.serviceSelectedOption).toHaveText(firstOption);
-                await expect(createTenderPage.tenderCategory).toBeVisible();
-
-                await createTenderPage.removeSelectedServiceicon.click();
-                break 
-        }
+    await createTenderPage.fillCreateTenderInput(createTenderPage.tenderServiceInput, randomLetter);
+    const dropDownOptions = await createTenderPage.seviceDropDownOptions.allInnerTexts();
+    await expect(createTenderPage.servicesDropDown).toBeVisible();
+    
+    for(const option of dropDownOptions) {
+        await expect(option.toLowerCase()).toContain(randomLetter.toLowerCase());
     }
+    
+    const firstOption = await createTenderPage.seviceDropDownOptions.first().innerText();
+
+    await createTenderPage.seviceDropDownOptions.first().click();
+
+    await expect(createTenderPage.serviceSelectedOption).toHaveText(firstOption);
+    await expect(createTenderPage.tenderCategory).toBeVisible();
+
+    await createTenderPage.removeSelectedServiceicon.click();
 });
 
 test('Test Case: C780 Verify tenders duration section', async ({ createTenderPage }) => {
