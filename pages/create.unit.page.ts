@@ -3,9 +3,6 @@ import Page from './page';
 import categoryNames from '../data/category.names.json' assert { type: 'json' };
 import { faker } from '@faker-js/faker';
 
-const mapLabelSelector: string = '[data-testid="mapLabel"]';
-const mapPopUpSelector: string = '[data-testid="div-mapPopup"]';
-
 class CreateUnitPage extends Page {  
 
     constructor(page: PlaywrightPage) {
@@ -63,6 +60,9 @@ class CreateUnitPage extends Page {
     mapLabel: Locator = this.page.locator('[data-testid="mapLabel"]');
     elementOutsidePopUp: Locator = this.page.locator('[class*="NavbarCatalog_wrapper"]');
 
+    mapLabelSelector: string = '[data-testid="mapLabel"]';
+    mapPopUpSelector: string = '[data-testid="div-mapPopup"]';
+
     async checkCreateUnitTabsTitles(activeTabNumber: number) {
         if(await this.createUnitTabs.isVisible) {
             const tabNames = await this.createUnitTabsText.allInnerTexts();
@@ -107,10 +107,6 @@ class CreateUnitPage extends Page {
         await sectionInputLocator.fill(value);
         await this.page.waitForLoadState('domcontentloaded');
     }
-
-    // async clearSectionInput(sectionInputLocator: Locator) {
-    //     await sectionInputLocator.clear();
-    // }
 
     async copyPasteValueInSectionInput(sectionInputLocator: Locator) {
         await sectionInputLocator.click();
@@ -263,7 +259,7 @@ class CreateUnitPage extends Page {
 
     async clickOnSelectOnMapBtn() {
         await this.selectOnMapBtn.click();
-        await this.page.waitForSelector(mapPopUpSelector)
+        await this.page.waitForSelector(this.mapPopUpSelector)
     }
 
     async getMapPopUpAddressLineText() {
@@ -273,14 +269,10 @@ class CreateUnitPage extends Page {
     async getAddressLineText() {
         return await this.selectedAddress.innerText();
     }
-
-    async clickOnMapPopUpCloseBtn() {
-        await this.mapPopUpCloseBtn.click();
-    }
     
     async clickOnMapPopUpSubmitBtn() {
         await this.mapPopUpSubmitBtn.click({force: true});
-        await this.page.waitForSelector(mapLabelSelector)
+        await this.page.waitForSelector(this.mapLabelSelector)
     }
 
     async clickOnMapAndGetAddress() {
