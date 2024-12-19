@@ -1,14 +1,14 @@
 {
-    "incorrect-phone-numbers": {
-        "without country code": "991234786",
-        "withoutln": "099123478",
+    "incorrectPhoneNumbers": {
+        "withoutCountryCode": "991234786",
+        "withoutLn": "099123478",
         "with-": "+380-99-123-47-86",
-        "with spaces" : "+380 99 123 47 86",
-        "with ()": "+380(99)1234786",
-        "with () without country code": "(99)1234786",
-        "11 numders": "+38099123478",
-        "other country code": "+10991234786",
-        "without 38": "+0991234786"
+        "withSpaces" : "+380 99 123 47 86",
+        "with()": "+380(99)1234786",
+        "with()WithoutCountryCode": "(99)1234786",
+        "11Numders": "+38099123478",
+        "otherCountryCode": "+10991234786",
+        "without38": "+0991234786"
     },
     "incorrect-emails": {
         "space": "for somemytests@gmail.com",
@@ -110,7 +110,12 @@
         "minPriceLess1000": "Мінімальна вартiсть має бути не менше 1000 грн",
         "incorrectChoosenAddress": "Виберіть коректне місце на мапі України",
         "invalidEmailOrPassword": "Невірний e-mail або пароль",
-        "incorrectPasswordFormat": "Пароль повинен містити"
+        "incorrectPasswordFormat": "Пароль повинен містити",
+        "uploadMin1Doc": "Додайте до вашого тендеру як мінімум один файл",
+        "lastNameShouldBeAtList2Symbols": "Прізвище має містити щонайменше дві літери",
+        "firstNameShouldBeAtList2Symbols": "Ім'я має містити щонайменше дві літери",
+        "nameMore25Symbols": "Введіть не більше 25 символів",
+        "enterCorrectPhoneNumber": "Введіть коректний мобільний номер телефону"
     },
     "successMessages": {
         "unitEdited": "Вашe оголошення успішно відредаговане"

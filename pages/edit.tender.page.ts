@@ -17,8 +17,23 @@ class EditTenderPage extends Page {
     tenderServicesDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
     selectedTenderService: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
     tenderBudgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
-    tenderDescriptionInput: Locator = this.page.locator('[data-testid="textAreaDiv"]');
+    tenderBudgetInputError: Locator = this.page.locator('[data-testid="descriptionError"]')
+    tenderDescriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
     tenderDescriptionInputError: Locator = this.page.locator('[data-testid="textAreaError"]');
+    removeDocBtn: Locator = this.page.locator('[data-testid="deleteFile"]');
+    tenderDocsErrorMsg: Locator = this.page.locator('[data-testid="getFileDiv"]');
+    operatorCheckbox: Locator = this.page.locator('[data-testid="operatorCheckbox"]');
+    lastNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').first();
+    firstNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').nth(1);
+    phoneInput: Locator = this.page.locator('[data-testid="phone"]');
+    lastNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').first();
+    firstNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').nth(1);
+    phoneInputErrorMsg: Locator = this.page.locator('p[data-testid="errorMessage"]');
+    tenderSuccessfullyEditedMsg: Locator = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
+    lookInMyTendersBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]')
+
+    
 }
+
 
 export default EditTenderPage;
