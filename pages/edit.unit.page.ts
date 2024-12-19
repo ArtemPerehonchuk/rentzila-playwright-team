@@ -2,7 +2,7 @@ import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 import testData from '../data/test.data.json' assert {type: 'json'};
 import { faker } from '@faker-js/faker';
-import getPhotoPath from '../helpers/helper';
+import path from 'path';
 
 const photoFileNames = testData['photo file names']
 const photoIndexes = testData.photoIndexes;
@@ -202,8 +202,7 @@ class EditUnitPage extends Page {
 
     async uploadPhotos(numberOfPhotos: number) {   
         for(let i = 0; i < numberOfPhotos; i++) {
-            const randomPhotoFileName = faker.helpers.arrayElement(photoFileNames);
-
+            let photoFileNameIndex = Math.floor(Math.random() * 15)
             await this.editedUnitImageBlocks.nth(i).focus();
             await this.editedUnitUploadFileInput.setInputFiles(path.resolve(`data/photo/${photoFileNames[photoFileNameIndex]}.jpg`));
             await this.page.waitForTimeout(3000)

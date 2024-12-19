@@ -26,7 +26,7 @@ class ApiHelper {
     async createAdminAccessToken() {
         if (!adminAccessToken) {
             await this.request
-                .post(`${base_url}api/auth/jwt/create/`, {
+                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
                     data: {
                         email: admin_email,
                         password: admin_password
@@ -59,7 +59,7 @@ class ApiHelper {
     async getUserDetails() {
         const accessAdminToken = await this.createAdminAccessToken();
         await this.request
-            .get(`${base_url}api/backcall/`, {
+            .get(`${process.env.HOMEPAGE_URL}api/backcall/`, {
                 headers: {
                     Authorization: `Bearer ${accessAdminToken}`
                 }
@@ -81,7 +81,7 @@ class ApiHelper {
         const price = faker.number.int({ min: 1000, max: 10000 });
 
         const response = await this.request
-            .post(`${base_url}api/units/`, {
+            .post(`${process.env.HOMEPAGE_URL}api/units/`, {
                 headers: {
                     Authorization: `Bearer ${accessUserToken}`,
                     ...this.defaultHeaders
@@ -135,7 +135,7 @@ class ApiHelper {
 
     async getUnitsList(accessUserToken: string) {
         const response = await this.request
-            .get(`${base_url}api/units/`, {
+            .get(`${process.env.HOMEPAGE_URL}api/units/`, {
                 headers: {
                     Authorization: `Bearer ${accessUserToken}`,
                     ...this.defaultHeaders
@@ -147,7 +147,7 @@ class ApiHelper {
     }
     async setUnitsActiveStatus(token: string, unitIds: number[]) {
         for (const unitId of unitIds) {
-            const response = await this.request.patch(`${base_url}api/crm/units/${unitId}/moderate/`, {
+            const response = await this.request.patch(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/moderate/`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -165,7 +165,7 @@ class ApiHelper {
     }
 
     async deleteUnit(accessUserToken: string, unitId: any) {
-        const response = await this.request.delete(`${base_url}api/units/${unitId}/`, {
+        const response = await this.request.delete(`${process.env.HOMEPAGE_URLl}api/units/${unitId}/`, {
             headers: {
                 Authorization: `Bearer ${accessUserToken}`,
                 ...this.defaultHeaders
@@ -268,7 +268,7 @@ class ApiHelper {
         let currentPage = 1;
 
         while (unitIds.length < limit) {
-            const response = await this.request.get(`${base_url}api/units/?page=${currentPage}`);
+            const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/units/?page=${currentPage}`);
             expect(response.status()).toBe(200);
 
             const responseBody = await response.json();
@@ -290,7 +290,7 @@ class ApiHelper {
 
     async addUnitsToFavorites(accessToken: string | null, unitIds: number[]) {
         for (const unitId of unitIds) {
-            const response = await this.request.post(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+            const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -301,7 +301,7 @@ class ApiHelper {
     }
 
     async getFavoriteUnits(accessToken: string | null): Promise<number[]> {
-        const response = await this.request.get(`${base_url}api/auth/users/${user_id}/favourite-units/`, {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -318,7 +318,7 @@ class ApiHelper {
     async removeUnitsFromFavorites(accessToken: string | null, unitIds: number[]) {
         for (const unitId of unitIds) {
             try {
-                const response = await this.request.delete(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+                const response = await this.request.delete(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         Connection: 'close',

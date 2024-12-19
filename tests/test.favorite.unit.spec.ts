@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures";
-import testData from '../data/test_data.json' assert {type: 'json'};
-import categories from '../data/category_names.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
+import categories from '../data/category.names.json' assert {type: 'json'};
 import { faker } from "@faker-js/faker";
 
 let adminAccessToken: string
@@ -14,20 +14,20 @@ test.beforeAll(async ({ apiHelper }) => {
     userAccessToken = await apiHelper.createUserAccessToken();
 });
 
-test.beforeEach(async ({ homePage, apiHelper }) => {
+test.beforeEach(async ({ homepage, apiHelper }) => {
     const favUnitIds: number[] = await apiHelper.getFavoriteUnits(adminAccessToken);
     await apiHelper.removeUnitsFromFavorites(adminAccessToken, favUnitIds);
 });
 
 test.describe('Favorite Unit Tests', async () => {
 
-    test.beforeEach(async ({ homePage, apiHelper, profilePage }) => {
+    test.beforeEach(async ({ homepage, apiHelper, profilePage }) => {
         let favUnitIds: number[] = await apiHelper.getFavoriteUnits(adminAccessToken);
         await apiHelper.removeUnitsFromFavorites(adminAccessToken, favUnitIds);
 
-        await homePage.loginUser(LOGIN, PASSWORD);
-        await homePage.clickOnUserIcon();
-        await homePage.clickOnProfileMyAnnouncementsItem();
+        await homepage.loginUser(LOGIN, PASSWORD);
+        await homepage.clickOnUserIcon();
+        await homepage.clickOnProfileMyAnnouncementsItem();
 
         await profilePage.favoriteUnitsTab.click();
     });
@@ -40,15 +40,15 @@ test.describe('Favorite Unit Tests', async () => {
         await expect(page).toHaveURL(/products/);
     });
 
-    test('C302 - "Обрані" icon functionality', async ({ homePage, productsPage, profilePage, ownerUnitsPage }) => {
-        await homePage.announcementsLink.click();
+    test('C302 - "Обрані" icon functionality', async ({ homepage, productsPage, profilePage, ownerUnitsPage }) => {
+        await homepage.announcementsLink.click();
 
         const unitTitle = await productsPage.getTitleFromUnitCard(0);
         await productsPage.getFavoriteBtnOnUnit(0).click();
         await expect(productsPage.getFavoriteStatusOnUnit(0)).toHaveAttribute('stroke',
             testData.elementStates.favBtn.active);
-        await homePage.clickOnUserIcon();
-        await homePage.clickOnProfileMyAnnouncementsItem();
+        await homepage.clickOnUserIcon();
+        await homepage.clickOnProfileMyAnnouncementsItem();
         await profilePage.favoriteUnitsTab.click();
 
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
@@ -57,21 +57,21 @@ test.describe('Favorite Unit Tests', async () => {
         await ownerUnitsPage.getFavoriteBtnOnUnit(unitTitle).click();
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).not.toBeVisible();
 
-        await homePage.announcementsLink.click();
+        await homepage.announcementsLink.click();
         await expect(productsPage.getFavoriteStatusOnUnit(0)).toHaveAttribute('stroke',
             testData.elementStates.favBtn.inactive);
     });
 
-    test('C305 - "Пошук по назві" search field functionality', async ({ page, homePage, productsPage, profilePage, ownerUnitsPage }) => {
-        await homePage.announcementsLink.click();
+    test('C305 - "Пошук по назві" search field functionality', async ({ page, homepage, productsPage, profilePage, ownerUnitsPage }) => {
+        await homepage.announcementsLink.click();
 
         const unitTitle = await productsPage.getTitleFromUnitCard(0);
         const unitTitle2 = await productsPage.getTitleFromUnitCard(1);
         await productsPage.getFavoriteBtnOnUnit(0).click();
         await productsPage.getFavoriteBtnOnUnit(1).click();
 
-        await homePage.clickOnUserIcon();
-        await homePage.clickOnProfileMyAnnouncementsItem();
+        await homepage.clickOnUserIcon();
+        await homepage.clickOnProfileMyAnnouncementsItem();
         await profilePage.favoriteUnitsTab.click();
 
         await expect(ownerUnitsPage.getUnitCardByTitle(unitTitle)).toBeVisible();
@@ -105,13 +105,13 @@ test.describe('Favorite Unit Tests', async () => {
 
 test.describe('Favorite units pagination and sorting tests', async () => {
 
-    test.beforeEach(async ({ page, apiHelper, profilePage, homePage }) => {
+    test.beforeEach(async ({ page, apiHelper, profilePage, homepage }) => {
         let unitIds: number[] = await apiHelper.getUnitIds(12);
         await apiHelper.addUnitsToFavorites(adminAccessToken, unitIds);
 
-        await homePage.loginUser(LOGIN, PASSWORD);
-        await homePage.clickOnUserIcon();
-        await homePage.clickOnProfileMyAnnouncementsItem();
+        await homepage.loginUser(LOGIN, PASSWORD);
+        await homepage.clickOnUserIcon();
+        await homepage.clickOnProfileMyAnnouncementsItem();
 
         await profilePage.favoriteUnitsTab.click();
         await expect(page).toHaveURL(/owner-favourite-units/);
@@ -190,7 +190,7 @@ test.describe('Favorite units category filter tests', async () => {
     let civilUnit: number
     let storageUnit: number
 
-    test.beforeEach(async ({ page, apiHelper, profilePage, ownerUnitsPage, homePage }) => {
+    test.beforeEach(async ({ page, apiHelper, profilePage, ownerUnitsPage, homepage }) => {
 
         buildingUnitTitle = "UnitBuild " + faker.string.alpha({ length: 10 });
         civilUnitTitle = "UnitCivil " + faker.string.alpha({ length: 10 });
@@ -203,9 +203,9 @@ test.describe('Favorite units category filter tests', async () => {
         const unitIds: number[] = [buildingUnit, civilUnit, storageUnit]
         await apiHelper.addUnitsToFavorites(adminAccessToken, unitIds);
 
-        await homePage.loginUser(LOGIN, PASSWORD);
-        await homePage.clickOnUserIcon();
-        await homePage.clickOnProfileMyAnnouncementsItem();
+        await homepage.loginUser(LOGIN, PASSWORD);
+        await homepage.clickOnUserIcon();
+        await homepage.clickOnProfileMyAnnouncementsItem();
 
         await profilePage.favoriteUnitsTab.click();
         await expect(page).toHaveURL(/owner-favourite-units/);

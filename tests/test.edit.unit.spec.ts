@@ -463,13 +463,13 @@ test('Test case C274: Check image section functionality', async({page, apiHelper
         await expect(editUnitPage.uploadTo12PhotosErrorMsg).toBeVisible();
         await expect(editUnitPage.uploadTo12PhotosErrorMsg).toHaveText(testData.errorMessages.uploadImages);
 
-    expect(await editUnitPage.getFileChooser).toBeDefined();
+        expect(await editUnitPage.getFileChooser).toBeDefined();
 
-    await editUnitPage.fileChooserSetInputFile();
-    await page.waitForLoadState('domcontentloaded');
+        await editUnitPage.fileChooserSetInputFile();
+        await page.waitForLoadState('domcontentloaded');
 
-    await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
-    await expect(editUnitPage.mainImgLable).toBeVisible();
+        await expect(await editUnitPage.editedUnitImageBlocks.first().getAttribute('draggable')).toBe('true');
+        await expect(editUnitPage.mainImgLable).toBeVisible();
 
         await editUnitPage.clickOnSaveUnitChangesBtn();
 
@@ -492,6 +492,11 @@ test('Test case C274: Check image section functionality', async({page, apiHelper
 test('Test case C275: Check services functionality', async({apiHelper, ownerUnitsPage, editUnitPage}) => {
     const over100CharStr = faker.string.alpha({length: 101});
     const randomService = faker.string.alpha({length: 20});
+    const inputValues = [
+        '<>{};^',
+        over100CharStr,
+        randomService
+    ];
 
     await ownerUnitsPage.clickOnEditUnitBtn(); 
     await editUnitPage.editedUnitServiceCloseIcon.click();
@@ -512,10 +517,10 @@ test('Test case C275: Check services functionality', async({apiHelper, ownerUnit
                 await expect(editUnitPage.serviceInput).toHaveAttribute('placeholder', testData.inputPlaceholderTexts.editUnitService);
                 break
 
-    const inputValue = await editUnitPage.serviceInput.inputValue();
-
-    await expect(inputValue.length).toBe(100);
-    
+            case over100CharStr:
+                const inputValue = await editUnitPage.serviceInput.inputValue();
+                await expect(inputValue.length).toBe(100);
+                break
             
             case randomService:
                 await expect(editUnitPage.serviceNotFoundMsg).toBeVisible();
@@ -549,7 +554,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
     for(let i = 0; i < paymentMethods.length; i++) {
         await editUnitPage.clickOnSelectPaymentMethodInput();
-    
+
         await expect(editUnitPage.paymentMethodsDropDown).toBeVisible();
         
         const paymentMethodDropDownItems = await editUnitPage.paymentMethodDropDownItems.allInnerTexts();
@@ -681,17 +686,17 @@ test('Test case C543:  Check "Вартість мінімального замо
         await expect(editUnitPage.additionalPriceDropDpwn).toBeVisible();
 
         additionalPriceItems = await editUnitPage.additionalPriceDropDownItems.allInnerTexts();
-        await expect(priceOptions).toContain(priceOption);
+ 
+        await expect(priceOptions).toContain(additionalPriceItems[i]);
 
-        const index = additionalPriceItems.indexOf(priceOption);
-        if (index !== -1) {
-            await editUnitPage.additionalPriceDropDownItems.nth(index).click();
-            const selectedPriceOption = await editUnitPage.additionalPriceSelect.nth(1).innerText();
-            await expect(selectedPriceOption.toLowerCase()).toBe(priceOption.toLowerCase());
+        await editUnitPage.additionalPriceDropDownItems.nth(i).click();
 
-            if (priceOption === 'Зміна') {
-                await expect(editUnitPage.selectTimeInput).toBeVisible();
-            }
+        const additionalPriceDropDownItem = await editUnitPage.additionalPriceSelect.nth(1).innerText()
+
+        await expect(additionalPriceDropDownItem.toLowerCase()).toBe(additionalPriceItems[i].toLowerCase());
+
+        if(additionalPriceItems[i] === 'Зміна') {
+            await expect(editUnitPage.selectTimeInput).toBeVisible();
         }
     }
 
@@ -704,6 +709,7 @@ test('Test case C543:  Check "Вартість мінімального замо
     await page.waitForLoadState('load');
 
     await editUnitPage.additionalPriceInput.fill('1000');
+
     await editUnitPage.clickOnSaveUnitChangesBtn();
 
     await expect(editUnitPage.successEditUnitMsg).toBeVisible();

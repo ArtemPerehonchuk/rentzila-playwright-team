@@ -8,10 +8,10 @@ class ProductsPage extends Page {
     }
     
     produtsList: Locator = this.page.locator('[data-testid="cardWrapper"]');
-    unitTitle = this.page.getByTestId('unitName');
-    unitCategory = this.page.locator('div[class*="OwnerUnitCard_category_"]');
-    favoriteBtn = this.page.getByTestId('favourite');
-    favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
+    unitTitle: Locator = this.page.getByTestId('unitName');
+    unitCategory: Locator = this.page.locator('div[class*="OwnerUnitCard_category_"]');
+    favoriteBtn: Locator = this.page.getByTestId('favourite');
+    favoriteIndicator: Locator = this.page.locator('[data-testid="favourite"] g>path');
     productFilterItem: Locator = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
     dropdownArrow: Locator = this.page.locator('[data-testid="rightArrow"]').nth(2);
     unitsContainer: Locator = this.page.locator('div[class*="MapPagination_units_container"]');

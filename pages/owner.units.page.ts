@@ -8,7 +8,7 @@ class OwnerUnitsPage extends Page {
     }
 
     unitName: Locator = this.page.locator('[class*="OwnerUnitCard_name"]');
-    unitCategory = this.page.locator('div[class*="OwnerUnitCard_category_"]');
+    unitCategory: Locator = this.page.locator('div[class*="OwnerUnitCard_category_"]');
     activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
     waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
     activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
@@ -16,24 +16,25 @@ class OwnerUnitsPage extends Page {
     unitCards: Locator = this.page.locator('div[class*="OwnerUnitCard_unitCard_"]');
     editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
     editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    favoriteBtn = this.page.locator('[data-testid="favourite"]');
-    favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
-    unitCreationDate = this.page.locator('div[class*="OwnerUnitCard_dot_"]~div');
+    firstWaitingsUnit: Locator = this.page.locator('[class*="OwnerUnitCard_container"]').first();
+    favoriteBtn: Locator = this.page.locator('[data-testid="favourite"]');
+    favoriteIndicator: Locator = this.page.locator('[data-testid="favourite"] g>path');
+    unitCreationDate: Locator = this.page.locator('div[class*="OwnerUnitCard_dot_"]~div');
     clearFavoritesBtn: Locator = this.page.locator('button[class*="OwnerFavouriteUnitsPage_removeList_"]');
-    clearFavoritesPopup = this.page.locator('[class*="DialogPopup_content_"]');
-    clearFavoritesPopupConfirmBtn = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
-    clearFavoritesPopupCancelBtn = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
-    clearFavoritesPopupCloseIcon = this.page.locator('[class*="PopupLayout_closeIcon_"]');
-    unitsEmptyTitle = this.page.getByTestId('title');
-    unitsEmptyMsg = this.page.getByTestId('descr');
-    emptyBlockBtn = this.page.getByTestId('emptyBlockButton');
-    unitSearchInput = this.page.locator('div[data-testid="search"] input');
-    paginationNumBtn = this.page.locator('a[class*="Pagination_page_"]');
-    paginationPrevBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
-    paginationNextBtn = this.page.locator('a[class*="Pagination_arrow_"][rel="next"]');
-    unitCategorySelect = this.page.getByTestId('div_CustomSelect').nth(0);
-    unitSortingSelect = this.page.getByTestId('div_CustomSelect').nth(1);
-    selectFieldItem = this.page.getByTestId('item-customSelect');
+    clearFavoritesPopup: Locator = this.page.locator('[class*="DialogPopup_content_"]');
+    clearFavoritesPopupConfirmBtn: Locator = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
+    clearFavoritesPopupCancelBtn: Locator = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
+    clearFavoritesPopupCloseIcon: Locator = this.page.locator('[class*="PopupLayout_closeIcon_"]');
+    unitsEmptyTitle: Locator = this.page.getByTestId('title');
+    unitsEmptyMsg: Locator = this.page.getByTestId('descr');
+    emptyBlockBtn: Locator = this.page.getByTestId('emptyBlockButton');
+    unitSearchInput: Locator = this.page.locator('div[data-testid="search"] input');
+    paginationNumBtn: Locator = this.page.locator('a[class*="Pagination_page_"]');
+    paginationPrevBtn: Locator = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
+    paginationNextBtn: Locator = this.page.locator('a[class*="Pagination_arrow_"][rel="next"]');
+    unitCategorySelect: Locator = this.page.getByTestId('div_CustomSelect').nth(0);
+    unitSortingSelect: Locator = this.page.getByTestId('div_CustomSelect').nth(1);
+    selectFieldItem: Locator = this.page.getByTestId('item-customSelect');
 
     getPaginationBtnWithIndex(index: number) {
         const number = index - 1;

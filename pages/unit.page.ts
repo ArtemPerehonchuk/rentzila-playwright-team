@@ -9,7 +9,7 @@ class UnitPage extends Page {
 
     unitServicesTitle: Locator = this.page.locator('[class*="UnitCharacteristics_services"] [class*="UnitCharacteristics_title"]');
     unitServicesTypesContainer: Locator = this.page.locator('[itemprop="services"]');
-    secondCategoryBreadCrumb = this.page.locator("span[data-testid='secondCategorySpan']");
+    secondCategoryBreadCrumb: Locator = this.page.locator("span[data-testid='secondCategorySpan']");
 
     async checkUnitIsVisible() {
         await expect(this.unitServicesTitle).toBeVisible()

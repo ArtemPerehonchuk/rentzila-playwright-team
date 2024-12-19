@@ -9,8 +9,8 @@ class ProfilePage extends Page {
 
     profilePhoneInput: Locator = this.page.locator('input[data-testid="input_OwnerProfileNumber"]');
     profileLogoutBtn: Locator = this.page.locator('div[data-testid="logOut"]');
-    unitsDropdown = this.page.getByTestId('leftsideCategory').filter({hasText: "Оголошення"});
-    favoriteUnitsTab = this.page.getByTestId('variant').filter({hasText: "Обрані оголошення"});
+    unitsDropdown: Locator = this.page.getByTestId('leftsideCategory').filter({hasText: "Оголошення"});
+    favoriteUnitsTab: Locator = this.page.getByTestId('variant').filter({hasText: "Обрані оголошення"});
 
     async getProfilePhoneInputValue() {
         return (await this.profilePhoneInput.inputValue()).split(' ').join('');
