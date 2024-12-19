@@ -1,5 +1,6 @@
 import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
+import path from 'path';
 
 class EditTenderPage extends Page {
 
@@ -30,9 +31,15 @@ class EditTenderPage extends Page {
     firstNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').nth(1);
     phoneInputErrorMsg: Locator = this.page.locator('p[data-testid="errorMessage"]');
     tenderSuccessfullyEditedMsg: Locator = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
-    lookInMyTendersBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]')
+    lookInMyTendersBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    uploadDocsInput: Locator = this.page.locator('input[type="file"]');
+    uploadDocsBlock: Locator = this.page.locator('[data-testid="dropDiv"]');
 
-    
+    async uploadDoc(pathToDoc: string) {   
+        await this.uploadDocsBlock.focus();
+        await this.uploadDocsInput.setInputFiles(path.resolve(pathToDoc));
+        await this.page.waitForLoadState('load');
+    }
 }
 
 

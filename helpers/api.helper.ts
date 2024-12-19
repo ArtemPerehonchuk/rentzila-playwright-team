@@ -238,10 +238,6 @@ class ApiHelper {
             },
             params: { status: tenderStatus },
         })
-
-        // console.log('status: ', response.status())
-        // console.log('response ', await response.json())
-        // console.log('Full response: ', await response.text());
     }
 
     async getTenderById(accessToken: string, tenderId: number){
@@ -251,8 +247,6 @@ class ApiHelper {
                 ... this.defaultHeaders
             },
         })
-
-        console.log('tender: ', await response.json())
 
         return response
     }

@@ -78,7 +78,6 @@ class EditUnitPage extends Page {
         await this.saveUnitChangesBtn.scrollIntoViewIfNeeded();
         await this.saveUnitChangesBtn.click({force: true});
         await this.page.waitForLoadState('load');
-        // await this.page.waitForTimeout(2000);
     }
 
     async clearUnitNameInput() {
@@ -128,7 +127,6 @@ class EditUnitPage extends Page {
         await this.technicalCharacteristicsInput.click();
         await this.technicalCharacteristicsInput.type(value);
         await this.page.waitForLoadState('load');
-        // await this.page.waitForTimeout(1000);
     }
 
     async getDetailDescriptionInputText() {

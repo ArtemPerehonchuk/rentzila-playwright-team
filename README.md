@@ -114,6 +114,11 @@ To run all tests using the default browser configuration:
     npm run test:create-tender
     ```
 
+- Run tests for edit rejected tender functionality:
+
+    ```bash
+    npm run test:edit-rejected-tender
+    ```
 ## GitHub Pages
 
 View report on GitHub Pages:
