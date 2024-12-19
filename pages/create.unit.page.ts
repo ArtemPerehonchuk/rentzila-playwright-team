@@ -3,6 +3,9 @@ import Page from './page';
 import categoryNames from '../data/category.names.json' assert { type: 'json' };
 import { faker } from '@faker-js/faker';
 
+const mapLabelSelector: string = '[data-testid="mapLabel"]';
+const mapPopUpSelector: string = '[data-testid="div-mapPopup"]';
+
 class CreateUnitPage extends Page {  
 
     constructor(page: PlaywrightPage) {
@@ -58,6 +61,7 @@ class CreateUnitPage extends Page {
     characteristicsTitle: Locator  = this.page.locator('div[class*="Characteristics_title"]');
     vehicleManufacturerList: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
     mapLabel: Locator = this.page.locator('[data-testid="mapLabel"]');
+    elementOutsidePopUp: Locator = this.page.locator('[class*="NavbarCatalog_wrapper"]');
 
     async checkCreateUnitTabsTitles(activeTabNumber: number) {
         if(await this.createUnitTabs.isVisible) {
@@ -98,21 +102,21 @@ class CreateUnitPage extends Page {
     }
 
     async fillSectionInput(sectionInputLocator: Locator, value: string) {
-        await this.clearSectionInput(sectionInputLocator);
+        await sectionInputLocator.clear();
         await sectionInputLocator.click();
         await sectionInputLocator.fill(value);
         await this.page.waitForLoadState('domcontentloaded');
     }
 
-    async clearSectionInput(sectionInputLocator: Locator) {
-        await sectionInputLocator.clear();
-    }
+    // async clearSectionInput(sectionInputLocator: Locator) {
+    //     await sectionInputLocator.clear();
+    // }
 
     async copyPasteValueInSectionInput(sectionInputLocator: Locator) {
         await sectionInputLocator.click();
         await this.page.keyboard.press('Meta+A');
         await this.page.keyboard.press('Meta+c');
-        await this.clearSectionInput(sectionInputLocator);
+        await sectionInputLocator.clear();
         await sectionInputLocator.click();
         await this.page.keyboard.press('Meta+V');
     }
@@ -184,8 +188,8 @@ class CreateUnitPage extends Page {
     }
 
     async clickOutsidePopup() {
-        await this.page.waitForSelector('[class*="NavbarCatalog_wrapper"]', { state: 'visible' });
-        await this.page.click('[class*="NavbarCatalog_wrapper"]', { force: true });
+        await this.elementOutsidePopUp.waitFor({state: 'visible'});
+        await this.elementOutsidePopUp.click({force: true});
         await this.page.waitForLoadState('load');
     }
 
@@ -259,7 +263,7 @@ class CreateUnitPage extends Page {
 
     async clickOnSelectOnMapBtn() {
         await this.selectOnMapBtn.click();
-        await this.page.waitForSelector('[data-testid="div-mapPopup"]')
+        await this.page.waitForSelector(mapPopUpSelector)
     }
 
     async getMapPopUpAddressLineText() {
@@ -276,7 +280,7 @@ class CreateUnitPage extends Page {
     
     async clickOnMapPopUpSubmitBtn() {
         await this.mapPopUpSubmitBtn.click({force: true});
-        await this.page.waitForSelector('[data-testid="mapLabel"]')
+        await this.page.waitForSelector(mapLabelSelector)
     }
 
     async clickOnMapAndGetAddress() {

@@ -128,7 +128,7 @@ test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
     ]
 
     for (const value of inputValues) {
-        await createUnitPage.clearSectionInput(createUnitPage.announcementNameInput)
+        await createUnitPage.announcementNameInput.clear();
         await createUnitPage.announcementNameInput.type(value)
 
         switch(value) {
@@ -290,7 +290,7 @@ test('test case C299: Verify model name input field', async( {createUnitPage} ) 
             await expect(createUnitPage.modelNameInputError).toHaveText(testData.errorMessages.modelNameLess15Symbols);
             await expect(createUnitPage.modelNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
-            await createUnitPage.clearSectionInput(createUnitPage.modelNameInput);
+            await createUnitPage.modelNameInput.clear();
         }
         else if(input === ' ' || input === '<>{};^') {
             await expect(await createUnitPage.getModelNameInputText()).toBe('');
