@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "./run-tests.sh all",
-    "test:run": "./run-tests.sh",
-    "test:report": "playwright show-report"
+    "test": "playwright test"
   },
   "keywords": [
     "playwright",
