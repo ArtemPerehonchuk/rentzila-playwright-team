@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
 import testData from '../data/test.data.json' assert {type: 'json'};
+import { getRandomString, getRandomNumericString } from "../helpers/random.values";
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -31,7 +32,7 @@ test.beforeEach(async ({ homepage, ownerUnitsPage, adminMainPage, apiHelper}) =>
     await homepage.fillInput('password', VALID_PASSWORD);
     await homepage.clickOnSubmitLoginFormBtn();
 
-    unitName = faker.string.alpha({length: 15});
+    unitName = getRandomString(15);
 
     await homepage.clickOnUserIcon();
     await homepage.clickOnProfileMyAnnouncementsItem();
@@ -106,9 +107,9 @@ test('Test case C182: Edit Unit without changes', async({ page, ownerUnitsPage, 
 })
 
 test('Test case C272: Check "Назва оголошення" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, apiHelper}) => {
-    const nineCharStr = faker.string.alpha({length: 9});
-    const over100CharStr = faker.string.alpha({length: 101});
-    const tenCharStr = faker.string.alpha({length: 10});
+    const nineCharStr = getRandomString(9)
+    const over100CharStr = getRandomString(101);
+    const tenCharStr = getRandomString(10);
     const inputValues = [
         '<>{};^',
         nineCharStr,
@@ -166,8 +167,8 @@ test('Test case C272: Check "Назва оголошення" input field', asyn
 })
 
 test('Test case C273: Check "Виробник транспортного засобу" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
-    const randomString = faker.string.alpha({length: 15});
-    const randomChar = faker.string.alpha({length: 1});
+    const randomString = getRandomString(10);
+    const randomChar = getRandomString(1);
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.uploadPhotos(1);
@@ -227,8 +228,8 @@ test('Test case C273: Check "Виробник транспортного зас�
 })
 
 test('Test case C532: "Check "Назва моделі" input field', async({ ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage, apiHelper}) => {
-    const random15CharString = faker.string.alpha({length: 15});
-    const random16CharString = faker.string.alpha({length: 16});
+    const random15CharString = getRandomString(15);
+    const random16CharString = getRandomString(16);
 
     await ownerUnitsPage.clickOnEditUnitBtn();
     await editUnitPage.uploadPhotos(1);
@@ -476,8 +477,8 @@ test('Test case C274: Check image section functionality', async({page, ownerUnit
 })
 
 test('Test case C275: Check services functionality', async({ownerUnitsPage, editUnitPage, adminUnitsPage, adminUnitReviewPage}) => {
-    const over100CharStr = faker.string.alpha({length: 101});
-    const randomService = faker.string.alpha({length: 20});
+    const over100CharStr = getRandomString(101);
+    const randomService = getRandomString(20);
     const inputValues = [
         '<>{};^',
         over100CharStr,
@@ -584,7 +585,7 @@ test('Test case C276: Check "Вартість мінімального замо�
     await expect(editUnitPage.unitPriceErrorMsg).toBeVisible();
     await expect(editUnitPage.unitPriceErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
-    const random10Digits = (faker.number.int({ min: 1000000000, max: 9999999999 })).toString()
+    const random10Digits = getRandomNumericString(10)
     const inputValues = [
         '<>{};^@!#$%?()|\/`~',
         random10Digits

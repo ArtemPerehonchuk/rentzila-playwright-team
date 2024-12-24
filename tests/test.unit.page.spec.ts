@@ -1,7 +1,7 @@
 import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
-import { getStringWithSpaceIncide, getStringWithSpaceInEnd } from '../helpers/random.values';
-import testData from '../data/test.data.json' assert {type: 'json'}
+import { getStringWithSpaceIncide, getStringWithSpaceInEnd, getRandomString } from '../helpers/random.values';
+import testData from '../data/test.data.json' assert {type: 'json'};
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -117,9 +117,9 @@ test('test case C297: Verify unit name section', async( {createUnitPage} ) => {
     await expect(createUnitPage.announcementNameInput).toHaveCSS('border-color', testData.borderColors.errorColor);
 
     const randomToNineCharNumber = String(faker.number.int({min: 1, max: 999999999}));
-    const random101CharString = faker.string.alpha({ length: 101 });
-    const randomTenCharString = faker.string.alpha({ length: 10 });
-    const randomOneCharString = faker.string.alpha({ length: 1 });
+    const random101CharString = getRandomString(101);
+    const randomTenCharString = getRandomString(10);
+    const randomOneCharString = getRandomString(1);
     const inputValues = [
         randomToNineCharNumber, 
         random101CharString,
@@ -192,8 +192,8 @@ test('test case C298: Verify vehicle manufacturer section', async( {createUnitPa
     await expect(createUnitPage.vehicleManufacturerInputError).toHaveText(testData.errorMessages.requiredField);
     await expect(createUnitPage.vehicleManufacturerInputContainer).toHaveCSS('border-color', testData.borderColors.darkBlue);
 
-    const random101CharString = faker.string.alpha({ length: 101 });
-    const randomOneCharString = faker.string.alpha({ length: 1 });
+    const random101CharString = getRandomString(101);
+    const randomOneCharString = getRandomString(1);
     const InputValues = [
         'АТЭК',
         ' ',
@@ -263,7 +263,7 @@ test('test case C299: Verify model name input field', async( {createUnitPage} ) 
     await expect(await createUnitPage.getModelNameTitleText()).toContain(testData.titleTexts.modelName);
     await expect(await createUnitPage.getModelNameInputBgText()).toBe(testData.inputPlaceholderTexts.modelNameInput);
 
-    const random16CharStr = faker.string.alpha({ length: 16 });
+    const random16CharStr = getRandomString(16);
     const random10To15CharStr = faker.string.alpha({ length: {min: 10, max: 15} });
     const randomStrWithSpaceInEnd = getStringWithSpaceInEnd();
     const randomStrWithSpaceIncide = getStringWithSpaceIncide();
@@ -308,8 +308,8 @@ test('test case C317: Verify technical characteristics section', async( {createU
     await expect(createUnitPage.technicalInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
-    const random9000CharStr = faker.string.alpha({ length: 9000});
-    const randomOneCharStr = faker.string.alpha({ length: 1});
+    const random9000CharStr = getRandomString(9000);
+    const randomOneCharStr = getRandomString(1);
     const inputValues = [
         '<>{};^',
         random9000CharStr
@@ -336,8 +336,8 @@ test('test case C318: Verify description section', async( {createUnitPage} ) => 
     await expect(createUnitPage.descriptionInfoInput).toBeEnabled();
     await expect(await createUnitPage.getTechnicalInfoInputText()).toBe('');
 
-    const random9000CharStr = faker.string.alpha({ length: 9000});
-    const randomOneCharStr = faker.string.alpha({ length: 1});
+    const random9000CharStr = getRandomString(9000);
+    const randomOneCharStr = getRandomString(1);
     const inputValues = [
         '<>{};^',
         random9000CharStr

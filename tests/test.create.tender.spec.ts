@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
 import testData from '../data/test.data.json' assert {type: 'json'};
 import {faker} from '@faker-js/faker';
+import { getRandomString, getRandomNumericString } from '../helpers/random.values';
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -40,10 +41,10 @@ test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }
     await expect(createTenderPage.tenderNameInputErrorMsg).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
     await expect(createTenderPage.tenderNameInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
 
-    const random10Char = faker.string.alpha({length: 10});
-    const randomLetter = faker.string.alpha({length: 1});
-    const random9Char = faker.string.alpha({length: 9});
-    const random71Char = faker.string.alpha({length: 71});
+    const random10Char = getRandomString(10);
+    const randomLetter = getRandomString(1);
+    const random9Char = getRandomString(9);
+    const random71Char = getRandomString(71);
     const inputValues = [
         random9Char,
         random71Char,
@@ -109,8 +110,8 @@ test('Test Case: C779 Verify service section', async ({ createTenderPage }) => {
     await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveText(testData.errorMessages.requiredField);
     await expect(createTenderPage.tenderServiceInputErrorMsg).toHaveCSS('color', testData.borderColors.errorColor);
 
-    const randomLetter = faker.string.alpha({length: 1});
-    const random101Char = faker.string.alpha({length: 101});
+    const randomLetter = getRandomString(1);
+    const random101Char = getRandomString(101);
     const inputValues = [
         randomLetter,
         random101Char,
@@ -233,7 +234,7 @@ test('Test Case: C783 Verify additional info section', async ({ page, createTend
     await expect(createTenderPage.descriptionInputErrorMsg).toBeVisible();
     await expect(createTenderPage.descriptionInputErrorMsg).toContainText(testData.errorMessages.tenderDescriptionLess40Symbols);
 
-    const random39Char = faker.string.alpha({length: 39});
+    const random39Char = getRandomString(39);
 
     await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, random39Char);
 
@@ -244,7 +245,7 @@ test('Test Case: C783 Verify additional info section', async ({ page, createTend
     
     await expect(createTenderPage.descriptionInput).toHaveText('');
 
-    const random40Char = faker.string.alpha({length: 40});
+    const random40Char = getRandomString(40);
 
     await createTenderPage.fillCreateTenderInput(createTenderPage.descriptionInput, random40Char);
 
@@ -269,10 +270,10 @@ test('Test Case: C784 Verify "Скасувати" button', async ({ page, create
 });
 
 test('Test Case: C785 Verify "Далі" button', async ({ createTenderPage }) => {
-    const tenderName = faker.string.alpha({length: 10});
-    const letter = faker.string.alpha({length: 1});
-    const budget = faker.string.numeric(5);
-    const description = faker.string.alpha({length: 40});
+    const tenderName = getRandomString(10);
+    const letter = getRandomString(1);
+    const budget = getRandomNumericString(5);
+    const description = getRandomString(40);
 
     await createTenderPage.fillRequiredFields(tenderName, letter, budget, description);
     await createTenderPage.nextBtn.click();

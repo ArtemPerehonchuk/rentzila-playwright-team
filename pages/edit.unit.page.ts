@@ -93,11 +93,11 @@ class EditUnitPage extends Page {
         await this.vehicleManufacturerInput.fill(value);
     }
 
-    async getVehicleManufacturerInputText() {
+    async getVehicleManufacturerInputText(): Promise<string> {
         return await this.vehicleManufacturerInput.inputValue();
     }
 
-    async getVehicleManufacturerInputSelectedOptionText() {
+    async getVehicleManufacturerInputSelectedOptionText(): Promise<string> {
         return await this.vehicleManufacturerInputSelectedOption.innerText();
     }
 
@@ -129,7 +129,7 @@ class EditUnitPage extends Page {
         await this.page.waitForLoadState('load');
     }
 
-    async getDetailDescriptionInputText() {
+    async getDetailDescriptionInputText(): Promise<string> {
         return await this.detailDescriptionInput.innerText(); 
     }
 
@@ -169,7 +169,7 @@ class EditUnitPage extends Page {
         await this.page.waitForTimeout(500);
     }
 
-    async getMapPopUpLocationText() {
+    async getMapPopUpLocationText(): Promise<string> {
         return await this.mapPopUpLocation.innerText();
     } 
     
@@ -196,7 +196,7 @@ class EditUnitPage extends Page {
         await this.editedUnitDeleteImgIcons.nth(index).click();
     }
 
-    async getEditedUnitUploadedPhotosCount() {
+    async getEditedUnitUploadedPhotosCount(): Promise<number> {
         let uploadedImagesCount = 0;
         const unitImageBlocks = await this.editedUnitImageBlocks.all();
 
@@ -210,7 +210,7 @@ class EditUnitPage extends Page {
         return uploadedImagesCount;
     }
 
-    async getEditedUnitName() {
+    async getEditedUnitName(): Promise<string> {
         return await this.unitNameInput.inputValue();
     }
 
@@ -249,7 +249,7 @@ class EditUnitPage extends Page {
         }
     }
 
-    async getImgSrcAttr(numberOfImage: number) {
+    async getImgSrcAttr(numberOfImage: number): Promise<string | null> {
         return await this.editedUnitImages.nth(numberOfImage - 1).getAttribute('src');
     }
 

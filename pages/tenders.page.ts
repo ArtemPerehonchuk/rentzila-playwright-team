@@ -9,7 +9,7 @@ class TendersPage extends Page {
 
     searchInput: Locator = this.page.getByTestId('search');
 
-    async getSerchInputBgText() {
+    async getSerchInputBgText(): Promise<string | null> {
         const searchInputText = await this.searchInput.getAttribute('placeholder');
         return await searchInputText;
     }

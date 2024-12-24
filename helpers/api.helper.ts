@@ -1,14 +1,15 @@
 import { APIRequestContext } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
-import FormData from 'form-data';
 import path from 'path';
-import { createTenderData } from '../helpers/tender.body'
+import { createTenderData } from '../helpers/tender.body';
+import tesData from '../data/test.data.json' assert {type: 'json'}
 
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
 const user_password: string = process.env.VALID_PASSWORD || '';
+const unitOwner = Number(tesData.unitOwner);
 
 const tenderData = createTenderData();
 
@@ -119,7 +120,7 @@ class ApiHelper {
                     "is_approved": null,
                     "is_archived": false,
                     "manufacturer": 1107,
-                    "owner": 1776,
+                    "owner": unitOwner,
                     "category": 360,
                     "services": [
                         118
@@ -171,8 +172,6 @@ class ApiHelper {
                 is_main: 'true'
             }
         });
-
-        const responseData = await response.json();
     
         return response;
     }
@@ -193,7 +192,7 @@ class ApiHelper {
     async deleteAllUnits(accessToken: string) {
         const unitsList = await this.getUnitsList(accessToken);
         for(const unit of unitsList.results) {
-            if(unit.owner === 1776) {
+            if(unit.owner === unitOwner) {
                 await this.deleteUnit(accessToken, unit.id)
             }
         }

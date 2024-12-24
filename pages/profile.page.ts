@@ -11,7 +11,7 @@ class ProfilePage extends Page {
     profileLogoutBtn: Locator = this.page.locator('div[data-testid="logOut"]');
 
 
-    async getProfilePhoneInputValue() {
+    async getProfilePhoneInputValue(): Promise<string> {
         return (await this.profilePhoneInput.inputValue()).split(' ').join('');
     }
 

@@ -53,7 +53,7 @@ class ProductsPage extends Page {
         }else return false
     }
 
-    async getSearchInputBgText() {
+    async getSearchInputBgText(): Promise<string | null> {
         const searchInputText = await this.searchInput.getAttribute('placeholder');
         return searchInputText;
     }

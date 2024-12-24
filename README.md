@@ -63,7 +63,7 @@ To run all tests using the default browser configuration:
 - Run tests for footer elements:
 
     ```bash
-    npm run test:footer-elements
+    npm run test:footer:elements
     ```
 
 - Run tests for login:
@@ -75,25 +75,25 @@ To run all tests using the default browser configuration:
 - Run tests for main info tab on create unit page:
 
     ```bash
-    npm run test:unit-page-main-info-tab
+    npm run test:unit:main:info:tab
     ```
 
 - Run tests for photo tab on create unit page:
 
     ```bash
-    npm run test:photo-tab
+    npm run test:photo;tab
     ```
 
 - Run tests for prices tab on create unit page:
 
     ```bash
-    npm run test:prices-tab
+    npm run test:prices:tab
     ```
 
 - Run tests for services tab on create unit page:
 
     ```bash
-    npm run test:services-tab
+    npm run test:services:tab
     ```
 
 - Run tests for creating unit using API:
@@ -105,19 +105,19 @@ To run all tests using the default browser configuration:
 - Run tests for edit unit functionality:
 
     ```bash
-    npm run test:edit-unit
+    npm run test:edit:unit
     ```
 
 - Run tests for create tender functionality:
 
     ```bash
-    npm run test:create-tender
+    npm run test:create:tender
     ```
 
 - Run tests for edit rejected tender functionality:
 
     ```bash
-    npm run test:edit-rejected-tender
+    npm run test:edit:rejected:tender
     ```
 ## GitHub Pages
 

@@ -37,7 +37,7 @@ class PhotoTab extends Page {
         }
     }
 
-    async getInvalidPhotoPopUpText() {
+    async getInvalidPhotoPopUpText(): Promise<string> {
         return await this.invalidPhotoPopUp.innerText();
     }
 
@@ -55,11 +55,11 @@ class PhotoTab extends Page {
         await this.uploadFileInput.setInputFiles(path.resolve('data/photo/21mb.jpg'));
     }
 
-    async getPhotoTabTitleText() {
+    async getPhotoTabTitleText(): Promise<string> {
         return await this.photoTabTitle.innerText();
     }
 
-    async getUploadPhotoClueLineText() {
+    async getUploadPhotoClueLineText(): Promise<string> {
        return await this.uploadPhotoClueLine.innerText();
     }
 

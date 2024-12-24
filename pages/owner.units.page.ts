@@ -21,7 +21,7 @@ class OwnerUnitsPage extends Page {
         await this.page.waitForLoadState('load');
     }
 
-    async getFirstUnitNameText() {
+    async getFirstUnitNameText(): Promise<string> {
         return await this.firstUnitName.innerText();
     }
 
@@ -30,7 +30,7 @@ class OwnerUnitsPage extends Page {
         await this.page.waitForLoadState('load')
     }
 
-    async getUnitCardsLength() {
+    async getUnitCardsLength(): Promise<number> {
         const cards =  await this.unitCards.all();
         const unitCardsLength = cards.length;
         return unitCardsLength;

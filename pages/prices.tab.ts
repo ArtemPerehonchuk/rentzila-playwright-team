@@ -37,27 +37,27 @@ class PricesTab extends Page {
     priceOfMinOrderInputError: Locator = this.page.locator('[class*="RowUnitPrice_error"]');
     serviceInAddPriceSection: Locator = this.page.locator('[class*="ServicePrice_service"] > span')
 
-    async getDropDownBgText() {
+    async getDropDownBgText(): Promise<string> {
         return await this.paymentMethodDropDown.innerText();
     }
 
-    async getPaymentMethodTitleText() {
+    async getPaymentMethodTitleText(): Promise<string> {
         return await this.paymentMethodTitle.innerText();
     }
 
-    async getPaymentMethodDropDownOptionsText() {
+    async getPaymentMethodDropDownOptionsText(): Promise<string[]> {
         return await this.paymentMethodDropDownOptions.allInnerTexts()
     }
 
-    async getPaymentMethodDropDownOptions() {
+    async getPaymentMethodDropDownOptions(): Promise<Locator[]> {
         return await this.paymentMethodDropDownOptions.all();
     }
 
-    async getpriceOfMinOrderTitleText() {
+    async getpriceOfMinOrderTitleText(): Promise<string> {
         return await this.priceOfMinOrderTitle.innerText();
     }
 
-    async getpriceOfMinOrderInputBgText() {
+    async getpriceOfMinOrderInputBgText(): Promise<string | null> {
         return await this.priceOfMinOrderInput.getAttribute('placeholder');
     }
 
@@ -69,7 +69,7 @@ class PricesTab extends Page {
         await inputLocator.fill(value)
     }
 
-    async getInputValue(inputLocator: Locator) {
+    async getInputValue(inputLocator: Locator): Promise<string> {
         return await inputLocator.inputValue();
     }
 
@@ -83,27 +83,27 @@ class PricesTab extends Page {
         await this.page.keyboard.press('Meta+V');
     }
 
-    async getCurrencyFieldText() {
+    async getCurrencyFieldText(): Promise<string> {
         return await this.currencyField.inputValue();
     }
 
-    async getAddPriceCurrencyFieldText() {
+    async getAddPriceCurrencyFieldText(): Promise<string> {
         return await this.addPriceCurrency.inputValue();
     }
 
-    async getServicePriceTitleText() {
+    async getServicePriceTitleText(): Promise<string> {
         return await this.servicePriseTitle.innerText();
     }
 
-    async getServicePriceClueText() {
+    async getServicePriceClueText(): Promise<string> {
         return await this.servicePriceClue.innerText();
     }
 
-    async getAddPriceInputBgText() {
+    async getAddPriceInputBgText(): Promise<string | null> {
        return await this.addPriceInput.getAttribute('placeholder');
     }
 
-    async getSelectAddPriceOptionDropDownBgText() {
+    async getSelectAddPriceOptionDropDownBgText(): Promise<string> {
         return this.selectAddPriceOptionDropDown.innerText();
     }
 
@@ -143,7 +143,7 @@ class PricesTab extends Page {
         await expect(currentText).toBe(expectedText);
     }
 
-    async getServiceFromAddPriceSection() {
+    async getServiceFromAddPriceSection(): Promise<string> {
         const service = await this.serviceInAddPriceSection.innerText();
         return service;
     }

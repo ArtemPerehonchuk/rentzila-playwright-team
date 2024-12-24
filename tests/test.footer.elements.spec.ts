@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
-import testData from '../data/test.data.json' assert {type: 'json'}
+import testData from '../data/test.data.json' assert {type: 'json'};
+import { Locator } from '@playwright/test';
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 const contactUsFormInputValues = testData["contuct us form inputs"];
@@ -10,6 +11,12 @@ test.beforeEach(async ({ page, homepage }) => {
 });
 
 test('test case C214: Verify that all elements on the footer are displayed and all links are clickable', async ({homepage, privacyPolicyPage, cookiePolicyPage, termsConditionsPage, productsPage, tendersPage }) => {
+    async function verifyPagesTitleAndUrl(pageName: any, pageTitleLocator: Locator, url: string, titleText: string) {
+        await expect(await pageName.getUrl()).toContain(url);
+        await expect(pageTitleLocator).toBeVisible();
+        await expect(pageTitleLocator).toHaveText(titleText);
+    }
+    
     await homepage.scrollToFooter();
 
     await expect(homepage.footerContainer).toBeVisible();
@@ -31,21 +38,15 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homepage.clickOnPrivacyPolicyLink();
 
-    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath["privacy-policy"]);
-    await expect(privacyPolicyPage.privacyPolicyTitle).toBeVisible();
-    await expect(privacyPolicyPage.privacyPolicyTitle).toHaveText(testData.titleTexts.privacyPolicy);
+    await verifyPagesTitleAndUrl(privacyPolicyPage, privacyPolicyPage.privacyPolicyTitle, testData.pagesURLPath["privacy-policy"], testData.titleTexts.privacyPolicy)
 
     await homepage.clickOnCookiePolicyLink();
 
-    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath["cookey-policy"]);
-    await expect(cookiePolicyPage.cookiePolicyTitle).toBeVisible()
-    await expect(cookiePolicyPage.cookiePolicyTitle).toHaveText(testData.titleTexts.cookiePolicy);
+    await verifyPagesTitleAndUrl(cookiePolicyPage, cookiePolicyPage.cookiePolicyTitle, testData.pagesURLPath["cookey-policy"], testData.titleTexts.cookiePolicy)
 
     await homepage.clickOnTermsConditionsLink();
 
-    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath["terms-conditions"]);
-    await expect(termsConditionsPage.termsConditionsTitle).toBeVisible()
-    await expect(termsConditionsPage.termsConditionsTitle).toHaveText(testData.titleTexts.termsConditions);
+    await verifyPagesTitleAndUrl(termsConditionsPage, termsConditionsPage.termsConditionsTitle, testData.pagesURLPath["terms-conditions"], testData.titleTexts.termsConditions)
 
     await homepage.clickOnAnnouncementsLink();
 
@@ -73,6 +74,11 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 test('test case C226: Verify "У Вас залишилися питання?" form', async ({ homepage, apiHelper }) => {
     const userName = faker.person.firstName();
     const userPhone = contactUsFormInputValues["other correct phone"];
+
+    async function verifyNameAndPhoneInputError(nameInputError: boolean, phoneInputError: boolean) {
+        await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(nameInputError);
+        await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(phoneInputError);
+    }
     
     await homepage.scrollToConsultationForm();
 
@@ -80,14 +86,12 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
 
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(true);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+    await verifyNameAndPhoneInputError(true, true);
 
     await homepage.fillInput('name', 'test');
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(false);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(true);
+    await verifyNameAndPhoneInputError(false, true);
 
     await homepage.consultationFormPhoneInput.click();
 
@@ -97,8 +101,7 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
     await homepage.clearInput('name');
     await homepage.clickOnSubmitConsultationBtn();
 
-    await expect(await homepage.checkInputErrorIsDisplayed('name', testData.errorMessages.fieldMustBeFilled)).toBe(true);
-    await expect(await homepage.checkInputErrorIsDisplayed('phone', testData.errorMessages.fieldMustBeFilled)).toBe(false);
+    await verifyNameAndPhoneInputError(true, false);
 
     await homepage.fillInput('name', contactUsFormInputValues.test);
     await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone with spaces"]);
@@ -106,7 +109,7 @@ test('test case C226: Verify "У Вас залишилися питання?" fo
 
     await expect(homepage.consultationFormErrorMessage.first()).toBeVisible();
     await expect(homepage.consultationFormErrorMessage.first()).toHaveText(testData.errorMessages.phoneNumberWasNotValidated);
-    await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', 'rgb(247, 56, 89)')
+    await expect(homepage.consultationFormErrorMessage).toHaveCSS('border-color', testData.borderColors.errorColor)
 
     await homepage.fillInput('phone', contactUsFormInputValues["incorrect phone same digits and spaces"]);
     await homepage.clickOnSubmitConsultationBtn();

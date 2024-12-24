@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures";
 import testData from '../data/test.data.json' assert {type: 'json'};
 import { faker } from "@faker-js/faker";
+import { getRandomString, getRandomNumericString } from "../helpers/random.values";
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -47,7 +48,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
     await expect(editTenderPage.tenderNameInputError).toBeVisible();
     await expect(editTenderPage.tenderNameInputError).toHaveText(testData.errorMessages.tenderNameLess10Symbols);
 
-    const random9Char = faker.string.alpha({length: 9});
+    const random9Char = getRandomString(9);
 
     await editTenderPage.tenderNameInput.clear()
     await editTenderPage.tenderNameInput.fill(random9Char);
@@ -72,7 +73,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
         await expect(await editTenderPage.tenderNameInput.inputValue()).not.toContain(testData.restrictedSymbols[i]);
     }
 
-    const random71Char = faker.string.alpha({length: 71})
+    const random71Char = getRandomString(71)
 
     await editTenderPage.tenderNameInput.type(random71Char);
 
@@ -85,7 +86,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
     await expect(editTenderPage.tenderServiceInputError).toBeVisible();
     await expect(editTenderPage.tenderServiceInputError).toHaveText(testData.errorMessages.requiredField);
 
-    const randomChar = faker.string.alpha({length: 1});
+    const randomChar = getRandomString(1);
 
     await editTenderPage.tenderServiceInput.fill(randomChar);
 
@@ -114,7 +115,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
         await expect(editTenderPage.tenderBudgetInputError).toHaveText(testData.errorMessages.requiredField)
     }
 
-    const random10NumStr = faker.string.numeric({length: 10});
+    const random10NumStr = getRandomNumericString(10);
 
     await editTenderPage.tenderBudgetInput.type(random10NumStr);
 
@@ -128,7 +129,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
 
     await editTenderPage.tenderDescriptionInput.clear();
 
-    const random39Char = faker.string.alpha({length: 39});
+    const random39Char = getRandomString(39);
 
     await editTenderPage.tenderDescriptionInput.fill(random39Char);
 
@@ -183,7 +184,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
     await expect(editTenderPage.lastNameInputErrorMsg).toBeVisible();
     await expect(editTenderPage.lastNameInputErrorMsg).toHaveText(testData.errorMessages.requiredField);
 
-    const oneLetter = faker.string.alpha({length: 1});
+    const oneLetter = getRandomString(1);
 
     await editTenderPage.lastNameInput.fill(oneLetter);
     await editTenderPage.saveTenderChangesBtn.click();
@@ -191,7 +192,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
     await expect(editTenderPage.lastNameInputErrorMsg).toBeVisible();
     await expect(editTenderPage.lastNameInputErrorMsg).toHaveText(testData.errorMessages.lastNameShouldBeAtList2Symbols);
 
-    const random26Char = faker.string.alpha({length: 26});
+    const random26Char = getRandomString(26);
 
     await editTenderPage.lastNameInput.fill(random26Char);
     await editTenderPage.saveTenderChangesBtn.click();
@@ -269,7 +270,7 @@ test('Test case C238: Edit the rejected tender with valid values (default contac
 
     await expect((await editTenderPage.phoneInput.inputValue()).split(' ').join('')).toBe(`+${phone13digits.slice(0, -1)}`);
 
-    const description = faker.string.alpha({length: 40});
+    const description = getRandomString(40);
 
     await editTenderPage.tenderDescriptionInput.fill(description);
     await editTenderPage.uploadDoc('data/photo/pexels-albinberlin-919073.jpg');

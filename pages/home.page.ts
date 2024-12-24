@@ -139,7 +139,7 @@ class HomePage extends Page {
         await navigationPromise; 
     }
 
-    async getSearchServiceSpecialEquipmentTitleText() {
+    async getSearchServiceSpecialEquipmentTitleText(): Promise<string> {
         return await this.searchServicesSpecialEquipmentTitle.innerText();
     }
 
@@ -148,7 +148,7 @@ class HomePage extends Page {
         await this.page.waitForLoadState('domcontentloaded');
     }
 
-    async getContactsEmail() {
+    async getContactsEmail(): Promise<string | null> {
         const emailAttr = await this.contactsEmail.getAttribute('href');
         return emailAttr
     }
@@ -228,7 +228,7 @@ class HomePage extends Page {
         }
     }
 
-    async getPhoneInputText() {
+    async getPhoneInputText(): Promise<string> {
         return await this.consultationFormPhoneInput.inputValue();
     }
 
@@ -263,15 +263,15 @@ class HomePage extends Page {
         await this.page.waitForTimeout(1000)
     }
 
-    async getLoginEmailOrPhoneInputValue() {
+    async getLoginEmailOrPhoneInputValue(): Promise<string> {
         return await this.loginEmailOrPhoneInput.inputValue();
     }
 
-    async getPasswordInputValue() {
+    async getPasswordInputValue(): Promise<string> {
         return await this.loginPasswordInput.inputValue();
     }
 
-    async getPasswordInputType() {
+    async getPasswordInputType(): Promise<string | null> {
         return await this.loginPasswordInput.getAttribute('type')
     }
 
@@ -287,7 +287,7 @@ class HomePage extends Page {
         await this.page.waitForLoadState('load');
     }
 
-    async getProfileDropDownEmail() {
+    async getProfileDropDownEmail(): Promise<string> {
         return await this.profileDropDownEmail.innerText();
     }
 
@@ -300,7 +300,7 @@ class HomePage extends Page {
         await this.page.waitForTimeout(2000);
     }
 
-    async getIncorrectPasswordErrorText() {
+    async getIncorrectPasswordErrorText(): Promise<string | undefined> {
         if(await this.invalidEmailOrPasswordError.isVisible()) {
             return await this.invalidEmailOrPasswordError.innerText()
         }else if(await this.loginErrorInputsMsg.isVisible()) {

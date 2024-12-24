@@ -20,3 +20,13 @@ export function getRandomLetter() {
     return alphabet[randomIndex];
 }
 
+export function getRandomString(stringLength: number) {
+    const randomString = faker.string.alpha({length: stringLength});
+    return randomString;
+}
+
+export function getRandomNumericString(stringLength: number) {
+    const randomString = faker.string.numeric({length: stringLength});
+    return randomString
+}
+

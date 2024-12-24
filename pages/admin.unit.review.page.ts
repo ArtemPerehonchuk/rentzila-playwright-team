@@ -18,7 +18,7 @@ class AdminUnitReviewPage extends Page {
     workTypeField: Locator = this.page.locator('[class*="AdminCurrentUnit_workType"]');
     approveChangesBtn: Locator = this.page.locator('[data-testid="approveBtn"]');
 
-    async getLocationFieldText() {
+    async getLocationFieldText(): Promise<string> {
         const text = await this.locationField.evaluate(element => 
             element.textContent?.replace(/\s+/g, ' ').trim() || ''
         );

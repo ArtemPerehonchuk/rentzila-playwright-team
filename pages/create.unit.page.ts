@@ -80,15 +80,15 @@ class CreateUnitPage extends Page {
         }else return false
     }
 
-    async getCategoriesTitleText() {
+    async getCategoriesTitleText(): Promise<string> {
         return await this.categoriesTitle.innerText();
     }
 
-    async getCategoriesDropDownBgText() {
+    async getCategoriesDropDownBgText(): Promise<string> {
         return await this.categoriesDropDown.innerText();
     }
 
-    async getCategoryInputErrorText() {
+    async getCategoryInputErrorText(): Promise<string> {
         return await this.categoryErrorMessage.innerText();
     }
 
@@ -136,49 +136,49 @@ class CreateUnitPage extends Page {
         return false;
     }
 
-    async getAnnouncementNameTitleText() {
+    async getAnnouncementNameTitleText(): Promise<string> {
         return await this.announcementNameTitle.innerText();
     } 
 
-    async getAnnouncementNameInputBgText() {
+    async getAnnouncementNameInputBgText(): Promise<string | null> {
         return await this.announcementNameInput.getAttribute('placeholder');
     } 
 
-    async getAnnouncementNameInputValueText() {
+    async getAnnouncementNameInputValueText(): Promise<string> {
         return await this.announcementNameInput.inputValue();
     }
 
-    async getAnnouncementInputValueCharCount() {
+    async getAnnouncementInputValueCharCount(): Promise<number> {
         const value = await this.announcementNameInput.inputValue();
         return value.length;
     }
 
-    async getVehicleManufacturerTitleText() {
+    async getVehicleManufacturerTitleText(): Promise<string> {
         return await this.vehicleManufacturerTitle.innerText();
     } 
 
-    async getVehicleManufacturerInputBgText() {
+    async getVehicleManufacturerInputBgText(): Promise<string | null> {
         return await this.vehicleManufacturerInput.getAttribute('placeholder');
     } 
 
-    async getVehicleManufacturerInputValueLength() {
+    async getVehicleManufacturerInputValueLength(): Promise<number> {
         const currentValue = await this.vehicleManufacturerInput.inputValue();
         return currentValue.length;
     }
 
-    async getVehicleManufacturerDropDownOptionText() {
+    async getVehicleManufacturerDropDownOptionText(): Promise<string> {
         return await this.vehicleManufacturerDropDownOption.innerText();
     }
 
-    async getOptionNotFoundErrorText() {
+    async getOptionNotFoundErrorText(): Promise<string> {
         return await this.optionNotFoundMessage.innerText();
     }
 
-    async getVehicleManufacturerSelectedOptionText() {
+    async getVehicleManufacturerSelectedOptionText(): Promise<string> {
         return await this.vehicleManufacturerSelectedOption.innerText();
     }
 
-    async getVehicleManufacturerInputText() {
+    async getVehicleManufacturerInputText(): Promise<string> {
         return await this.vehicleManufacturerInput.inputValue();
     }
 
@@ -236,27 +236,27 @@ class CreateUnitPage extends Page {
         }
     }
 
-    async getModelNameTitleText() {
+    async getModelNameTitleText(): Promise<string> {
         return await this.modelNameTitle.innerText();
     }
 
-    async getModelNameInputBgText() {
+    async getModelNameInputBgText(): Promise<string | null> {
         return await this.modelNameInput.getAttribute('placeholder');
     }
 
-    async getModelNameInputText() {
+    async getModelNameInputText(): Promise<string> {
         return await this.modelNameInput.inputValue();
     }
 
-    async getTechnicalInfoInputText() {
+    async getTechnicalInfoInputText(): Promise<string> {
         return await this.technicalInfoInput.inputValue();
     }
 
-    async getDescriptionInfoInputText() {
+    async getDescriptionInfoInputText(): Promise<string> {
         return await this.descriptionInfoInput.inputValue();
     }
 
-    async getAddressSelectionTitleText() {
+    async getAddressSelectionTitleText(): Promise<string> {
         return await this.addressSelectionTitle.innerText();
     }
 
@@ -265,11 +265,11 @@ class CreateUnitPage extends Page {
         await this.page.waitForTimeout(2000)
     }
 
-    async getMapPopUpAddressLineText() {
+    async getMapPopUpAddressLineText(): Promise<string> {
         return await this.mapPopUpAddressLine.innerText();
     }
 
-    async getAddressLineText() {
+    async getAddressLineText(): Promise<string> {
         return await this.selectedAddress.innerText();
     }
 
@@ -282,7 +282,7 @@ class CreateUnitPage extends Page {
         await this.page.waitForTimeout(2000)
     }
 
-    async clickOnMapAndGetAddress() {
+    async clickOnMapAndGetAddress(): Promise<string> {
         const mapContainerSize = await this.mapContainer.boundingBox();
         if (mapContainerSize) {
             const randomX = mapContainerSize.x + Math.random() * mapContainerSize.width;

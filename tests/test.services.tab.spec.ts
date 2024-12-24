@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures";
 import { faker } from "@faker-js/faker";
-import testData from '../data/test.data.json' assert {type: 'json'}
+import testData from '../data/test.data.json' assert {type: 'json'};
+import { getRandomString } from "../helpers/random.values";
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALIR_PASSWORD: string = process.env.VALID_PASSWORD || '';
@@ -22,7 +23,7 @@ test.beforeEach(async ({ homepage, createUnitPage, photoTab }) => {
 });
 
 test('Text case: 410: Verify creating new service', async ( {servicesTab} ) => {
-    const notExistingService = faker.string.alpha({length: 15});
+    const notExistingService = getRandomString(15);
 
     await servicesTab.fillServicesTabInput(notExistingService);
 
@@ -38,7 +39,7 @@ test('Text case: 410: Verify creating new service', async ( {servicesTab} ) => {
 });
 
 test('Text case: 411: Verify choosing multiple services', async ( {servicesTab} ) => {
-    const randomLetter = faker.string.alpha({length: 1});
+    const randomLetter = getRandomString(1);
 
     await servicesTab.fillServicesTabInput(randomLetter);
 
@@ -63,7 +64,7 @@ test('Text case: 411: Verify choosing multiple services', async ( {servicesTab} 
 });
 
 test('Text case: 412: Verify removing variants from choosed list', async ( {servicesTab} ) => {
-    const randomLetter = faker.string.alpha({length: 1});
+    const randomLetter = getRandomString(1);
     const randomNumber = 2 + Math.floor(Math.random() * 4)
 
     await servicesTab.fillServicesTabInput(randomLetter);
@@ -125,7 +126,7 @@ test('Text case: 592: Verify "Послуги" input choosin of existing service'
     await expect(servicesTab.searchServiceIcon).toBeVisible();
     await expect(await servicesTab.getServiceTabInputBgText()).toBe(testData.inputPlaceholderTexts.servicesInput);
 
-    let randomChar = faker.string.alpha({length: 1});
+    let randomChar = getRandomString(1);
 
     await servicesTab.fillServicesTabInput(randomChar);
 
@@ -140,7 +141,7 @@ test('Text case: 592: Verify "Послуги" input choosin of existing service'
 
     await expect(await servicesTab.getSelectedService()).toBe('Буріння');
 
-    randomChar = faker.string.alpha({length: 1});
+    randomChar = getRandomString(1);
 
     await servicesTab.fillServicesTabInput(randomChar);
     
@@ -173,8 +174,8 @@ test('Text case: 632: Verify entering spesial characters in the "Послуги"
 });
 
 test('Text case: 633: Verify data length for "Послуги" input field', async ( {servicesTab} ) => {
-    const randomChar = faker.string.alpha();
-    const random101Char = faker.string.alpha({length: 101});
+    const randomChar = getRandomString(1);
+    const random101Char = getRandomString(101);
 
     await servicesTab.fillServicesTabInput(randomChar);
 

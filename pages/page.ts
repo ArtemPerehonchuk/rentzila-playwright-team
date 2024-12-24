@@ -16,7 +16,7 @@ class Page {
       await this.page.goto(path);
     }
 
-    async getUrl() {
+    async getUrl(): Promise<string> {
       await this.page.waitForLoadState('load')
       return await this.page.url()
     }
