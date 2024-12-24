@@ -1,5 +1,5 @@
 {
-    "incorrect-phone-numbers": {
+    "incorrectPhoneNumbers": {
         "without country code": "991234786",
         "withoutln": "099123478",
         "with-": "+380-99-123-47-86",
@@ -10,7 +10,7 @@
         "other country code": "+10991234786",
         "without 38": "+0991234786"
     },
-    "incorrect-emails": {
+    "incorrectEmails": {
         "space": "for somemytests@gmail.com",
         "cyrillic": "еуіегіуккутеяшдф",
         "without @": "forsomemytestsgmail.com",
@@ -20,7 +20,7 @@
         "without @gmail.com": "forsomemytests",
         "with 2 @": "forsomemytests@@gmail.com"
     },
-    "incorrect-passwords": {
+    "incorrectPasswords": {
         "space at the end": "Qwerty12 ",
         "space at the begining": " Qwerty12",
         "non-existent": "Qwerty17",
@@ -40,14 +40,14 @@
         "edit-unit": "/edit-unit/",
         "unit": "/unit/"
     },
-    "contuct us form inputs": {
+    "contuctUsFormInputs": {
         "correct phone": "+380506743060",
         "other correct phone": "+380501234567",
         "incorrect phone with spaces": "+38063 111 111",
         "incorrect phone same digits and spaces": " +1 1111111111111",
         "test": "Test"
     },
-    "photo file names": [
+    "photoFileNames": [
         "pexels-alex-amorales-321095-909907",
         "pexels-alexgtacar-745150-1592384",
         "pexels-cesarperez209-733745",
@@ -64,19 +64,19 @@
         "pexels-sarmad-mughal-94606-305070",
         "pexels-trace-707046"
     ],
-    "payment methods": [
+    "paymentMethods": [
         "Готівкою / на картку",
         "Безготівковий розрахунок (без ПДВ)",
         "Безготівковий розрахунок (з ПДВ)"
     ],
-    "incorrect prices": {
+    "incorrectPrices": {
         "space in middle": "123 456",
         "space in end": "123456 ",
         "one space": " ",
         "letters": "abcd",
         "special symbols": "!@#$%.,"
     },
-    "add price options": [
+    "addPriceOptions": [
         "Година",
         "Зміна",
         "Тонна",
@@ -106,7 +106,7 @@
             "inactive": "#404B69"
         }
     },
-    "create tender tabs names": [
+    "createTenderTabsNames": [
         "Основна інформація",
         "Документація",
         "Контакти"

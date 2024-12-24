@@ -24,7 +24,7 @@ test('Test Case: C777 Verify body and tabs titles', async ({createTenderPage }) 
     await expect(createTenderPage.createTenderPageTitle).toBeVisible();
     await expect(createTenderPage.createTenderPageTitle).toHaveText(testData.titleTexts.createTender);
 
-    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, testData['create tender tabs names'])).toBeTruthy();
+    await expect(await createTenderPage.checkCreateTenderTabsTitles(1, testData.createTenderTabsNames)).toBeTruthy();
 });
 
 test('Test Case: C778 Verify tender\'s name section', async ({createTenderPage }) => {

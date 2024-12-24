@@ -550,7 +550,7 @@ test('Test case C275: Check services functionality', async({apiHelper, ownerUnit
 test('Test case C541: Check "Спосіб оплати" menu', async({page, ownerUnitsPage, editUnitPage, unitDetailsPage}) => {
     await ownerUnitsPage.clickOnEditUnitBtn(); 
 
-    const paymentMethods = testData['payment methods'];
+    const paymentMethods = testData.paymentMethods;
 
     for(let i = 0; i < paymentMethods.length; i++) {
         await editUnitPage.clickOnSelectPaymentMethodInput();
@@ -676,7 +676,7 @@ test('Test case C543:  Check "Вартість мінімального замо
     await editUnitPage.addPriceBtn.click();
     await page.waitForLoadState('domcontentloaded');
 
-    const priceOptions = testData['add price options'];
+    const priceOptions = testData.addPriceOptions;
     let additionalPriceItems;
 
     for(let i = 1; i < priceOptions.length; i ++) {

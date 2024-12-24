@@ -2,7 +2,7 @@ import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 import testData from '../data/test.data.json' assert {type: 'json'};
 
-const addPriceOptions = testData['add price options'];
+const addPriceOptions = testData.addPriceOptions;
 const hoursDropDownItems = ['8 год', '4 год'];
 
 

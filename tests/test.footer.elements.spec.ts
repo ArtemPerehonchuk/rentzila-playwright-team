@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import testData from '../data/test.data.json' assert {type: 'json'}
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
-const contactUsFormInputValues = testData["contuct us form inputs"];
+const contactUsFormInputValues = testData.contuctUsFormInputs;
 
 test.beforeEach(async ({ page, homepage }) => {
     await homepage.navigate('/');

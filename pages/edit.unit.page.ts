@@ -4,7 +4,7 @@ import testData from '../data/test.data.json' assert {type: 'json'};
 import { faker } from '@faker-js/faker';
 import path from 'path';
 
-const photoFileNames = testData['photo file names']
+const photoFileNames = testData.photoFileNames
 const photoIndexes = testData.photoIndexes;
 
 class EditUnitPage extends Page {

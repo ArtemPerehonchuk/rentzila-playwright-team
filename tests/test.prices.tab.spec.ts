@@ -2,12 +2,12 @@ import { test, expect } from "../fixtures";
 import { faker } from '@faker-js/faker';
 import testData from '../data/test.data.json' assert {type: 'json'};
 
-const incorrectPrices = Object.values(testData['incorrect prices']);
+const incorrectPrices = Object.values(testData.incorrectPrices);
 
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALIR_PASSWORD: string = process.env.VALID_PASSWORD || '';
-const paymentMetods = testData["payment methods"];
-const addPriceOptions = testData["add price options"];
+const paymentMetods = testData.paymentMethods;
+const addPriceOptions = testData.addPriceOptions;
 
 let selectedService: string;
 
