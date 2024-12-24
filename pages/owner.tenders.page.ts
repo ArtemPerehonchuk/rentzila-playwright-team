@@ -7,12 +7,12 @@ class OwnerTendersPage extends Page {
         super(page);
     }
 
-    createTenderBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]');
-    rejectedTab: Locator  = this.page.locator('button[id*="Відхилені"]');
-    rejectedTenders: Locator = this.page.locator('[data-testid="tenderLink"]');
-    editBtn: Locator = this.page.locator('[class*="CurrentTenderButtons_fillBtn"]');
-    waitingsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
-    firstWaitingTenderName: Locator = this.page.locator('[class*="CurrentItemInfo_name"]').first();
+    readonly createTenderBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]');
+    readonly rejectedTab: Locator  = this.page.locator('button[id*="Відхилені"]');
+    readonly rejectedTenders: Locator = this.page.locator('[data-testid="tenderLink"]');
+    readonly editBtn: Locator = this.page.locator('[class*="CurrentTenderButtons_fillBtn"]');
+    readonly waitingsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
+    readonly firstWaitingTenderName: Locator = this.page.locator('[class*="CurrentItemInfo_name"]').first();
 }
 
 export default OwnerTendersPage;

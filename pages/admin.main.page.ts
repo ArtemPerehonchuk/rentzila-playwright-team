@@ -7,16 +7,16 @@ class AdminMainPage extends Page {
         super(page);
     }
 
-    adminPanelIcon : Locator= this.page.locator('[data-testid="superuserIcon_Navbar"]');
-    announcementsMenuItem : Locator= this.page.locator('a[href="/admin/units/"]');
-    searchUnitInput : Locator= this.page.locator('[data-testid="input"]');
-    adminShowUnitDetailsBtn : Locator= this.page.locator('[data-testid="adminShowButton"]').first();
-    aproveUnitBtn : Locator= this.page.locator('[data-testid="approveBtn"]');
-    homeBtn : Locator= this.page.locator('[data-testid="homeButton"]');
-    adminPanelTitle : Locator= this.page.locator('[class*="AdminLayout_title"]');
-    dateSortContainer : Locator= this.page.locator('[class*="MuiTableCell-head "]').nth(6);
-    dateSortBtn : Locator= this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
-    searchedUnitStatus: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]').first();
+    readonly announcementsMenuItem : Locator= this.page.locator('a[href="/admin/units/"]');
+    readonly searchUnitInput : Locator= this.page.locator('[data-testid="input"]');
+    readonly adminPanelIcon : Locator= this.page.locator('[data-testid="superuserIcon_Navbar"]');
+    readonly adminShowUnitDetailsBtn : Locator= this.page.locator('[data-testid="adminShowButton"]').first();
+    readonly aproveUnitBtn : Locator= this.page.locator('[data-testid="approveBtn"]');
+    readonly homeBtn : Locator= this.page.locator('[data-testid="homeButton"]');
+    readonly adminPanelTitle : Locator= this.page.locator('[class*="AdminLayout_title"]');
+    readonly dateSortContainer : Locator= this.page.locator('[class*="MuiTableCell-head "]').nth(6);
+    readonly dateSortBtn : Locator= this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
+    readonly searchedUnitStatus: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]').first();
 
     async moveAnnouncementToActiveState(unitId: string) {
         await this.clickOnAdminPanelIcon();

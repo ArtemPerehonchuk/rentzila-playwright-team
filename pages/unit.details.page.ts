@@ -6,8 +6,8 @@ class UnitDetailsPage extends Page {
         super(page)
     }
 
-    unitsPaymentMethod: Locator = this.page.locator('[class*="ImageWithDescription_paymentMethod"]');
-    editUnitBtn: Locator = this.page.locator('[class*="CurrentUnitButtons_emptyBtn"]');
+    readonly unitsPaymentMethod: Locator = this.page.locator('[class*="ImageWithDescription_paymentMethod"]');
+    readonly editUnitBtn: Locator = this.page.locator('[class*="CurrentUnitButtons_emptyBtn"]');
 
     async clickOnEditUnitBtn() {
         await this.editUnitBtn.click();

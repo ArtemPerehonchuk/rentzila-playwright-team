@@ -7,7 +7,7 @@ class TermsConditionsPage extends Page {
         super(page);
     }
 
-    termsConditionsTitle: Locator = this.page.locator('h1[class*="TermsConditions_title"]');
+    readonly termsConditionsTitle: Locator = this.page.locator('h1[class*="TermsConditions_title"]');
 
 }
 

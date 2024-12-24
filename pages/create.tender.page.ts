@@ -6,42 +6,42 @@ class CreateTenderPage extends Page {
         super(page)
     }
 
-    createTenderPageTitle: Locator = this.page.locator('[class*="CreateEditFlowLayout_title"]');
-    createTenderPageTabs: Locator = this.page.locator('button[id*="mui-p"]');
-    createTenderPageTabsContainer: Locator = this.page.getByRole('tablist');
-    tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
-    maininfoTitle: Locator = this.page.locator('[class*="CreateTenderInfo_title"]');
-    nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
-    tenderNameTitle: Locator = this.page.locator('[class*="CustomInput_title"]').first();
-    tenderNameInput: Locator = this.page.locator('[data-testid="custom-input"]').first();
-    tenderNameInputErrorMsg: Locator = this.page.locator('[placeholder="Введіть назву тендера"] + [data-testid="descriptionError"]');
-    tenderServiceContainer: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchResult"]');
-    tenderServiceTitle: Locator = this.page.locator('[class*="CreateTenderInfo_serviceParagraph"]');
-    tenderServiceInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    tenderServiceInputErrorMsg: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
-    serviceNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    servicesDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    seviceDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
-    serviceSelectedOption: Locator = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
-    tenderCategory: Locator = this.page.locator('[data-testid="categoryWrapper"]');
-    removeSelectedServiceicon: Locator = this.page.locator('[data-testid="closeButton"]');
-    endDateErrorMsg: Locator =this.page.locator('[class*="DateContainer_container"] > [data-testid="errorMessage"][class*="DateContainer_errorTextVisible"]');
-    startDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').first();
-    endDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').nth(1);
-    incorrectEndDateErrorMsg: Locator = this.page.locator('[class*="PeriodOfProposals_errorTextVisible"]');
-    DateCalendar: Locator = this.page.locator('[class="react-datepicker__month-container"]');
-    workPeriodTitle: Locator = this.page.locator('[class*="DateContainer_title"]').nth(2);
-    workPeriodInput: Locator = this.page.locator('[tabindex="999"]');
-    workPeriodStartDate: Locator = this.page.locator('[aria-disabled="false"]').first();
-    budgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
-    budgetInputErrorMsg: Locator = this.page.locator('[data-testid="custom-input"]+[data-testid="descriptionError"]').nth(1);
-    descriptionInputErrorMsg: Locator = this.page.locator('[data-testid="textAreaError"]');
-    descriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
-    cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
-    selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
-    mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
-    availableDays: Locator = this.page.locator('[aria-disabled="false"]');
+    readonly createTenderPageTitle: Locator = this.page.locator('[class*="CreateEditFlowLayout_title"]');
+    readonly createTenderPageTabs: Locator = this.page.locator('button[id*="mui-p"]');
+    readonly createTenderPageTabsContainer: Locator = this.page.getByRole('tablist');
+    readonly tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
+    readonly maininfoTitle: Locator = this.page.locator('[class*="CreateTenderInfo_title"]');
+    readonly nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    readonly tenderNameTitle: Locator = this.page.locator('[class*="CustomInput_title"]').first();
+    readonly tenderNameInput: Locator = this.page.locator('[data-testid="custom-input"]').first();
+    readonly tenderNameInputErrorMsg: Locator = this.page.locator('[placeholder="Введіть назву тендера"] + [data-testid="descriptionError"]');
+    readonly tenderServiceContainer: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchResult"]');
+    readonly tenderServiceTitle: Locator = this.page.locator('[class*="CreateTenderInfo_serviceParagraph"]');
+    readonly tenderServiceInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    readonly tenderServiceInputErrorMsg: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
+    readonly serviceNotFoundMsg: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    readonly servicesDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    readonly seviceDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
+    readonly serviceSelectedOption: Locator = this.page.locator('[data-testid="div-service-customSelectWithSearch"]');
+    readonly tenderCategory: Locator = this.page.locator('[data-testid="categoryWrapper"]');
+    readonly removeSelectedServiceicon: Locator = this.page.locator('[data-testid="closeButton"]');
+    readonly endDateErrorMsg: Locator =this.page.locator('[class*="DateContainer_container"] > [data-testid="errorMessage"][class*="DateContainer_errorTextVisible"]');
+    readonly startDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').first();
+    readonly endDateInput: Locator = this.page.locator('[class*="react-datepicker__input-container"] > input').nth(1);
+    readonly incorrectEndDateErrorMsg: Locator = this.page.locator('[class*="PeriodOfProposals_errorTextVisible"]');
+    readonly DateCalendar: Locator = this.page.locator('[class="react-datepicker__month-container"]');
+    readonly workPeriodTitle: Locator = this.page.locator('[class*="DateContainer_title"]').nth(2);
+    readonly workPeriodInput: Locator = this.page.locator('[tabindex="999"]');
+    readonly workPeriodStartDate: Locator = this.page.locator('[aria-disabled="false"]').first();
+    readonly budgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
+    readonly budgetInputErrorMsg: Locator = this.page.locator('[data-testid="custom-input"]+[data-testid="descriptionError"]').nth(1);
+    readonly descriptionInputErrorMsg: Locator = this.page.locator('[data-testid="textAreaError"]');
+    readonly descriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
+    readonly cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    readonly selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
+    readonly mapPopUpConfirmBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    readonly uploadDocsSection: Locator = this.page.locator('[data-testid="dropDiv"]');
+    readonly availableDays: Locator = this.page.locator('[aria-disabled="false"]');
 
     async checkCreateTenderTabsTitles(activeTabNumber: number, createTenderTabsNames: string[]) {
         if(await this.createTenderPageTabsContainer.isVisible) {

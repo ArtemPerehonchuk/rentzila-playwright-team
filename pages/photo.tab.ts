@@ -11,18 +11,18 @@ class PhotoTab extends Page {
         super(page);
         } 
     
-    imageBlocks: Locator =  this.page.locator('[data-testid="imageBlock"]');
-    uploadFileInput: Locator = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
-    invalidPhotoPopUp: Locator = this.page.locator('[data-testid="errorPopup"]');
-    closePopUpBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
-    submitPopUpBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    elementOutsidePopUp: Locator = this.page.locator('[class*="NavbarCatalog_wrapper"]');
-    prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
-    uploadPhotoClueLine: Locator = this.page.locator('div[data-testid="description"]');
-    photoTabTitle: Locator = this.page.locator('div[class="ImagesUnitFlow_paragraph__gQRyS"]');
-    firstImgLable: Locator = this.page.locator('[data-testid="mainImageLabel"]');
-    deleteImgIcons: Locator = this.page.locator('[data-testid="deleteImage"]');
-    unitImages: Locator = this.page.locator('[data-testid="unitImage"]');
+    readonly imageBlocks: Locator =  this.page.locator('[data-testid="imageBlock"]');
+    readonly uploadFileInput: Locator = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
+    readonly invalidPhotoPopUp: Locator = this.page.locator('[data-testid="errorPopup"]');
+    readonly closePopUpBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
+    readonly submitPopUpBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    readonly elementOutsidePopUp: Locator = this.page.locator('[class*="NavbarCatalog_wrapper"]');
+    readonly prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    readonly uploadPhotoClueLine: Locator = this.page.locator('div[data-testid="description"]');
+    readonly photoTabTitle: Locator = this.page.locator('div[class="ImagesUnitFlow_paragraph__gQRyS"]');
+    readonly firstImgLable: Locator = this.page.locator('[data-testid="mainImageLabel"]');
+    readonly deleteImgIcons: Locator = this.page.locator('[data-testid="deleteImage"]');
+    readonly unitImages: Locator = this.page.locator('[data-testid="unitImage"]');
 
 
     async uploadPhoto() {

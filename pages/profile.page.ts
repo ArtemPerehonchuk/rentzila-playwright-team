@@ -7,8 +7,8 @@ class ProfilePage extends Page {
         super(page);
     }
 
-    profilePhoneInput: Locator = this.page.locator('input[data-testid="input_OwnerProfileNumber"]');
-    profileLogoutBtn: Locator = this.page.locator('div[data-testid="logOut"]');
+    readonly profilePhoneInput: Locator = this.page.locator('input[data-testid="input_OwnerProfileNumber"]');
+    readonly profileLogoutBtn: Locator = this.page.locator('div[data-testid="logOut"]');
 
 
     async getProfilePhoneInputValue(): Promise<string> {

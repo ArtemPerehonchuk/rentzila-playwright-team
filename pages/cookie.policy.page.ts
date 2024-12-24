@@ -7,7 +7,7 @@ class CookiePolicyPage extends Page {
         super(page);
     }
 
-    cookiePolicyTitle: Locator = this.page.locator('h1[class*="Cookies_title"]');
+    readonly cookiePolicyTitle: Locator = this.page.locator('h1[class*="Cookies_title"]');
 }
 
 export default CookiePolicyPage;

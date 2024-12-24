@@ -7,13 +7,13 @@ class ProductsPage extends Page {
         super(page);
     }
     
-    produtsList: Locator = this.page.locator('[data-testid="cardWrapper"]');
-    productFilterItem: Locator = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
-    dropdownArrow: Locator = this.page.locator('[data-testid="rightArrow"]').nth(2);
-    unitsContainer: Locator = this.page.locator('div[class*="MapPagination_units_container"]');
-    constructionsCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
-    othersCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
-    searchInput: Locator = this.page.getByTestId('searchInput');
+    readonly produtsList: Locator = this.page.locator('[data-testid="cardWrapper"]');
+    readonly productFilterItem: Locator = this.page.locator('div[class*="ResetFilters_selectedCategory"]');
+    readonly dropdownArrow: Locator = this.page.locator('[data-testid="rightArrow"]').nth(2);
+    readonly unitsContainer: Locator = this.page.locator('div[class*="MapPagination_units_container"]');
+    readonly constructionsCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(1);
+    readonly othersCheckBox: Locator = this.page.locator('[data-testid="categoryCheckbox"]').nth(2);
+    readonly searchInput: Locator = this.page.getByTestId('searchInput');
 
     async clickFirstProduct() {
         if(await this.produtsList.first().isVisible()) {

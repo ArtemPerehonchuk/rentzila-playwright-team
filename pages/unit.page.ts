@@ -7,8 +7,8 @@ class UnitPage extends Page {
         super(page);
     }
 
-    unitServicesTitle: Locator = this.page.locator('[class*="UnitCharacteristics_services"] [class*="UnitCharacteristics_title"]');
-    unitServicesTypesContainer: Locator = this.page.locator('[itemprop="services"]');
+    readonly unitServicesTitle: Locator = this.page.locator('[class*="UnitCharacteristics_services"] [class*="UnitCharacteristics_title"]');
+    readonly unitServicesTypesContainer: Locator = this.page.locator('[itemprop="services"]');
 
     async checkUnitIsVisible(isExist: boolean = true) {
         if(isExist) {

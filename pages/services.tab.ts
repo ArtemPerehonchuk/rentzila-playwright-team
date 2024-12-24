@@ -8,21 +8,21 @@ class ServicesTab extends Page {
         super(page);
         } 
 
-    servicesTabTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_title"]');
-    servicesTabInput: Locator = this.page.locator('div[class*="ServicesUnitFlow_searchInput"] > input');
-    servicesOptionsDropDown: Locator = this.page.locator('[data-testid="searchResult"]')
-    servicesOptions: Locator = this.page.locator('[data-testid="searchItem-servicesUnitFlow"]');
-    serviceNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    createServiceBtn: Locator = this.page.locator('[data-testid="btn-addNewItem"]');
-    createServiceBtnPlusIcon: Locator = this.page.locator('[data-testid="svg-plus-addNewItem"]');
-    serviceChoosenItem: Locator = this.page.locator('[data-testid="item-servicesUnitFlow"]');
-    serviceChoosenMark: Locator = this.page.locator('[data-testid="unitServicesButton"] > svg');
-    removeChoosenItemIcon: Locator = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
-    chosenServicesTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').nth(1);
-    choosenServicesContainer: Locator = this.page.locator('[class*="ServicesUnitFlow_servicesWrapper"]');
-    addServiceClueMsg: Locator = this.page.locator('[data-testid="add-info"]');
-    servicesParagraphTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').first();
-    searchServiceIcon: Locator = this.page.locator('[data-testid="searchResult"] > div > svg');
+    readonly servicesTabTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_title"]');
+    readonly servicesTabInput: Locator = this.page.locator('div[class*="ServicesUnitFlow_searchInput"] > input');
+    readonly servicesOptionsDropDown: Locator = this.page.locator('[data-testid="searchResult"]')
+    readonly servicesOptions: Locator = this.page.locator('[data-testid="searchItem-servicesUnitFlow"]');
+    readonly serviceNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    readonly createServiceBtn: Locator = this.page.locator('[data-testid="btn-addNewItem"]');
+    readonly createServiceBtnPlusIcon: Locator = this.page.locator('[data-testid="svg-plus-addNewItem"]');
+    readonly serviceChoosenItem: Locator = this.page.locator('[data-testid="item-servicesUnitFlow"]');
+    readonly serviceChoosenMark: Locator = this.page.locator('[data-testid="unitServicesButton"] > svg');
+    readonly removeChoosenItemIcon: Locator = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
+    readonly chosenServicesTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').nth(1);
+    readonly choosenServicesContainer: Locator = this.page.locator('[class*="ServicesUnitFlow_servicesWrapper"]');
+    readonly addServiceClueMsg: Locator = this.page.locator('[data-testid="add-info"]');
+    readonly servicesParagraphTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').first();
+    readonly searchServiceIcon: Locator = this.page.locator('[data-testid="searchResult"] > div > svg');
 
     async selectService() {
         await this.servicesTabInput.fill(getRandomLetter());

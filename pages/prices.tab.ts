@@ -12,30 +12,30 @@ class PricesTab extends Page {
         super(page);
         } 
     
-    paymentMethodTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').first();
-    paymentMethodDropDown: Locator = this.page.locator('div[data-testid="div_CustomSelect"]');
-    paymentMethodDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelect"]');
-    priceOfMinOrderTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').nth(1);
-    priceOfMinOrderInput: Locator = this.page.locator('[class*="RowUnitPrice_priceInput"]');
-    priceOfMinOrderInputContainer: Locator = this.page.locator('[data-testid="input_wrapper_RowUnitPrice"]').first();
-    currencyField: Locator = this.page.locator('[class*="RowUnitPrice_currencyWrapper"] > input');
-    servicePriseTitle: Locator = this.page.locator('[data-testid="div_servicePrices_PricesUnitFlow"]');
-    servicePriceClue: Locator = this.page.locator('[class*="PricesUnitFlow_description"]');
-    addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
-    addBtnIcon: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"] > svg');
-    addPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
-    addPriceCurrency: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(3);
-    selectAddPriceOptionDropDown: Locator = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
-    selectAddPriceOptionDropDownArrow : Locator= this.page.locator('[data-testid="arrowImage"]').nth(1);
-    addPriceDropDownOptions: Locator = this.page.locator('li[class*="CustomSelect_option"]');
-    hoursDropDown: Locator = this.page.locator('[class*="RowUnitPrice_selectTiming"] > [class*="CustomSelect_select"]').nth(1);
-    hoursDropDownArrow: Locator = this.page.locator('[data-testid="arrowImage"]').nth(2);
-    hoursDropDownOptions: Locator = this.page.locator('[data-testid="listItems-customSelect"] > [data-testid="item-customSelect"]');
-    removePriceBtn: Locator = this.page.locator('[data-testid="div_removePrice_RowUnitPrice"]');
-    additionalServicePriceSection: Locator = this.page.locator('[class*="RowUnitPrice_wrapper"]').nth(1);
-    prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
-    priceOfMinOrderInputError: Locator = this.page.locator('[class*="RowUnitPrice_error"]');
-    serviceInAddPriceSection: Locator = this.page.locator('[class*="ServicePrice_service"] > span')
+    readonly paymentMethodTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').first();
+    readonly paymentMethodDropDown: Locator = this.page.locator('div[data-testid="div_CustomSelect"]');
+    readonly paymentMethodDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelect"]');
+    readonly priceOfMinOrderTitle: Locator = this.page.locator('[class*="PricesUnitFlow_paragraph"]').nth(1);
+    readonly priceOfMinOrderInput: Locator = this.page.locator('[class*="RowUnitPrice_priceInput"]');
+    readonly priceOfMinOrderInputContainer: Locator = this.page.locator('[data-testid="input_wrapper_RowUnitPrice"]').first();
+    readonly currencyField: Locator = this.page.locator('[class*="RowUnitPrice_currencyWrapper"] > input');
+    readonly servicePriseTitle: Locator = this.page.locator('[data-testid="div_servicePrices_PricesUnitFlow"]');
+    readonly servicePriceClue: Locator = this.page.locator('[class*="PricesUnitFlow_description"]');
+    readonly addPriceBtn: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"]');
+    readonly addBtnIcon: Locator = this.page.locator('[data-testid="addPriceButton_ServicePrice"] > svg');
+    readonly addPriceInput: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(2);
+    readonly addPriceCurrency: Locator = this.page.locator('[data-testid="priceInput_RowUnitPrice"]').nth(3);
+    readonly selectAddPriceOptionDropDown: Locator = this.page.locator('[data-testid="div_CustomSelect"]').nth(1);
+    readonly selectAddPriceOptionDropDownArrow : Locator= this.page.locator('[data-testid="arrowImage"]').nth(1);
+    readonly addPriceDropDownOptions: Locator = this.page.locator('li[class*="CustomSelect_option"]');
+    readonly hoursDropDown: Locator = this.page.locator('[class*="RowUnitPrice_selectTiming"] > [class*="CustomSelect_select"]').nth(1);
+    readonly hoursDropDownArrow: Locator = this.page.locator('[data-testid="arrowImage"]').nth(2);
+    readonly hoursDropDownOptions: Locator = this.page.locator('[data-testid="listItems-customSelect"] > [data-testid="item-customSelect"]');
+    readonly removePriceBtn: Locator = this.page.locator('[data-testid="div_removePrice_RowUnitPrice"]');
+    readonly additionalServicePriceSection: Locator = this.page.locator('[class*="RowUnitPrice_wrapper"]').nth(1);
+    readonly prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    readonly priceOfMinOrderInputError: Locator = this.page.locator('[class*="RowUnitPrice_error"]');
+    readonly serviceInAddPriceSection: Locator = this.page.locator('[class*="ServicePrice_service"] > span')
 
     async getDropDownBgText(): Promise<string> {
         return await this.paymentMethodDropDown.innerText();

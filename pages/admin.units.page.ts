@@ -17,16 +17,16 @@ class AdminUnitsPage extends Page {
         this.adminMainPage = new AdminMainPage(page);
     }
 
-    announcementsTitle: Locator = this.page.locator('[class*="AdminLayout_title"]');
-    allUnitsTab: Locator = this.page.locator('[data-testid="statusBtns"]').first();
-    waitingsTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(1);
-    activesTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(2);
-    statusColumn: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]');
-    serachUnitInput: Locator = this.page.locator('[data-testid="input"]');
-    unitNameCell: Locator = this.page.locator('td[class*="MuiTableCell-root"]').nth(1);
-    adminWatchUnitIcon: Locator = this.page.locator('[data-testid="adminShowButton"]');
-    sortDateBtn: Locator = this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
-    adminShowIcon: Locator = this.page.locator('[data-testid="adminOkoButton"]');
+    readonly announcementsTitle: Locator = this.page.locator('[class*="AdminLayout_title"]');
+    readonly allUnitsTab: Locator = this.page.locator('[data-testid="statusBtns"]').first();
+    readonly waitingsTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(1);
+    readonly activesTab: Locator = this.page.locator('[data-testid="statusBtns"]').nth(2);
+    readonly statusColumn: Locator = this.page.locator('[class*="AdminTableRowUnits_status"]');
+    readonly serachUnitInput: Locator = this.page.locator('[data-testid="input"]');
+    readonly unitNameCell: Locator = this.page.locator('td[class*="MuiTableCell-root"]').nth(1);
+    readonly adminWatchUnitIcon: Locator = this.page.locator('[data-testid="adminShowButton"]');
+    readonly sortDateBtn: Locator = this.page.locator('[data-testid="ArrowDownwardIcon"]').nth(6);
+    readonly adminShowIcon: Locator = this.page.locator('[data-testid="adminOkoButton"]');
 
     async clickOnWaitingsTab() {
         await this.waitingsTab.click();

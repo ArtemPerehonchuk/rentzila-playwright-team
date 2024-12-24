@@ -7,7 +7,7 @@ class TendersPage extends Page {
         super(page);
     }
 
-    searchInput: Locator = this.page.getByTestId('search');
+    readonly searchInput: Locator = this.page.getByTestId('search');
 
     async getSerchInputBgText(): Promise<string | null> {
         const searchInputText = await this.searchInput.getAttribute('placeholder');

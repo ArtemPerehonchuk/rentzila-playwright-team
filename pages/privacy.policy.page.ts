@@ -7,7 +7,7 @@ class PrivacyPolicyPage extends Page {
         super(page);
     }
 
-    privacyPolicyTitle: Locator = this.page.locator('h1[class*="PrivacyPolicy_title"]');
+    readonly privacyPolicyTitle: Locator = this.page.locator('h1[class*="PrivacyPolicy_title"]');
 
 }
 

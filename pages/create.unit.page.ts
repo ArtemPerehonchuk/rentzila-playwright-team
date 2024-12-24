@@ -9,55 +9,55 @@ class CreateUnitPage extends Page {
         super(page);
     }
     
-    createUnitTitle: Locator = this.page.locator('div[class*="CreateEditFlowLayout_title"]');
-    createUnitTabs: Locator = this.page.getByRole('tab');
-    createUnitTabsText: Locator = this.page.locator('div[class*="CustomLabel_label"] > span[class*="CustomLabel_labelTitle__O2bFl"]');
-    tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
-    categoriesDropDown: Locator = this.page.locator('[data-testid="buttonDiv"]');
-    nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
-    categoryErrorMessage: Locator = this.page.locator('[class*="CategorySelect_errorTextVisible"]');
-    categoriesPopUp: Locator = this.page.locator('div[data-testid="categoryPopupWrapper"]');
-    categoriesPopUpCloseBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
-    categoriesDropDownArrowDown: Locator = this.page.locator('div[data-testid="buttonDiv"]>div  img[alt="Arrow-down"]');
-    categoriesTitle: Locator = this.page.locator('div[class*="CategorySelect_title"]');
-    categoriesPopUpTitle: Locator = this.page.locator('div[class*="CategoryPopup_title"]');
-    announcementNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').first();
-    announcementNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').first();
-    announcementNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]').first();
-    vehicleManufacturerTitle: Locator = this.page.locator('div[class*="SelectManufacturer_title"]');
-    vehicleManufacturerInputContainer: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"]');
-    vehicleManufacturerInput: Locator = this.page.locator('input[data-testid="input-customSelectWithSearch"]');
-    vehicleManufacturerInputError: Locator = this.page.locator('div[class*="CustomSelectWithSearch_errorTextVisible"]');
-    vehicleManufacturerInputSearchIcon: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"] > svg');
-    vehicleManufacturerSelectedOption: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]')
-    vehicleManifacturerDropDown: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    vehicleManufacturerDropDownOption: Locator = this.page.locator('div[class*="CustomSelectWithSearch_flexForServices"]').first();
-    optionNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    selectedOptionInDropdown: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
-    clearVehicleManifacturerDropDownIcon: Locator = this.page.locator('button[class*="CustomSelectWithSearch_serviceBtn"]');
-    modelNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').getByText('Назва моделі')
-    modelNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').nth(1);
-    modelNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
-    technicalInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').first();
-    technicalInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
-    descriptionInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').nth(1);
-    descriptionInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
-    addressSelectionTitle: Locator = this.page.locator('[class*="AddressSelectionBlock_title"]');
-    addressSelectionInput: Locator = this.page.locator('[data-testid="mapLabel"]');
-    addressSelectionInputError: Locator = this.page.locator('[class*="AddressSelectionBlock_errorTextVisible"]');
-    selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
-    mapPopUp: Locator = this.page.locator('[data-testid="div-mapPopup"]');
-    mapPopUpTitle: Locator = this.page.locator('[class*="MapPopup_title"]');
-    mapPopUpAddressLine: Locator = this.page.locator('[class*="MapPopup_address"]')
-    mapPopUpCloseBtn: Locator = this.page.locator('[class*="MapPopup_title"]');
-    addressLine: Locator = this.page.locator('[data-testid="address"]');
-    selectedAddress: Locator = this.page.locator('[class*="AddressSelectionBlock_mapLabelChosen"]');
-    mapPopUpSubmitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    mapContainer: Locator = this.page.locator('#map');
-    cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
-    characteristicsTitle: Locator  = this.page.locator('div[class*="Characteristics_title"]');
-    vehicleManufacturerList: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    mapLabel: Locator = this.page.locator('[data-testid="mapLabel"]');
+    readonly createUnitTitle: Locator = this.page.locator('div[class*="CreateEditFlowLayout_title"]');
+    readonly createUnitTabs: Locator = this.page.getByRole('tab');
+    readonly createUnitTabsText: Locator = this.page.locator('div[class*="CustomLabel_label"] > span[class*="CustomLabel_labelTitle__O2bFl"]');
+    readonly tabNumber: Locator = this.page.locator('[data-testid="labelNumber"]');
+    readonly categoriesDropDown: Locator = this.page.locator('[data-testid="buttonDiv"]');
+    readonly nextBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    readonly categoryErrorMessage: Locator = this.page.locator('[class*="CategorySelect_errorTextVisible"]');
+    readonly categoriesPopUp: Locator = this.page.locator('div[data-testid="categoryPopupWrapper"]');
+    readonly categoriesPopUpCloseBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
+    readonly categoriesDropDownArrowDown: Locator = this.page.locator('div[data-testid="buttonDiv"]>div  img[alt="Arrow-down"]');
+    readonly categoriesTitle: Locator = this.page.locator('div[class*="CategorySelect_title"]');
+    readonly categoriesPopUpTitle: Locator = this.page.locator('div[class*="CategoryPopup_title"]');
+    readonly announcementNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').first();
+    readonly announcementNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').first();
+    readonly announcementNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]').first();
+    readonly vehicleManufacturerTitle: Locator = this.page.locator('div[class*="SelectManufacturer_title"]');
+    readonly vehicleManufacturerInputContainer: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"]');
+    readonly vehicleManufacturerInput: Locator = this.page.locator('input[data-testid="input-customSelectWithSearch"]');
+    readonly vehicleManufacturerInputError: Locator = this.page.locator('div[class*="CustomSelectWithSearch_errorTextVisible"]');
+    readonly vehicleManufacturerInputSearchIcon: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchInput"] > svg');
+    readonly vehicleManufacturerSelectedOption: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]')
+    readonly vehicleManifacturerDropDown: Locator = this.page.locator('div[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    readonly vehicleManufacturerDropDownOption: Locator = this.page.locator('div[class*="CustomSelectWithSearch_flexForServices"]').first();
+    readonly optionNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    readonly selectedOptionInDropdown: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
+    readonly clearVehicleManifacturerDropDownIcon: Locator = this.page.locator('button[class*="CustomSelectWithSearch_serviceBtn"]');
+    readonly modelNameTitle: Locator = this.page.locator('div[class*="CustomInput_title"]').getByText('Назва моделі')
+    readonly modelNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').nth(1);
+    readonly modelNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
+    readonly technicalInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').first();
+    readonly technicalInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').first();
+    readonly descriptionInfoTitle: Locator = this.page.locator('div[class*="CustomTextAriaDescription_title"]').nth(1);
+    readonly descriptionInfoInput: Locator = this.page.locator('[data-testid="textarea-customTextAriaDescription"]').nth(1);
+    readonly addressSelectionTitle: Locator = this.page.locator('[class*="AddressSelectionBlock_title"]');
+    readonly addressSelectionInput: Locator = this.page.locator('[data-testid="mapLabel"]');
+    readonly addressSelectionInputError: Locator = this.page.locator('[class*="AddressSelectionBlock_errorTextVisible"]');
+    readonly selectOnMapBtn: Locator = this.page.locator('[class*="AddressSelectionBlock_locationBtn"]');
+    readonly mapPopUp: Locator = this.page.locator('[data-testid="div-mapPopup"]');
+    readonly mapPopUpTitle: Locator = this.page.locator('[class*="MapPopup_title"]');
+    readonly mapPopUpAddressLine: Locator = this.page.locator('[class*="MapPopup_address"]')
+    readonly mapPopUpCloseBtn: Locator = this.page.locator('[class*="MapPopup_title"]');
+    readonly addressLine: Locator = this.page.locator('[data-testid="address"]');
+    readonly selectedAddress: Locator = this.page.locator('[class*="AddressSelectionBlock_mapLabelChosen"]');
+    readonly mapPopUpSubmitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    readonly mapContainer: Locator = this.page.locator('#map');
+    readonly cancelBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    readonly characteristicsTitle: Locator  = this.page.locator('div[class*="Characteristics_title"]');
+    readonly vehicleManufacturerList: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    readonly mapLabel: Locator = this.page.locator('[data-testid="mapLabel"]');
 
     async checkCreateUnitTabsTitles(activeTabNumber: number) {
         if(await this.createUnitTabs.isVisible) {

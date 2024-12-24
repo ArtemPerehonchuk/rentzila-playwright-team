@@ -8,32 +8,32 @@ class EditTenderPage extends Page {
         super(page);
     }
 
-    tenderNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').first();
-    saveTenderChangesBtn: Locator = this.page.locator('[data-testid="nextButton"]');
-    tenderNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
-    removeTenderServiceBtn: Locator = this.page.locator('[data-testid="closeButton"]');
-    tenderServiceInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
-    tenderServiceInputError: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
-    tenderServicesDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
-    tenderServicesDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
-    selectedTenderService: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
-    tenderBudgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
-    tenderBudgetInputError: Locator = this.page.locator('[data-testid="descriptionError"]')
-    tenderDescriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
-    tenderDescriptionInputError: Locator = this.page.locator('[data-testid="textAreaError"]');
-    removeDocBtn: Locator = this.page.locator('[data-testid="deleteFile"]');
-    tenderDocsErrorMsg: Locator = this.page.locator('[data-testid="getFileDiv"]');
-    operatorCheckbox: Locator = this.page.locator('[data-testid="operatorCheckbox"]');
-    lastNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').first();
-    firstNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').nth(1);
-    phoneInput: Locator = this.page.locator('[data-testid="phone"]');
-    lastNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').first();
-    firstNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').nth(1);
-    phoneInputErrorMsg: Locator = this.page.locator('p[data-testid="errorMessage"]');
-    tenderSuccessfullyEditedMsg: Locator = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
-    lookInMyTendersBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    uploadDocsInput: Locator = this.page.locator('input[type="file"]');
-    uploadDocsBlock: Locator = this.page.locator('[data-testid="dropDiv"]');
+    readonly tenderNameInput: Locator = this.page.locator('input[data-testid="custom-input"]').first();
+    readonly saveTenderChangesBtn: Locator = this.page.locator('[data-testid="nextButton"]');
+    readonly tenderNameInputError: Locator = this.page.locator('[data-testid="descriptionError"]');
+    readonly removeTenderServiceBtn: Locator = this.page.locator('[data-testid="closeButton"]');
+    readonly tenderServiceInput: Locator = this.page.locator('[data-testid="input-customSelectWithSearch"]');
+    readonly tenderServiceInputError: Locator = this.page.locator('[class*="CustomSelectWithSearch_errorTextVisible"]');
+    readonly tenderServicesDropDown: Locator = this.page.locator('[class*="CustomSelectWithSearch_searchedServicesCat_wrapper"]');
+    readonly tenderServicesDropDownOptions: Locator = this.page.locator('[data-testid="item-customSelectWithSearch"]');
+    readonly selectedTenderService: Locator = this.page.locator('[class*="CustomSelectWithSearch_serviceText"]');
+    readonly tenderBudgetInput: Locator = this.page.locator('[data-testid="custom-input"]').nth(1);
+    readonly tenderBudgetInputError: Locator = this.page.locator('[data-testid="descriptionError"]')
+    readonly tenderDescriptionInput: Locator = this.page.locator('[data-testid="textAreaInput"]');
+    readonly tenderDescriptionInputError: Locator = this.page.locator('[data-testid="textAreaError"]');
+    readonly removeDocBtn: Locator = this.page.locator('[data-testid="deleteFile"]');
+    readonly tenderDocsErrorMsg: Locator = this.page.locator('[data-testid="getFileDiv"]');
+    readonly operatorCheckbox: Locator = this.page.locator('[data-testid="operatorCheckbox"]');
+    readonly lastNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').first();
+    readonly firstNameInput: Locator = this.page.locator('[data-testid="customValidInput"]').nth(1);
+    readonly phoneInput: Locator = this.page.locator('[data-testid="phone"]');
+    readonly lastNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').first();
+    readonly firstNameInputErrorMsg: Locator = this.page.locator('[data-testid="errorDescr"]').nth(1);
+    readonly phoneInputErrorMsg: Locator = this.page.locator('p[data-testid="errorMessage"]');
+    readonly tenderSuccessfullyEditedMsg: Locator = this.page.locator('[class*="SuccessfullyCreatedPage_finishTitle"]');
+    readonly lookInMyTendersBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    readonly uploadDocsInput: Locator = this.page.locator('input[type="file"]');
+    readonly uploadDocsBlock: Locator = this.page.locator('[data-testid="dropDiv"]');
 
     async uploadDoc(pathToDoc: string) {   
         await this.uploadDocsBlock.focus();

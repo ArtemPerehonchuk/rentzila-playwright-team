@@ -7,14 +7,14 @@ class OwnerUnitsPage extends Page {
         super(page);
     }
 
-    firstUnitName: Locator = this.page.locator('[class*="OwnerUnitCard_name"]').first();
-    activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
-    waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
-    activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
-    unitCards: Locator = this.page.locator('[class*="OwnerUnitCard_container"]');
-    editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
-    editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    firstWaitingsUnit: Locator = this.page.locator('[class*="OwnerUnitCard_container"]').first();
+    readonly firstUnitName: Locator = this.page.locator('[class*="OwnerUnitCard_name"]').first();
+    readonly activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
+    readonly waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
+    readonly activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
+    readonly unitCards: Locator = this.page.locator('[class*="OwnerUnitCard_container"]');
+    readonly editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
+    readonly editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    readonly firstWaitingsUnit: Locator = this.page.locator('[class*="OwnerUnitCard_container"]').first();
 
     async clickOnWaitingsAnnouncementsTab() {
         await this.waitingsAnnouncementsTab.click();
