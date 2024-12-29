@@ -2,30 +2,30 @@ import { test, expect } from "../fixtures";
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-test.beforeEach(async ({ homepage }) => {
-    await homepage.navigate('/');
+test.beforeEach(async ({ homePage }) => {
+    await homePage.navigate('/');
 });
 
-test('test case c212: Checking "Послуги" section on the main page', async ({ page, homepage, productsPage, unitPage }) => {
-    const servicesList = homepage.servicesList;
+test('test case c212: Checking "Послуги" section on the main page', async ({ page, homePage, productsPage, unitPage }) => {
+    const servicesList = homePage.servicesList;
     const servicesCount = await servicesList.count();
     let firstServicesUnitName;
 
-    await homepage.closePopUpBtn.click();
+    await homePage.closePopUpBtn.click();
 
     for (let i = 0; i < servicesCount; i++) {
         await page.waitForLoadState('domcontentloaded')
-        await homepage.servicesContainer.waitFor({state: 'visible'});
-        await homepage.scrollToServicesContainer();
+        await homePage.servicesContainer.waitFor({state: 'visible'});
+        await homePage.scrollToServicesContainer();
 
-        await expect(homepage.servicesContainer).toBeVisible();
-        await expect(await homepage.servicesUnitsList.count()).toBe(7);
+        await expect(homePage.servicesContainer).toBeVisible();
+        await expect(await homePage.servicesUnitsList.count()).toBe(7);
 
         await servicesList.nth(i).click();
 
-        firstServicesUnitName = await homepage.getFirstServicesUnitName();
+        firstServicesUnitName = await homePage.getFirstServicesUnitName();
 
-        await homepage.clickFirstServicesUnit();
+        await homePage.clickFirstServicesUnit();
 
         let filterIsVisible = await productsPage.productFilterItem.isVisible();
 
@@ -41,9 +41,9 @@ test('test case c212: Checking "Послуги" section on the main page', async
 
             await unitPage.clickOnLogo();
 
-            await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await expect(await homePage.getUrl()).toBe(HOMEPAGE_URL);
 
-            await homepage.announcementsNavMenuItem.click({force: true});
+            await homePage.announcementsNavMenuItem.click({force: true});
 
             filterIsVisible = await productsPage.productFilterItem.isVisible();
 
@@ -57,19 +57,19 @@ test('test case c212: Checking "Послуги" section on the main page', async
     }
 })
 
-test('test case c213: Checking "Спецтехніка" section on the main page', async ({ homepage, productsPage, unitPage }) => {
-    const specialEquipmentsList = homepage.specialEquipmentsList;
+test('test case c213: Checking "Спецтехніка" section on the main page', async ({ homePage, productsPage, unitPage }) => {
+    const specialEquipmentsList = homePage.specialEquipmentsList;
     const specialEquipmentsCount = await specialEquipmentsList.count();
 
     for (let i = 0; i < specialEquipmentsCount; i++) {
-        await homepage.scrollToSpecialEquipmentContainer();
+        await homePage.scrollToSpecialEquipmentContainer();
 
-        await expect(homepage.specialEquipmentContainer).toBeVisible();
-        await expect(await homepage.specialEquipmentsUnitsList.count()).toBe(7);
+        await expect(homePage.specialEquipmentContainer).toBeVisible();
+        await expect(await homePage.specialEquipmentsUnitsList.count()).toBe(7);
 
         await specialEquipmentsList.nth(i).click({force: true});
 
-        await homepage.clickFirstSpecialEquipmentUnit();
+        await homePage.clickFirstSpecialEquipmentUnit();
 
         await expect(productsPage.productFilterItem).toBeVisible();
         await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);
@@ -84,9 +84,9 @@ test('test case c213: Checking "Спецтехніка" section on the main page
 
             await unitPage.clickOnLogo();
 
-            await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await expect(await homePage.getUrl()).toBe(HOMEPAGE_URL);
 
-            await homepage.announcementsNavMenuItem.click({force: true});
+            await homePage.announcementsNavMenuItem.click({force: true});
             
             await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);}
         }

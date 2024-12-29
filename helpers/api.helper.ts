@@ -2,12 +2,14 @@ import { APIRequestContext, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import * as fs from 'fs';
 import path from 'path';
+import { generateTenderDates } from './datetime.helpers';
 
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
 const user_password: string = process.env.VALID_PASSWORD || '';
 const user_id: string = process.env.USER_ID || '';
+const base_url: string = process.env.HOMEPAGE_URL || '';
 
 let adminAccessToken: any = null;
 let userAccessToken: any = null;
@@ -335,6 +337,112 @@ class ApiHelper {
                 }
             }
         }
+    }
+
+    async createTender(token: string, tenderName: string, payloadOverrides: Partial<any> = {}) {
+        const tenderDates = generateTenderDates();
+
+        const defaultPayload = {
+            "category": 5,
+            "currency": "UAH",
+            "customer": user_id,
+            "description": "Additional information for the tender. More Information.",
+            "first_name": "",
+            "last_name": "",
+            "lat": 50.453,
+            "lng": 30.516,
+            "middle_name": "",
+            "name": tenderName,
+            "phone": "",
+            "services": [215],
+            "start_price": "6000",
+            "time_of_work": "EIGHT",
+            "type_of_work": "HOUR",
+            ...tenderDates
+        };
+
+        const payload = { ...defaultPayload, ...payloadOverrides };
+
+        const response = await this.request.post(`${base_url}api/tenders/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: payload
+        });
+
+        expect(response.status()).toBe(201);
+
+        const responseBody = await response.json();
+        return responseBody;
+    }
+
+    async uploadTenderAttachment(token: string, tenderId: number, attachmentName: string) {
+        const attachmentPath = path.resolve('data/photo', attachmentName + '.jpg');
+        const attachmentReadStream = fs.createReadStream(attachmentPath);
+
+        const response = await this.request.post(`${base_url}api/tender/attachment-file/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            multipart: {
+                tender: tenderId.toString(),
+                name: attachmentName,
+                attachment_file: attachmentReadStream
+            }
+        });
+
+        expect(response.status()).toBe(201);
+
+        const responseBody = await response.json();
+        return responseBody;
+    }
+
+    async deleteTender(token: string, tenderId: number) {
+        const response = await this.request.delete(`${base_url}api/tender/${tenderId}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        expect(response.status()).toBe(204);
+    }
+
+    async setTenderModerationStatus(token: string, tenderId: number, status: 'approved' | 'declined') {
+        const response = await this.request.post(`${base_url}api/crm/tenders/${tenderId}/moderate/?status=${status}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        expect(response.status()).toBe(202);
+
+        const updatedResponse = await response.json();
+        return updatedResponse
+    }
+
+    async setTenderStatus(token: string, tenderId: number, status: 'closed', value: boolean) {
+        const statusMapping: Record<string, string> = {
+            closed: "is_closed",
+        };
+
+        const statusKey = statusMapping[status];
+
+        const payload = {
+            [statusKey]: value
+        };
+
+        const response = await this.request.patch(`${base_url}api/tender/${tenderId}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            data: payload
+        })
+
+        expect(response.status()).toBe(202);
+
+        const updatedResponse = await response.json();
+        return updatedResponse
     }
 }
 

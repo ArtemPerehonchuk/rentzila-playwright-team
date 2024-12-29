@@ -11,13 +11,13 @@ const addPriceOptions = testData.addPriceOptions;
 
 let selectedService: string;
 
-test.beforeEach(async ({ homepage, createUnitPage, photoTab, servicesTab }) => {
-    await homepage.navigate('/');
-    await homepage.closePopUpBtn.click();
-    await homepage.createUnitBtn.click();
-    await homepage.fillInput('email', VALID_EMAIL);
-    await homepage.fillInput('password', VALIR_PASSWORD);
-    await homepage.clickOnSubmitLoginFormBtn();
+test.beforeEach(async ({ homePage, createUnitPage, photoTab, servicesTab }) => {
+    await homePage.navigate('/');
+    await homePage.closePopUpBtn.click();
+    await homePage.createUnitBtn.click();
+    await homePage.fillInput('email', VALID_EMAIL);
+    await homePage.fillInput('password', VALIR_PASSWORD);
+    await homePage.clickOnSubmitLoginFormBtn();
     await createUnitPage.fillCategory();
     await createUnitPage.fillAnnouncementName();
     await createUnitPage.fillVehicleManufacturer();

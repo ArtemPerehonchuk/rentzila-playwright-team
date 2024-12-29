@@ -1,4 +1,4 @@
-import{ test as baseTest, expect, request, APIRequestContext } from '@playwright/test';
+import { test as baseTest, expect, request, APIRequestContext } from '@playwright/test';
 import CookiePolicyPage from './pages/cookie.policy.page';
 import CreateUnitPage from './pages/create.unit.page';
 import EditUnitPage from './pages/edit.unit.page';
@@ -10,16 +10,18 @@ import PrivacyPolicyPage from './pages/privacy.policy.page';
 import ProductsPage from './pages/products.page';
 import ProfilePage from './pages/profile.page';
 import ServicesTab from './pages/services.tab';
+import OwnerUnitsUI from './page_elements/owner.units.ui'
+import TenderViewPage from './pages/tender.view.page'
+import OwnerTendersPage from './pages/owner.tenders.page'
 import TendersPage from './pages/tenders.page';
 import TermsConditionsPage from './pages/terms.conditions.page';
 import UnitDetailsPage from './pages/unit.details.page';
 import UnitPage from './pages/unit.page';
 import ApiHelper from './helpers/api.helper';
 import CreateTenderPage from './pages/create.tender.page';
-import OwnerTendersPage from './pages/owner.tenders.page'
 
 type TestFixtures = {
-    homepage: HomePage;
+    homePage: HomePage;
     cookiePolicyPage: CookiePolicyPage;
     createUnitPage: CreateUnitPage;
     editUnitPage: EditUnitPage;
@@ -36,86 +38,79 @@ type TestFixtures = {
     unitPage: UnitPage;
     apiHelper: ApiHelper;
     createTenderPage: CreateTenderPage;
+    ownerUnitsUI: OwnerUnitsUI;
+    tenderViewPage: TenderViewPage;
     ownerTendersPage: OwnerTendersPage;
 }
 
 export const test = baseTest.extend<TestFixtures>({
-    homepage: async({page}, use) => {
+    homePage: async ({ page }, use) => {
         const homePage = new HomePage(page);
 
         await homePage.navigate('/');
         await homePage.closePopUpBtn.click();
-        
+
         await use(homePage)
     },
-    cookiePolicyPage: async({page}, use) => {
-        const cookiePolicyPage = new CookiePolicyPage(page);
-        await use(cookiePolicyPage);
+    cookiePolicyPage: async ({ page }, use) => {
+        await use(new CookiePolicyPage(page));
     },
-    createUnitPage: async({page}, use) => {
-        const createUnitPage = new CreateUnitPage(page);
-        await use(createUnitPage);
+    createUnitPage: async ({ page }, use) => {
+        await use(new CreateUnitPage(page));
     },
-    editUnitPage: async({page}, use) => {
-        const editUnitPage = new EditUnitPage(page);
-        await use(editUnitPage);
+    editUnitPage: async ({ page }, use) => {
+        await use(new EditUnitPage(page));
     },
-    ownerUnitsPage: async({page}, use) => {
-        const ownerUnitsPage = new OwnerUnitsPage(page);
-        await use(ownerUnitsPage);
+    ownerUnitsPage: async ({ page }, use) => {
+        await use(new OwnerUnitsPage(page));
     },
-    photoTab: async({page}, use) => {
-        const photoTab = new PhotoTab(page);
-        await use(photoTab);
+    photoTab: async ({ page }, use) => {
+        await use(new PhotoTab(page));
     },
-    pricesTab: async({page}, use) => {
-        const pricesTab = new PricesTab(page);
-        await use(pricesTab);
+    pricesTab: async ({ page }, use) => {
+        await use(new PricesTab(page));
     },
-    privacyPolicyPage: async({page}, use) => {
-        const privacyPolicyPage = new PrivacyPolicyPage(page);
-        await use(privacyPolicyPage);
+    privacyPolicyPage: async ({ page }, use) => {
+        await use(new PrivacyPolicyPage(page));
     },
-    productsPage: async({page}, use) => {
-        const productsPage = new ProductsPage(page);
-        await use(productsPage);
+    productsPage: async ({ page }, use) => {
+        await use(new ProductsPage(page));
     },
-    profilePage: async({page}, use) => {
-        const profilePage = new ProfilePage(page);
-        await use(profilePage);
+    profilePage: async ({ page }, use) => {
+        await use(new ProfilePage(page));
     },
-    servicesTab: async({page}, use) => {
-        const servicesTab = new ServicesTab(page);
-        await use(servicesTab);
+    servicesTab: async ({ page }, use) => {
+        await use(new ServicesTab(page));
     },
-    tendersPage: async({page}, use) => {
-        const tendersPage = new TendersPage(page);
-        await use(tendersPage);
+    tendersPage: async ({ page }, use) => {
+        await use(new TendersPage(page));
     },
-    termsConditionsPage: async({page}, use) => {
-        const termsConditionsPage = new TermsConditionsPage(page);
-        await use(termsConditionsPage);
+    termsConditionsPage: async ({ page }, use) => {
+        await use(new TermsConditionsPage(page)
+        );
     },
-    unitDetailsPage: async({page}, use) => {
-        const unitDetailsPage = new UnitDetailsPage(page);
-        await use(unitDetailsPage);
+    unitDetailsPage: async ({ page }, use) => {
+        await use(new UnitDetailsPage(page));
     },
-    unitPage: async({page}, use) => {
-        const unitPage = new UnitPage(page);
-        await use(unitPage);
+    unitPage: async ({ page }, use) => {
+        await use(new UnitPage(page));
     },
-    apiHelper: async({}, use) => {
+    apiHelper: async ({ }, use) => {
         const apiRequestContext: APIRequestContext = await request.newContext();
         const apiHelper = new ApiHelper(apiRequestContext);
         await use(apiHelper);
     },
-    createTenderPage: async({page}, use) => {
-        const createTenderPage = new CreateTenderPage(page);
-        await use(createTenderPage);
+    createTenderPage: async ({ page }, use) => {
+        await use(new CreateTenderPage(page));
     },
-    ownerTendersPage: async({page}, use) => {
-        const ownerTendersPage = new OwnerTendersPage(page);
-        await use(ownerTendersPage);
+    ownerUnitsUI: async ({ page }, use) => {
+        await use(new OwnerUnitsUI(page));
+    },
+    ownerTendersPage: async ({ page }, use) => {
+        await use(new OwnerTendersPage(page));
+    },
+    tenderViewPage: async ({ page }, use) => {
+        await use(new TenderViewPage(page));
     },
 });
 

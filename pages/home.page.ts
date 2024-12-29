@@ -58,6 +58,11 @@ class HomePage extends Page {
     profileMyAnnouncementsItem: Locator = this.page.locator('[data-testid="units"] > ul > li:nth-child(1)');
     profileTendersItem: Locator = this.page.locator('[data-testid="tenders"]');
 
+    async goToMyTenders () {
+        await this.userIcon.click();
+        await this.profileTendersItem.click();
+    }
+    
     async scrollToServicesContainer() {
         await this.servicesContainer.scrollIntoViewIfNeeded();
     }

@@ -4,13 +4,13 @@ import testData from '../data/test.data.json' assert {type: 'json'}
 const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 
-test.beforeEach(async ({ homepage, createUnitPage }) => {
-    await homepage.navigate('/');
-    await homepage.closePopUpBtn.click();
-    await homepage.createUnitBtn.click();
-    await homepage.fillInput('email', VALID_EMAIL);
-    await homepage.fillInput('password', VALID_PASSWORD);
-    await homepage.clickOnSubmitLoginFormBtn();
+test.beforeEach(async ({ homePage, createUnitPage }) => {
+    await homePage.navigate('/');
+    await homePage.closePopUpBtn.click();
+    await homePage.createUnitBtn.click();
+    await homePage.fillInput('email', VALID_EMAIL);
+    await homePage.fillInput('password', VALID_PASSWORD);
+    await homePage.clickOnSubmitLoginFormBtn();
     await createUnitPage.fillCategory();
     await createUnitPage.fillAnnouncementName();
     await createUnitPage.fillVehicleManufacturer();

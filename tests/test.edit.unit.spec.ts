@@ -23,7 +23,7 @@ test.afterAll(async ({apiHelper}) => {
     await apiHelper.deleteAllUnits(accessUserToken)
 });
 
-test.beforeEach(async ({ homepage, ownerUnitsPage, apiHelper}) => {
+test.beforeEach(async ({ homePage, ownerUnitsPage, apiHelper}) => {
     unitName = faker.string.alpha({length: 15});
 
     await apiHelper.createUnit(accessUserToken, unitName);
@@ -33,16 +33,16 @@ test.beforeEach(async ({ homepage, ownerUnitsPage, apiHelper}) => {
     await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);
     await apiHelper.moderateUnit(accessAdminToken, createdUnitId);
 
-    await homepage.navigate('/');
-    await homepage.closePopUpBtn.click();
-    await homepage.enterBtn.click()
-    await homepage.fillInput('email', VALID_EMAIL);
-    await homepage.fillInput('password', VALID_PASSWORD);
-    await homepage.clickOnSubmitLoginFormBtn();
-    await homepage.clickOnUserIcon();
-    await homepage.clickOnProfileMyAnnouncementsItem();
+    await homePage.navigate('/');
+    await homePage.closePopUpBtn.click();
+    await homePage.enterBtn.click()
+    await homePage.fillInput('email', VALID_EMAIL);
+    await homePage.fillInput('password', VALID_PASSWORD);
+    await homePage.clickOnSubmitLoginFormBtn();
+    await homePage.clickOnUserIcon();
+    await homePage.clickOnProfileMyAnnouncementsItem();
     
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath.ownerUnit));
 
     editedUnitName = await ownerUnitsPage.getFirstUnitNameText();
 });
@@ -60,11 +60,11 @@ test('Test case C182: Edit Unit without changes', async({ ownerUnitsPage, editUn
     
     await ownerUnitsPage.clickOnEditUnitBtn();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
 
     await editUnitPage.clickOnCancelUnitChangesBtn();
 
-    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath["owner-unit"]));
+    await expect(ownerUnitsPage.page).toHaveURL(new RegExp(testData.pagesURLPath.ownerUnit));
 
     await ownerUnitsPage.clickOnEditUnitBtn();
 
@@ -425,7 +425,7 @@ test('Test case C535: Check "Місце розташування технічн�
 
     await editUnitPage.mapPopUpConfirmChoiseBtn.click();
 
-    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+    await expect(editUnitPage.page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
     await expect(editUnitPage.mapPopUp).not.toBeVisible();
     await expect(editUnitPage.vehicleLocation).toHaveText(choosenLocation);
 
@@ -600,7 +600,7 @@ test('Test case C541: Check "Спосіб оплати" menu', async({page, owne
 
         await unitDetailsPage.editUnitBtn.click();
 
-        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath["edit-unit"]));
+        await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.editUnit));
     }
 })
 

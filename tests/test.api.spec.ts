@@ -14,16 +14,16 @@ test.beforeAll(async ({apiHelper, }) => {
     accessAdminToken = await apiHelper.createAdminAccessToken();
 });
 
-test.beforeEach(async ({ homepage }) => {
-    await homepage.navigate('/');
-    await homepage.closePopUpBtn.click();
-    await homepage.enterBtn.click()
-    await homepage.fillInput('email', VALID_EMAIL);
-    await homepage.fillInput('password', VALID_PASSWORD);
-    await homepage.clickOnSubmitLoginFormBtn();
+test.beforeEach(async ({ homePage }) => {
+    await homePage.navigate('/');
+    await homePage.closePopUpBtn.click();
+    await homePage.enterBtn.click()
+    await homePage.fillInput('email', VALID_EMAIL);
+    await homePage.fillInput('password', VALID_PASSWORD);
+    await homePage.clickOnSubmitLoginFormBtn();
 });
 
-test('Verify creating unit through the API request', async( { apiHelper, homepage, ownerUnitsPage} ) => {
+test('Verify creating unit through the API request', async( { apiHelper, homePage, ownerUnitsPage} ) => {
     unitName = faker.string.alpha({length: 15});
 
     const { response: createUnitResponse, unit } = await apiHelper.createUnit(accessUserToken, unitName);
@@ -32,8 +32,8 @@ test('Verify creating unit through the API request', async( { apiHelper, homepag
 
     createdUnitId = await apiHelper.getUnitId(accessUserToken, unitName);
 
-    await homepage.clickOnUserIcon();
-    await homepage.clickOnProfileMyAnnouncementsItem();
+    await homePage.clickOnUserIcon();
+    await homePage.clickOnProfileMyAnnouncementsItem();
     await ownerUnitsPage.clickOnWaitingsAnnouncementsTab();
 
     const uploadPhotoResponse = await apiHelper.uploadUnitPhoto(accessUserToken, createdUnitId);

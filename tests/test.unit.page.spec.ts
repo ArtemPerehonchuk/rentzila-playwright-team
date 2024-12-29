@@ -7,13 +7,13 @@ const VALID_EMAIL: string = process.env.VALID_EMAIL || '';
 const VALID_PASSWORD: string = process.env.VALID_PASSWORD || '';
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-test.beforeEach(async ({ homepage }) => {
-    await homepage.navigate('/');
-    await homepage.closePopUpBtn.click();
-    await homepage.createUnitBtn.click();
-    await homepage.fillInput('email', VALID_EMAIL);
-    await homepage.fillInput('password', VALID_PASSWORD);
-    await homepage.clickOnSubmitLoginFormBtn();
+test.beforeEach(async ({ homePage }) => {
+    await homePage.navigate('/');
+    await homePage.closePopUpBtn.click();
+    await homePage.createUnitBtn.click();
+    await homePage.fillInput('email', VALID_EMAIL);
+    await homePage.fillInput('password', VALID_PASSWORD);
+    await homePage.clickOnSubmitLoginFormBtn();
 });
 
 test('test case C294: Verify body title and tab titles', async( {createUnitPage} ) => {

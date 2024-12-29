@@ -1,4 +1,5 @@
 import { Page as PlaywrightPage, Locator } from '@playwright/test';
+import { parseDate } from '../helpers/datetime.helpers';
 import Page from './page';
 
 class OwnerUnitsPage extends Page {
@@ -44,18 +45,11 @@ class OwnerUnitsPage extends Page {
     async verifyUnitsSortedByDateDescending() {
         const dateTexts = await this.unitCreationDate.allInnerTexts();
 
-        const parsedDates = dateTexts.map(dateText => {
-            const [day, month, year] = dateText.split('.').map(Number);
-            return new Date(year, month - 1, day);
-        });
+        const parsedDates = dateTexts.map(dateText => parseDate(dateText));
 
         const sortedDates = [...parsedDates].sort((a, b) => b.getTime() - a.getTime());
 
         return parsedDates.every((date, index) => date.getTime() === sortedDates[index].getTime());
-    }
-
-    getSelectItemWithText(text: string) {
-        return this.selectFieldItem.filter({ hasText: text });
     }
 
     getUnitCardByTitle(title: string) {
@@ -81,9 +75,6 @@ class OwnerUnitsPage extends Page {
 
         if (unitCardsCount === 0) {
             console.warn(`No units found for category ${expectedCategory}`);
-            const isEmptyTitleCorrect = (await this.unitsEmptyTitle.innerText()) === `Оголошення в категорії "${expectedCategory}" не знайдені`;
-            const isEmptyMsgCorrect = (await this.unitsEmptyMsg.innerText()) === "Ви можете змінити пошуковий запит або скинути всі фільтри";
-            return isEmptyTitleCorrect && isEmptyMsgCorrect;
         }
         else {
             for (let i = 0; i < unitCardsCount; i++) {

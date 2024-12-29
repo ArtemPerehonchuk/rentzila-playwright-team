@@ -29,16 +29,17 @@
         "cyrillic": "Йцукен12"
     },
     "pagesURLPath": {
-        "privacy-policy": "/privacy-policy/",
-        "cookey-policy": "/cookie-policy/",
-        "terms-conditions": "/terms-conditions/",
+        "privacyPolicy": "/privacy-policy/",
+        "cookiePolicy": "/cookie-policy/",
+        "termsConditions": "/terms-conditions/",
         "products": "/products/",
-        "tenders-map": "/tenders-map/",
-        "owner-cabinet": "/owner-cabinet/",
-        "owner-tender": "/owner-tenders-page/",
-        "owner-unit": "/owner-units-page/",
-        "edit-unit": "/edit-unit/",
-        "unit": "/unit/"
+        "tendersMap": "/tenders-map/",
+        "ownerCabinet": "/owner-cabinet/",
+        "ownerTender": "/owner-tenders-page/",
+        "ownerUnit": "/owner-units-page/",
+        "editUnit": "/edit-unit/",
+        "unit": "/unit/",
+        "favoriteUnits": "/owner-favourite-units/"
     },
     "contuctUsFormInputs": {
         "correct phone": "+380506743060",
@@ -85,27 +86,23 @@
         "Метр куб.",
         "Кілометр"
     ],
-    "photoIndexes" : [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    "photoIndexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
     ],
-    "myUnitsFilters": {
-        "category": {
-            "allCategories": "Всі категорії",
-            "building": "Будівельна техніка",
-            "civilEngineering": "Комунальна техніка",
-            "storage": "Складська техніка"
-        },
-        "sorting": {
-            "alpabetically": "По назві",
-            "dateTime": "По даті створення"
-        }
-    },
-    "elementStates": {
-        "favBtn": {
-            "active": "#F73859",
-            "inactive": "#404B69"
-        }
-    },
     "createTenderTabsNames": [
         "Основна інформація",
         "Документація",
@@ -191,5 +188,61 @@
         "next": "Далі",
         "addPrice": "Додати вартість",
         "createService": "Створити послугу"
+    },
+    "ownerUnitsUI": {
+        "noFavoriteUnits": "У Вас поки немає обраних оголошень",
+        "toProductsBtn": "До списку оголошень",
+        "resetFiltersBtn": "Скинути фільтри",
+        "noResultsFoundMsg": "Ви можете змінити пошуковий запит або скинути всі фільтри"
+    },
+    "tenders": {
+        "stateLabel": {
+            "active": "Активний",
+            "closed": "Завершений"
+        },
+        "proposeBtn": "Подати пропозицію",
+        "editBtn": "Редагувати",
+        "closeBtn": "Завершити",
+        "deleteBtn": "Видалити",
+        "propositionsOpenLabel": "Прийом пропозицій",
+        "organiserText": "Організатор: ",
+        "propositionsText": "Кількість пропозицій: ",
+        "worksDateText": "Дата проведення робіт",
+        "locationText": "Місце проведення робіт: ",
+        "defaultLocation": "Київ, Київська область, Україна"
+    },
+    "myUnitsFilters": {
+        "equipmentCategory": {
+            "allCategories": "Всі категорії",
+            "building": "Будівельна техніка",
+            "civilEngineering": "Комунальна техніка",
+            "storage": "Складська техніка"
+        },
+        "serviceCategory": {
+            "allCategories": "Всі категорії",
+            "farming": "Сільськогосподарські",
+            "building": "Будівельні",
+            "user": "Користувацькі",
+            "other": "Інші"
+        },
+        "sorting": {
+            "alpabetically": "По назві",
+            "dateTime": "По даті створення"
+        }
+    },
+    "elementStates": {
+        "favBtn": {
+            "active": "#F73859",
+            "inactive": "#404B69"
+        }
+    },
+    "apiRequestData": {
+        "defaultServiceName": "Прибирання снігу",
+        "serviceCategoryMap": {
+            "13": 2,
+            "37": 3,
+            "53": 4,
+            "132": 5
+        }
     }
 }
