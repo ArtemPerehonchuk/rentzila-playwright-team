@@ -31,19 +31,19 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homePage.clickOnPrivacyPolicyLink();
 
-    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath["privacy-policy"]);
+    await expect(await privacyPolicyPage.getUrl()).toContain(testData.pagesURLPath.privacyPolicy);
     await expect(privacyPolicyPage.privacyPolicyTitle).toBeVisible();
     await expect(privacyPolicyPage.privacyPolicyTitle).toHaveText(testData.titleTexts.privacyPolicy);
 
     await homePage.clickOnCookiePolicyLink();
 
-    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath["cookey-policy"]);
+    await expect(await cookiePolicyPage.getUrl()).toContain(testData.pagesURLPath.cookiePolicy);
     await expect(cookiePolicyPage.cookiePolicyTitle).toBeVisible()
     await expect(cookiePolicyPage.cookiePolicyTitle).toHaveText(testData.titleTexts.cookiePolicy);
 
     await homePage.clickOnTermsConditionsLink();
 
-    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath["terms-conditions"]);
+    await expect(await termsConditionsPage.getUrl()).toContain(testData.pagesURLPath.termsConditions);
     await expect(termsConditionsPage.termsConditionsTitle).toBeVisible()
     await expect(termsConditionsPage.termsConditionsTitle).toHaveText(testData.titleTexts.termsConditions);
 
@@ -60,7 +60,7 @@ test('test case C214: Verify that all elements on the footer are displayed and a
 
     await homePage.clickOnTendersLink();
 
-    await expect(await tendersPage.getUrl()).toContain(testData.pagesURLPath["tenders-map"]);
+    await expect(await tendersPage.getUrl()).toContain(testData.pagesURLPath.tendersMap);
     await expect(tendersPage.searchInput).toBeVisible();
     await expect(await tendersPage.getSerchInputBgText()).toBe(testData.inputPlaceholderTexts.searchTenderInput);
 

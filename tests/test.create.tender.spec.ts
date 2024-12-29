@@ -265,7 +265,7 @@ test('Test Case: C784 Verify "Скасувати" button', async ({ page, create
     await createTenderPage.clickOnCancelBtn();
 
     await expect(dialogAppeared).toBe(true);
-    await expect(page).toHaveURL(new RegExp(testData.pagesURLPath['owner-tender']));
+    await expect(page).toHaveURL(new RegExp(testData.pagesURLPath.ownerTender));
 });
 
 test('Test Case: C785 Verify "Далі" button', async ({ createTenderPage }) => {

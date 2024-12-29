@@ -173,7 +173,7 @@ test.describe('Positive test cases for login form', () => {
             await homePage.clickOnUserIcon();
             await homePage.clickOnMyProfileMenuItem();
 
-            await expect(await profilePage.getUrl()).toContain(testData.pagesURLPath["owner-cabinet"]);
+            await expect(await profilePage.getUrl()).toContain(testData.pagesURLPath.ownerCabinet);
             await expect(profilePage.profilePhoneInput).toBeVisible();
             await expect(await profilePage.getProfilePhoneInputValue()).toBe(VALID_PHONE);
 

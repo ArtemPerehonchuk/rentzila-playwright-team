@@ -1,23 +1,35 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class OwnerTendersPage extends Page {
 
+    readonly createTenderBtn: Locator;
+    readonly tenderCard: Locator;
+    readonly tenderCategory: Locator;
+    readonly tenderTitle: Locator;
+    readonly tenderPrice: Locator;
+    readonly tenderDate: Locator;
+    readonly tenderLocation: Locator;
+    readonly tenderPropositions: Locator;
+    readonly tenderActionBtn: Locator;
+    readonly tenderCloseBtn: Locator;
+    readonly tenderPropositionsOpenLabel: Locator;
+
     constructor(page: PlaywrightPage) {
         super(page);
-    }
 
-    createTenderBtn = this.page.locator('[data-testid="emptyBlockButton"]');
-    tenderCard = this.page.locator('div[class*="OwnerTenderCard_tenderCard_"]');
-    tenderCategory = this.page.locator('div[class*="CurrentItemInfo_category_"]');
-    tenderTitle = this.page.locator('div[class*="CurrentItemInfo_name_"]');
-    tenderPrice = this.page.locator('div[class*="CurrentItemPrice_price_"]');
-    tenderDate = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(0);
-    tenderLocation = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(1);
-    tenderPropositions = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(2);
-    tenderActionBtn = this.page.locator('button[class*="CurrentTenderButtons_fillBtn_"]');
-    tenderCloseBtn = this.page.locator('button[class*="CurrentTenderButtons_redBtn_"]');
-    tenderPropositionsOpenLabel = this.page.locator('div[class*="CurrentTenderStatus_proposes_"]');
+        this.createTenderBtn = this.page.locator('[data-testid="emptyBlockButton"]');
+        this.tenderCard = this.page.locator('div[class*="OwnerTenderCard_tenderCard_"]');
+        this.tenderCategory = this.page.locator('div[class*="CurrentItemInfo_category_"]');
+        this.tenderTitle = this.page.locator('div[class*="CurrentItemInfo_name_"]');
+        this.tenderPrice = this.page.locator('div[class*="CurrentItemPrice_price_"]');
+        this.tenderDate = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(0);
+        this.tenderLocation = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(1);
+        this.tenderPropositions = this.page.locator('div[class*="ParagraphWithIcon_paragraph_"]').nth(2);
+        this.tenderActionBtn = this.page.locator('button[class*="CurrentTenderButtons_fillBtn_"]');
+        this.tenderCloseBtn = this.page.locator('button[class*="CurrentTenderButtons_redBtn_"]');
+        this.tenderPropositionsOpenLabel = this.page.locator('div[class*="CurrentTenderStatus_proposes_"]');
+    }
 
     getTenderByTitle(title: string) {
         return this.tenderCard.filter({ has: this.tenderTitle.filter({ hasText: title }) });

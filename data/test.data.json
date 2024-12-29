@@ -29,16 +29,17 @@
         "cyrillic": "Йцукен12"
     },
     "pagesURLPath": {
-        "privacy-policy": "/privacy-policy/",
-        "cookey-policy": "/cookie-policy/",
-        "terms-conditions": "/terms-conditions/",
+        "privacyPolicy": "/privacy-policy/",
+        "cookiePolicy": "/cookie-policy/",
+        "termsConditions": "/terms-conditions/",
         "products": "/products/",
-        "tenders-map": "/tenders-map/",
-        "owner-cabinet": "/owner-cabinet/",
-        "owner-tender": "/owner-tenders-page/",
-        "owner-unit": "/owner-units-page/",
-        "edit-unit": "/edit-unit/",
-        "unit": "/unit/"
+        "tendersMap": "/tenders-map/",
+        "ownerCabinet": "/owner-cabinet/",
+        "ownerTender": "/owner-tenders-page/",
+        "ownerUnit": "/owner-units-page/",
+        "editUnit": "/edit-unit/",
+        "unit": "/unit/",
+        "favoriteUnits": "/owner-favourite-units/"
     },
     "contuctUsFormInputs": {
         "correct phone": "+380506743060",
@@ -85,8 +86,22 @@
         "Метр куб.",
         "Кілометр"
     ],
-    "photoIndexes" : [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    "photoIndexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
     ],
     "createTenderTabsNames": [
         "Основна інформація",
@@ -196,7 +211,6 @@
         "locationText": "Місце проведення робіт: ",
         "defaultLocation": "Київ, Київська область, Україна"
     },
-
     "myUnitsFilters": {
         "equipmentCategory": {
             "allCategories": "Всі категорії",
