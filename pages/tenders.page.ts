@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class TendersPage extends Page {  
@@ -7,7 +7,7 @@ class TendersPage extends Page {
         super(page);
     }
 
-    searchInput = this.page.getByTestId('search');
+    searchInput: Locator = this.page.getByTestId('search');
 
     async getSerchInputBgText() {
         const searchInputText = await this.searchInput.getAttribute('placeholder');

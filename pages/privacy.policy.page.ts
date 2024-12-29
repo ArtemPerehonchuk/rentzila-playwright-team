@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import Page from './page';
 
 class PrivacyPolicyPage extends Page {  
@@ -7,7 +7,7 @@ class PrivacyPolicyPage extends Page {
         super(page);
     }
 
-    privacyPolicyTitle = this.page.locator('h1[class*="PrivacyPolicy_title"]');
+    privacyPolicyTitle: Locator = this.page.locator('h1[class*="PrivacyPolicy_title"]');
 
 }
 

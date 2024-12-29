@@ -4,12 +4,12 @@ import * as fs from 'fs';
 import path from 'path';
 import { generateTenderDates } from './datetime.helpers';
 
-const base_url: string = process.env.HOMEPAGE_URL || '';
 const admin_email: string = process.env.ADMIN_EMAIL || '';
 const admin_password: string = process.env.ADMIN_PASSWORD || '';
 const user_email: string = process.env.VALID_EMAIL || '';
 const user_password: string = process.env.VALID_PASSWORD || '';
 const user_id: string = process.env.USER_ID || '';
+const base_url: string = process.env.HOMEPAGE_URL || '';
 
 let adminAccessToken: any = null;
 let userAccessToken: any = null;
@@ -28,7 +28,7 @@ class ApiHelper {
     async createAdminAccessToken() {
         if (!adminAccessToken) {
             await this.request
-                .post(`${base_url}api/auth/jwt/create/`, {
+                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
                     data: {
                         email: admin_email,
                         password: admin_password
@@ -43,7 +43,10 @@ class ApiHelper {
     async createUserAccessToken() {
         if (!userAccessToken) {
             await this.request
-                .post(`${base_url}api/auth/jwt/create/`, {
+                .post(`${process.env.HOMEPAGE_URL}api/auth/jwt/create/`, {
+                    headers: {
+                        ...this.defaultHeaders
+                    },
                     data: {
                         email: user_email,
                         password: user_password
@@ -58,7 +61,7 @@ class ApiHelper {
     async getUserDetails() {
         const accessAdminToken = await this.createAdminAccessToken();
         await this.request
-            .get(`${base_url}api/backcall/`, {
+            .get(`${process.env.HOMEPAGE_URL}api/backcall/`, {
                 headers: {
                     Authorization: `Bearer ${accessAdminToken}`
                 }
@@ -80,7 +83,7 @@ class ApiHelper {
         const price = faker.number.int({ min: 1000, max: 10000 });
 
         const response = await this.request
-            .post(`${base_url}api/units/`, {
+            .post(`${process.env.HOMEPAGE_URL}api/units/`, {
                 headers: {
                     Authorization: `Bearer ${accessUserToken}`,
                     ...this.defaultHeaders
@@ -134,7 +137,7 @@ class ApiHelper {
 
     async getUnitsList(accessUserToken: string) {
         const response = await this.request
-            .get(`${base_url}api/units/`, {
+            .get(`${process.env.HOMEPAGE_URL}api/units/`, {
                 headers: {
                     Authorization: `Bearer ${accessUserToken}`,
                     ...this.defaultHeaders
@@ -146,7 +149,7 @@ class ApiHelper {
     }
     async setUnitsActiveStatus(token: string, unitIds: number[]) {
         for (const unitId of unitIds) {
-            const response = await this.request.patch(`${base_url}api/crm/units/${unitId}/moderate/`, {
+            const response = await this.request.patch(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/moderate/`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -164,7 +167,7 @@ class ApiHelper {
     }
 
     async deleteUnit(accessUserToken: string, unitId: any) {
-        const response = await this.request.delete(`${base_url}api/units/${unitId}/`, {
+        const response = await this.request.delete(`${process.env.HOMEPAGE_URLl}api/units/${unitId}/`, {
             headers: {
                 Authorization: `Bearer ${accessUserToken}`,
                 ...this.defaultHeaders
@@ -175,24 +178,22 @@ class ApiHelper {
     }
 
     async uploadUnitPhoto(accessUserToken: string, unitId: number) {
-        const response = await this.request.post(`${base_url}api/unit-images/`, {
+
+        const imagePath = path.resolve('data/photo/', 'pexels-albinberlin-919073.jpg');
+        const imageReadStream = fs.createReadStream(imagePath);
+
+        const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/unit-images/`, {
             headers: {
-                'Authorization': `Bearer ${accessUserToken}`,
+                Authorization: `Bearer ${accessUserToken}`
             },
             multipart: {
                 unit: unitId.toString(),
-                image: {
-                    name: 'pexels-albinberlin-919073.jpg',
-                    mimeType: 'image/jpg',
-                    buffer: fs.readFileSync('./data/photo/pexels-albinberlin-919073.jpg')
-                },
+                image: imageReadStream,
                 is_main: 'true'
             }
         });
 
-        const responseData = await response.json();
-
-        return { response, responseData };
+        return response;
     }
 
     async getUnitId(accessToken: string, unitName: string) {
@@ -217,12 +218,59 @@ class ApiHelper {
         }
     }
 
+    async moderateUnit(accessAdminToken: string, unitId: number) {
+        const response = await this.request.patch(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/moderate/`, {
+            headers: {
+                Authorization: `Bearer ${accessAdminToken}`,
+                ...this.defaultHeaders
+            },
+            data: {
+                "is_approved": true,
+            }
+        })
+
+        return response
+    }
+
+    async searchUnitByName(accessToken: string, unitName: string) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/units/?search=${unitName}`, {
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            ...this.defaultHeaders
+            }
+        })
+
+        return response
+    }
+
+    async getVehicleManufacturer(accessToken: string, manufacturerId: number) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/manufacturers/${manufacturerId}/`, {
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            ...this.defaultHeaders
+            }
+        })
+
+        return response
+    }
+
+    async getUnitById(accessAdminToken: string, unitId: number) {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/crm/units/${unitId}/`, {
+            headers: {
+                Authorization: `Bearer ${accessAdminToken}`,
+                ...this.defaultHeaders
+            }
+        })
+
+        return response
+    }
+
     async getUnitIds(limit: number): Promise<number[]> {
         const unitIds: number[] = [];
         let currentPage = 1;
 
         while (unitIds.length < limit) {
-            const response = await this.request.get(`${base_url}api/units/?page=${currentPage}`);
+            const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/units/?page=${currentPage}`);
             expect(response.status()).toBe(200);
 
             const responseBody = await response.json();
@@ -244,7 +292,7 @@ class ApiHelper {
 
     async addUnitsToFavorites(accessToken: string | null, unitIds: number[]) {
         for (const unitId of unitIds) {
-            const response = await this.request.post(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+            const response = await this.request.post(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -255,7 +303,7 @@ class ApiHelper {
     }
 
     async getFavoriteUnits(accessToken: string | null): Promise<number[]> {
-        const response = await this.request.get(`${base_url}api/auth/users/${user_id}/favourite-units/`, {
+        const response = await this.request.get(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -272,7 +320,7 @@ class ApiHelper {
     async removeUnitsFromFavorites(accessToken: string | null, unitIds: number[]) {
         for (const unitId of unitIds) {
             try {
-                const response = await this.request.delete(`${base_url}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
+                const response = await this.request.delete(`${process.env.HOMEPAGE_URL}api/auth/users/${user_id}/favourite-units/${unitId}/`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         Connection: 'close',

@@ -1,9 +1,9 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 import path from 'path';
-import testData from '../data/test_data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 
-const photoFileNames = testData['photo file names'];
+const photoFileNames = testData.photoFileNames;
 
 class PhotoTab extends Page {  
 
@@ -11,18 +11,18 @@ class PhotoTab extends Page {
         super(page);
         } 
     
-    imageBlocks =  this.page.locator('[data-testid="imageBlock"]');
-    uploadFileInput = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
-    invalidPhotoPopUp = this.page.locator('[data-testid="errorPopup"]');
-    closePopUpBtn = this.page.locator('[data-testid="closeIcon"]');
-    submitPopUpBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    elementOutsidePopUp = this.page.locator('[class*="NavbarCatalog_wrapper"]');
-    prevBtn = this.page.locator('[data-testid="prevButton"]');
-    uploadPhotoClueLine = this.page.locator('div[data-testid="description"]');
-    photoTabTitle = this.page.locator('div[class="ImagesUnitFlow_paragraph__gQRyS"]');
-    firstImgLable = this.page.locator('[data-testid="mainImageLabel"]');
-    deleteImgIcons = this.page.locator('[data-testid="deleteImage"]');
-    unitImages = this.page.locator('[data-testid="unitImage"]');
+    imageBlocks: Locator =  this.page.locator('[data-testid="imageBlock"]');
+    uploadFileInput: Locator = this.page.locator('[data-testid="input_ImagesUnitFlow"]');
+    invalidPhotoPopUp: Locator = this.page.locator('[data-testid="errorPopup"]');
+    closePopUpBtn: Locator = this.page.locator('[data-testid="closeIcon"]');
+    submitPopUpBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    elementOutsidePopUp: Locator = this.page.locator('[class*="NavbarCatalog_wrapper"]');
+    prevBtn: Locator = this.page.locator('[data-testid="prevButton"]');
+    uploadPhotoClueLine: Locator = this.page.locator('div[data-testid="description"]');
+    photoTabTitle: Locator = this.page.locator('div[class="ImagesUnitFlow_paragraph__gQRyS"]');
+    firstImgLable: Locator = this.page.locator('[data-testid="mainImageLabel"]');
+    deleteImgIcons: Locator = this.page.locator('[data-testid="deleteImage"]');
+    unitImages: Locator = this.page.locator('[data-testid="unitImage"]');
 
 
     async uploadPhoto() {
@@ -41,18 +41,6 @@ class PhotoTab extends Page {
         return await this.invalidPhotoPopUp.innerText();
     }
 
-    async clickOnClosePopUpBtn() {
-        await this.closePopUpBtn.click();
-    }
-
-    async clickOnSubmitPopUpBtn() {
-        await this.submitPopUpBtn.click();
-    }
-
-    async clickOutsidePopUp() {
-        await this.elementOutsidePopUp.click({force: true});
-    }
-
     async uploadIncorrectFileType() {
             await this.imageBlocks.nth(0).focus();
             await this.uploadFileInput.setInputFiles(path.resolve('data/test.txt'));
@@ -61,10 +49,6 @@ class PhotoTab extends Page {
     async uploadIncorrectFileSize() {
         await this.imageBlocks.nth(0).focus();
         await this.uploadFileInput.setInputFiles(path.resolve('data/photo/21mb.jpg'));
-    }
-    
-    async clickOnPrevBtn() {
-        await this.prevBtn.click();
     }
 
     async getPhotoTabTitleText() {

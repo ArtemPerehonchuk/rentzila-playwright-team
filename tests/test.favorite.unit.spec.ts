@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures";
-import testData from '../data/test_data.json' assert {type: 'json'};
-import categories from '../data/category_names.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
+import categories from '../data/category.names.json' assert {type: 'json'};
 import { faker } from "@faker-js/faker";
 
 let adminAccessToken: string

@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, expect, Locator } from '@playwright/test';
 import Page from './page';
 
 class UnitPage extends Page {
@@ -7,9 +7,9 @@ class UnitPage extends Page {
         super(page);
     }
 
-    unitServicesTitle = this.page.locator('[class*="UnitCharacteristics_services"] [class*="UnitCharacteristics_title"]');
-    unitServicesTypesContainer = this.page.locator('[itemprop="services"]');
-    secondCategoryBreadCrumb = this.page.locator("span[data-testid='secondCategorySpan']");
+    unitServicesTitle: Locator = this.page.locator('[class*="UnitCharacteristics_services"] [class*="UnitCharacteristics_title"]');
+    unitServicesTypesContainer: Locator = this.page.locator('[itemprop="services"]');
+    secondCategoryBreadCrumb: Locator = this.page.locator("span[data-testid='secondCategorySpan']");
 
     async checkUnitIsVisible() {
         await expect(this.unitServicesTitle).toBeVisible()

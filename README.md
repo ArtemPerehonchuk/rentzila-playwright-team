@@ -22,11 +22,27 @@ This project contains end-to-end tests for the Rentzila web site using Playwrigh
     ```bash
     cd rentzila-playwright-tests
     ````
-3. Install dependencies:
+
+3. Install Playwright:
+
+    ```bash
+    npx playwright install
+    ```
+
+4. Install dependencies:
 
     ```bash
     npm install
     ```
+
+5. Create an .env file:
+
+    In the project root directory, create an .env file by copying the example.env file:
+
+    ```bash
+    cp example.env .env
+    ```
+    Then, update the .env file with your specific environment variables, such as credentials and homepage URL.
 
 ## Running Tests
 1. Run All Tests:
@@ -35,66 +51,67 @@ To run all tests using the default browser configuration:
     ```bash
     npm run test
     ```
-2. Run Tests in Chrome:
 
-    ```bash
-    npm run test:chrome
-    ```
-
-3. To run specific test file in Chrome:
+2. To run specific test file:
 
 - Run tests for services:
 
     ```bash
-    npm run test:services:chrome
+    npm run test:services
     ```
 
 - Run tests for footer elements:
 
     ```bash
-    npm run test:footer-elements:chrome
+    npm run test:footer-elements
     ```
 
 - Run tests for login:
 
     ```bash
-    npm run test:login:chrome
+    npm run test:login
     ```
 
 - Run tests for main info tab on create unit page:
 
     ```bash
-    npm run test:unit-page-main-info-tab:chrome
+    npm run test:unit-page-main-info-tab
     ```
 
 - Run tests for photo tab on create unit page:
 
     ```bash
-    npm run test:photo-tab:chrome
+    npm run test:photo-tab
     ```
 
 - Run tests for prices tab on create unit page:
 
     ```bash
-    npm run test:prices-tab:chrome
+    npm run test:prices-tab
     ```
 
 - Run tests for services tab on create unit page:
 
     ```bash
-    npm run test:services-tab:chrome
+    npm run test:services-tab
     ```
 
 - Run tests for creating unit using API:
 
     ```bash
-    npm run test:api:chrome
+    npm run test:api
     ```
 
 - Run tests for edit unit functionality:
 
     ```bash
-    npm run test:edit-unit:chrome
+    npm run test:edit-unit
+    ```
+
+- Run tests for create tender functionality:
+
+    ```bash
+    npm run test:create-tender
     ```
 
 ## GitHub Pages

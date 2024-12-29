@@ -1,0 +1,234 @@
+{
+    "incorrectPhoneNumbers": {
+        "without country code": "991234786",
+        "withoutln": "099123478",
+        "with-": "+380-99-123-47-86",
+        "with spaces": "+380 99 123 47 86",
+        "with ()": "+380(99)1234786",
+        "with () without country code": "(99)1234786",
+        "11 numders": "+38099123478",
+        "other country code": "+10991234786",
+        "without 38": "+0991234786"
+    },
+    "incorrectEmails": {
+        "space": "for somemytests@gmail.com",
+        "cyrillic": "еуіегіуккутеяшдф",
+        "without @": "forsomemytestsgmail.com",
+        "without .": "forsomemytests@gmailcom",
+        "without com": "forsomemytests@gmail.",
+        "without gmail": "forsomemytests@.com",
+        "without @gmail.com": "forsomemytests",
+        "with 2 @": "forsomemytests@@gmail.com"
+    },
+    "incorrectPasswords": {
+        "space at the end": "Qwerty12 ",
+        "space at the begining": " Qwerty12",
+        "non-existent": "Qwerty17",
+        "without 1 uppercase": "qwerty12",
+        "without 1 lowercase": "QWERTY12",
+        "cyrillic": "Йцукен12"
+    },
+    "pagesURLPath": {
+        "privacy-policy": "/privacy-policy/",
+        "cookey-policy": "/cookie-policy/",
+        "terms-conditions": "/terms-conditions/",
+        "products": "/products/",
+        "tenders-map": "/tenders-map/",
+        "owner-cabinet": "/owner-cabinet/",
+        "owner-tender": "/owner-tenders-page/",
+        "owner-unit": "/owner-units-page/",
+        "edit-unit": "/edit-unit/",
+        "unit": "/unit/"
+    },
+    "contuctUsFormInputs": {
+        "correct phone": "+380506743060",
+        "other correct phone": "+380501234567",
+        "incorrect phone with spaces": "+38063 111 111",
+        "incorrect phone same digits and spaces": " +1 1111111111111",
+        "test": "Test"
+    },
+    "photoFileNames": [
+        "pexels-alex-amorales-321095-909907",
+        "pexels-alexgtacar-745150-1592384",
+        "pexels-cesarperez209-733745",
+        "pexels-christian-9-454702-1164778",
+        "pexels-mikebirdy-112460",
+        "pexels-mikebirdy-116675",
+        "pexels-mikebirdy-120049",
+        "pexels-mikebirdy-170811",
+        "pexels-mikebirdy-244206",
+        "pexels-mikebirdy-810357",
+        "pexels-nordic-overdrive-202768-627678",
+        "pexels-pixabay-35967",
+        "pexels-pixabay-210019",
+        "pexels-sarmad-mughal-94606-305070",
+        "pexels-trace-707046"
+    ],
+    "paymentMethods": [
+        "Готівкою / на картку",
+        "Безготівковий розрахунок (без ПДВ)",
+        "Безготівковий розрахунок (з ПДВ)"
+    ],
+    "incorrectPrices": {
+        "space in middle": "123 456",
+        "space in end": "123456 ",
+        "one space": " ",
+        "letters": "abcd",
+        "special symbols": "!@#$%.,"
+    },
+    "addPriceOptions": [
+        "Година",
+        "Зміна",
+        "Тонна",
+        "Гектар",
+        "Метр кв.",
+        "Метр куб.",
+        "Кілометр"
+    ],
+    "photoIndexes" : [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    ],
+    "createTenderTabsNames": [
+        "Основна інформація",
+        "Документація",
+        "Контакти"
+    ],
+    "errorMessages": {
+        "tenderNameLess10Symbols": "Назва має містити щонайменше 10 символів",
+        "requiredField": "Це поле обов’язкове",
+        "incorrectEndDate": "Період між датами подання пропозицій має бути більшим за добу",
+        "tenderDescriptionLess40Symbols": "Опис має містити щонайменше 40 символів",
+        "announcementNameLess10Symbols": "У назві оголошення повинно бути не менше 10 символів",
+        "announcementNameMore100Symbols": "У назві оголошення може бути не більше 100 символів",
+        "modelNameLess15Symbols": "У назві моделі може бути не більше 15 символів",
+        "uploadImages": "Додайте в оголошення від 1 до 12 фото технічного засобу розміром до 20 МВ у форматі .jpg, .jpeg, .png. Перше фото буде основним.",
+        "addMin1Service": "Додайте в оголошення принаймні 1 послугу",
+        "fieldMustBeFilled": "Поле не може бути порожнім",
+        "phoneNumberWasNotValidated": "Телефон не пройшов валідацію",
+        "incorrectEmailOrPhoneFormat": "Неправильний формат email або номера телефону",
+        "uploadingTheSamePhotosIsNotAllowed": "Ви не можете завантажити двічі один файл.",
+        "incorrectFileFormat": "Формат зображення не підтримується",
+        "more20MbFile": "Ви не можете завантажити файл більше 20 МВ",
+        "minPriceLess1000": "Мінімальна вартiсть має бути не менше 1000 грн",
+        "incorrectChoosenAddress": "Виберіть коректне місце на мапі України",
+        "invalidEmailOrPassword": "Невірний e-mail або пароль",
+        "incorrectPasswordFormat": "Пароль повинен містити"
+    },
+    "successMessages": {
+        "unitEdited": "Вашe оголошення успішно відредаговане"
+    },
+    "inputPlaceholderTexts": {
+        "tenderNameInput": "Введіть назву тендера",
+        "tenderServiceInput": "Назва послуги, наприклад, Прибирання снігу ",
+        "tenderBudgetInput": "Наприклад, 10 000",
+        "announcementNameInput": "Введіть назву оголошення",
+        "vehicleManufacturerInput": "Введіть виробника транспортного засобу",
+        "modelNameInput": "Введіть назву моделі",
+        "editUnitService": "Наприклад: Рихлення грунту, буріння",
+        "minOrderInput": "Наприклад, 1000",
+        "searchAnnouncementInput": "Пошук оголошень або послуг",
+        "searchTenderInput": "Пошук тендера за ключовими словами",
+        "servicesInput": "Наприклад: Рихлення грунту, буріння",
+        "chooseCategory": "Виберіть категорію",
+        "chooseOnMap": "Виберіть на мапі"
+    },
+    "titleTexts": {
+        "createTender": "Створити тендер",
+        "createUnit": "Створити оголошення",
+        "tenderName": "Назва тендера",
+        "arrowSymbol": "*",
+        "tenderService": "Знайдіть послугу, яку необхідно виконати",
+        "activeAnnouncementsNotExist": "У Вас поки немає активних оголошень",
+        "privacyPolicy": "Політика конфіденційності",
+        "cookiePolicy": "Політика використання файлів cookie",
+        "termsConditions": "Угода користувача",
+        "specialEquipment": "Сервіс пошуку",
+        "photoTabTitle": "Фото технічного засобу",
+        "paymentMethod": "Спосіб оплати",
+        "minOrderPrice": "Вартість мінімального замовлення",
+        "servicesPrice": "Вартість Ваших послуг",
+        "services": "Послуги",
+        "servicesParagraph": "Знайдіть послуги, які надає Ваш технічний засіб",
+        "choosenServices": "Послуги, які надає технічний засіб:",
+        "category": "Категорія",
+        "categoriesPopUp": "Вибір категорії технічного засобу",
+        "announcementName": "Назва оголошення",
+        "vehicleManufacturer": "Виробник транспортного засобу",
+        "modelName": "Назва моделі",
+        "technicalCharacteristics": "Технічні характеристики",
+        "detailDescription": "Детальний опис",
+        "vehicalAddress": "Місце розташування технічного засобу",
+        "vehiclesOnMap": "Техніка на мапі"
+    },
+    "borderColors": {
+        "errorColor": "rgb(247, 56, 89)",
+        "defaultGrey": "rgb(229, 229, 229)",
+        "redColor": "rgb(247, 56, 89)",
+        "darkBlue": "rgb(40, 49, 73)"
+    },
+    "buttonNames": {
+        "cancel": "Скасувати ",
+        "understood": "Зрозуміло",
+        "previous": "Назад",
+        "next": "Далі",
+        "addPrice": "Додати вартість",
+        "createService": "Створити послугу"
+    },
+    "ownerUnitsUI": {
+        "noFavoriteUnits": "У Вас поки немає обраних оголошень",
+        "toProductsBtn": "До списку оголошень",
+        "resetFiltersBtn": "Скинути фільтри",
+        "noResultsFoundMsg": "Ви можете змінити пошуковий запит або скинути всі фільтри"
+    },
+    "tenders": {
+        "stateLabel": {
+            "active": "Активний",
+            "closed": "Завершений"
+        },
+        "proposeBtn": "Подати пропозицію",
+        "editBtn": "Редагувати",
+        "closeBtn": "Завершити",
+        "deleteBtn": "Видалити",
+        "propositionsOpenLabel": "Прийом пропозицій",
+        "organiserText": "Організатор: ",
+        "propositionsText": "Кількість пропозицій: ",
+        "worksDateText": "Дата проведення робіт",
+        "locationText": "Місце проведення робіт: ",
+        "defaultLocation": "Київ, Київська область, Україна"
+    },
+
+    "myUnitsFilters": {
+        "equipmentCategory": {
+            "allCategories": "Всі категорії",
+            "building": "Будівельна техніка",
+            "civilEngineering": "Комунальна техніка",
+            "storage": "Складська техніка"
+        },
+        "serviceCategory": {
+            "allCategories": "Всі категорії",
+            "farming": "Сільськогосподарські",
+            "building": "Будівельні",
+            "user": "Користувацькі",
+            "other": "Інші"
+        },
+        "sorting": {
+            "alpabetically": "По назві",
+            "dateTime": "По даті створення"
+        }
+    },
+    "elementStates": {
+        "favBtn": {
+            "active": "#F73859",
+            "inactive": "#404B69"
+        }
+    },
+    "apiRequestData": {
+        "defaultServiceName": "Прибирання снігу",
+        "serviceCategoryMap": {
+            "13": 2,
+            "37": 3,
+            "53": 4,
+            "132": 5
+        }
+    }
+}

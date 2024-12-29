@@ -1,4 +1,4 @@
-import { Page as PlaywrightPage, expect } from '@playwright/test';
+import { Page as PlaywrightPage, Locator } from '@playwright/test';
 import { parseDate } from '../helpers/datetime.helpers';
 import Page from './page';
 
@@ -8,22 +8,39 @@ class OwnerUnitsPage extends Page {
         super(page);
     }
 
-    unitName = this.page.locator('[class*="OwnerUnitCard_name"]');
-    unitCategory = this.page.locator('div[class*="OwnerUnitCard_category_"]');
-    activeAnnouncementsTab = this.page.locator('button[id*="Активні"]');
-    waitingsAnnouncementsTab = this.page.locator('button[id*="Очікуючі"]');
-    activeAnnouncementsTabTitle = this.page.locator('[data-testid="title"]');
-    unitCards = this.page.locator('div[class*="OwnerUnitCard_unitCard_"]');
-    editUnitBtn = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
-    editWaitingsUnitBtn = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
-    favoriteBtn = this.page.locator('[data-testid="favourite"]');
-    favoriteIndicator = this.page.locator('[data-testid="favourite"] g>path');
-    unitCreationDate = this.page.locator('div[class*="OwnerUnitCard_dot_"]~div');
-    clearFavoritesBtn = this.page.locator('button[class*="OwnerFavouriteUnitsPage_removeList_"]');
-    clearFavoritesPopup = this.page.locator('[class*="DialogPopup_content_"]');
-    clearFavoritesPopupConfirmBtn = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
-    clearFavoritesPopupCancelBtn = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
-    clearFavoritesPopupCloseIcon = this.page.locator('[class*="PopupLayout_closeIcon_"]');
+    unitName: Locator = this.page.locator('[class*="OwnerUnitCard_name"]');
+    unitCategory: Locator = this.page.locator('div[class*="OwnerUnitCard_category_"]');
+    activeAnnouncementsTab: Locator = this.page.locator('button[id*="Активні"]');
+    waitingsAnnouncementsTab: Locator = this.page.locator('button[id*="Очікуючі"]');
+    activeAnnouncementsTabTitle: Locator = this.page.locator('[data-testid="title"]');
+    createUntBtn: Locator = this.page.locator('[data-testid="emptyBlockButton"]')
+    unitCards: Locator = this.page.locator('div[class*="OwnerUnitCard_unitCard_"]');
+    editUnitBtn: Locator = this.page.locator('[class*="ItemButtons_lightBlueBtn"]');
+    editWaitingsUnitBtn: Locator = this.page.locator('[class*="ItemButtons_darkBlueBtn"]');
+    firstWaitingsUnit: Locator = this.page.locator('[class*="OwnerUnitCard_container"]').first();
+    favoriteBtn: Locator = this.page.locator('[data-testid="favourite"]');
+    favoriteIndicator: Locator = this.page.locator('[data-testid="favourite"] g>path');
+    unitCreationDate: Locator = this.page.locator('div[class*="OwnerUnitCard_dot_"]~div');
+    clearFavoritesBtn: Locator = this.page.locator('button[class*="OwnerFavouriteUnitsPage_removeList_"]');
+    clearFavoritesPopup: Locator = this.page.locator('[class*="DialogPopup_content_"]');
+    clearFavoritesPopupConfirmBtn: Locator = this.page.locator('div[class*="DialogPopup_btnsWrapper_"] button[class*="ItemButtons_darkBlueBtn"]');
+    clearFavoritesPopupCancelBtn: Locator = this.page.locator('[class*="ItemButtons_lightRedBtn_"]');
+    clearFavoritesPopupCloseIcon: Locator = this.page.locator('[class*="PopupLayout_closeIcon_"]');
+    unitsEmptyTitle: Locator = this.page.getByTestId('title');
+    unitsEmptyMsg: Locator = this.page.getByTestId('descr');
+    emptyBlockBtn: Locator = this.page.getByTestId('emptyBlockButton');
+    unitSearchInput: Locator = this.page.locator('div[data-testid="search"] input');
+    paginationNumBtn: Locator = this.page.locator('a[class*="Pagination_page_"]');
+    paginationPrevBtn: Locator = this.page.locator('a[class*="Pagination_arrow_"][rel="prev"]');
+    paginationNextBtn: Locator = this.page.locator('a[class*="Pagination_arrow_"][rel="next"]');
+    unitCategorySelect: Locator = this.page.getByTestId('div_CustomSelect').nth(0);
+    unitSortingSelect: Locator = this.page.getByTestId('div_CustomSelect').nth(1);
+    selectFieldItem: Locator = this.page.getByTestId('item-customSelect');
+
+    getPaginationBtnWithIndex(index: number) {
+        const number = index - 1;
+        return this.paginationNumBtn.nth(number);
+    }
 
     async verifyUnitsSortedByDateDescending() {
         const dateTexts = await this.unitCreationDate.allInnerTexts();
@@ -92,8 +109,8 @@ class OwnerUnitsPage extends Page {
     }
 
     async clickOnEditUnitBtn() {
-        await this.editUnitBtn.first().click();
-        await this.page.waitForTimeout(1000);
+        await this.editUnitBtn.first().click(); 
+        await this.page.waitForLoadState('load')
     }
 
     async clickOnEditWaitingsUnitBtn() {

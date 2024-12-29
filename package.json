@@ -1,36 +1,41 @@
 {
   "name": "rentzila-playwright-tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright-based automated tests for Rentzila web site.",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
-    "test:ui": "playwright test --ui --config=playwright.config.chrome.ts",
-    "test:chrome": "playwright test --config=playwright.config.chrome.ts",
-    "test:services:chrome": "playwright test tests/test.services.spec.ts --config=playwright.config.chrome.ts",
-    "test:login:chrome": "playwright test tests/test.login.spec.ts --config=playwright.config.chrome.ts",
-    "test:footer-elements:chrome": "playwright test tests/test.footer.elements.spec.ts --config=playwright.config.chrome.ts",
-    "test:unit-page-main-info-tab:chrome": "playwright test tests/test.unit.page.spec.ts --config=playwright.config.chrome.ts",
-    "test:photo-tab:chrome": "playwright test tests/test.photo.tab.spec.ts --config=playwright.config.chrome.ts",
-    "test:prices-tab:chrome": "playwright test tests/test.prices.tab.spec.ts --config=playwright.config.chrome.ts",
-    "test:services-tab:chrome": "playwright test tests/test.services.tab.spec.ts --config=playwright.config.chrome.ts",
-    "test:api:chrome": "playwright test tests/test.api.spec.ts --config=playwright.config.chrome.ts",
-    "test:edit-unit:chrome": "playwright test tests/test.edit.unit.spec.ts --config=playwright.config.chrome.ts --workers=1"
+    "test": "playwright test --workers=1",
+    "test:ui": "playwright test --ui",
+    "test:services": "playwright test tests/test.services.spec.ts",
+    "test:login": "playwright test tests/test.login.spec.ts",
+    "test:footer-elements": "playwright test tests/test.footer.elements.spec.ts",
+    "test:unit-page-main-info-tab": "playwright test tests/test.unit.page.spec.ts",
+    "test:photo-tab": "playwright test tests/test.photo.tab.spec.ts",
+    "test:prices-tab": "playwright test tests/test.prices.tab.spec.ts",
+    "test:services-tab": "playwright test tests/test.services.tab.spec.ts",
+    "test:api": "playwright test tests/test.api.spec.ts",
+    "test:edit-unit": "playwright test tests/test.edit.unit.spec.ts --workers=1",
+    "test:create-tender": "playwright test tests/test.create.tender.spec.ts --workers=1",
+    "generate-report": "playwright show-report test-results/html/index.html"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@faker-js/faker": "^9.0.1",
+  "keywords": [
+    "playwright",
+    "automation",
+    "e2e-tests",
+    "qa",
+    "rentzila",
+    "typescript"
+  ],
+  "author": "Artem Perehonchuk",
+  "license": "MIT",
+  "dependencies": {
     "@playwright/test": "^1.47.0",
+    "dotenv": "^16.4.5",
+    "@faker-js/faker": "^9.0.1",
     "@types/dotenv": "^6.1.1",
     "@types/form-data": "^2.2.1",
     "@types/node": "^22.5.4",
     "typescript": "^5.6.2"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "form-data": "^4.0.1"
   }
 }

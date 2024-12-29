@@ -1,6 +1,6 @@
-import { Page as PlaywrightPage } from '@playwright/test';
+import { Page as PlaywrightPage,Locator } from '@playwright/test';
 import Page from './page';
-import { getRandomLetter } from '../helpers/random_values';
+import { getRandomLetter } from '../helpers/random.values';
 
 class ServicesTab extends Page {  
 
@@ -8,21 +8,21 @@ class ServicesTab extends Page {
         super(page);
         } 
 
-    servicesTabTitle = this.page.locator('[class*="ServicesUnitFlow_title"]');
-    servicesTabInput = this.page.locator('div[class*="ServicesUnitFlow_searchInput"] > input');
-    servicesOptionsDropDown = this.page.locator('[data-testid="searchResult"]')
-    servicesOptions = this.page.locator('[data-testid="searchItem-servicesUnitFlow"]');
-    serviceNotFoundMessage = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
-    createServiceBtn = this.page.locator('[data-testid="btn-addNewItem"]');
-    createServiceBtnPlusIcon = this.page.locator('[data-testid="svg-plus-addNewItem"]');
-    serviceChoosenItem = this.page.locator('[data-testid="item-servicesUnitFlow"]');
-    serviceChoosenMark = this.page.locator('[data-testid="unitServicesButton"] > svg');
-    removeChoosenItemIcon = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
-    chosenServicesTitle = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').nth(1);
-    choosenServicesContainer = this.page.locator('[class*="ServicesUnitFlow_servicesWrapper"]');
-    addServiceClueMsg = this.page.locator('[data-testid="add-info"]');
-    servicesParagraphTitle = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').first();
-    searchServiceIcon = this.page.locator('[data-testid="searchResult"] > div > svg');
+    servicesTabTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_title"]');
+    servicesTabInput: Locator = this.page.locator('div[class*="ServicesUnitFlow_searchInput"] > input');
+    servicesOptionsDropDown: Locator = this.page.locator('[data-testid="searchResult"]')
+    servicesOptions: Locator = this.page.locator('[data-testid="searchItem-servicesUnitFlow"]');
+    serviceNotFoundMessage: Locator = this.page.locator('[data-testid="p2-notFound-addNewItem"]');
+    createServiceBtn: Locator = this.page.locator('[data-testid="btn-addNewItem"]');
+    createServiceBtnPlusIcon: Locator = this.page.locator('[data-testid="svg-plus-addNewItem"]');
+    serviceChoosenItem: Locator = this.page.locator('[data-testid="item-servicesUnitFlow"]');
+    serviceChoosenMark: Locator = this.page.locator('[data-testid="unitServicesButton"] > svg');
+    removeChoosenItemIcon: Locator = this.page.locator('[data-testid="remove-servicesUnitFlow"]');
+    chosenServicesTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').nth(1);
+    choosenServicesContainer: Locator = this.page.locator('[class*="ServicesUnitFlow_servicesWrapper"]');
+    addServiceClueMsg: Locator = this.page.locator('[data-testid="add-info"]');
+    servicesParagraphTitle: Locator = this.page.locator('[class*="ServicesUnitFlow_paragraph"]').first();
+    searchServiceIcon: Locator = this.page.locator('[data-testid="searchResult"] > div > svg');
 
     async selectService() {
         await this.servicesTabInput.fill(getRandomLetter());
@@ -34,20 +34,8 @@ class ServicesTab extends Page {
        return selectedService;
     }
 
-    async clickOnServicesOption() {
-        await this.servicesOptions.first().click();
-    }
-
-    async fillServicesTabInput(value: string) {
-        await this.servicesTabInput.fill(value);
-    }
-
     async getServiceNotFoundMessageText() {
         return await this.serviceNotFoundMessage.innerText();    
-    }
-
-    async clickOnCreateServiceBtn() {
-        await this.createServiceBtn.click();
     }
 
     async getServiceSearchItemTexts() {
@@ -58,16 +46,8 @@ class ServicesTab extends Page {
         return await this.serviceChoosenItem.all()
     }
 
-    async clickOnRemoveChoosenItemIcon(index: number) {
-        await this.removeChoosenItemIcon.nth(index).click();
-    }
-
     async getServicesTabInputValue() {
         return await this.servicesTabInput.inputValue();
-    }
-
-    async typeValueInServicesTabInput(value: string) {
-        await this.servicesTabInput.type(value);
     }
 
     async getServicesParagraphTitleText() {
@@ -76,10 +56,6 @@ class ServicesTab extends Page {
 
     async getServiceTabInputBgText() {
         return await this.servicesTabInput.getAttribute('placeholder');
-    }
-
-    async clearServicesTabInput() {
-        await this.servicesTabInput.clear();
     }
 
     async getChosenItemText() {

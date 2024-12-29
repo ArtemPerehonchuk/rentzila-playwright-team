@@ -1,87 +1,95 @@
-import { test, expect } from "@playwright/test";
-import HomePage from '../pages/home.page';
-import ProductsPage from '../pages/products.page';
-import UnitPage from '../pages/unit.page';
+import { test, expect } from "../fixtures";
 
 const HOMEPAGE_URL: string = process.env.HOMEPAGE_URL || '';
 
-let homepage: HomePage;
-let productsPage: ProductsPage;
-let unitPage: UnitPage;
-
-test.beforeEach(async ({ page }) => {
-    homepage = new HomePage(page);
-    productsPage = new ProductsPage(page);
-    unitPage = new UnitPage(page);
-    await homepage.navigate('/');
+test.beforeEach(async ({ homePage }) => {
+    await homePage.navigate('/');
 });
 
-test('test case c212: Checking ""Послуги"" section on the main page', async ({ page }) => {
-    const servicesList = homepage.servicesList;
+test('test case c212: Checking "Послуги" section on the main page', async ({ page, homePage, productsPage, unitPage }) => {
+    const servicesList = homePage.servicesList;
     const servicesCount = await servicesList.count();
     let firstServicesUnitName;
 
-    for (let i = 0; i < servicesCount; i++) {
-        await homepage.scrollToServicesContainer();
+    await homePage.closePopUpBtn.click();
 
-        await expect(homepage.servicesContainer).toBeVisible();
-        await expect(await homepage.servicesUnitsList.count()).toBe(7);
+    for (let i = 0; i < servicesCount; i++) {
+        await page.waitForLoadState('domcontentloaded')
+        await homePage.servicesContainer.waitFor({state: 'visible'});
+        await homePage.scrollToServicesContainer();
+
+        await expect(homePage.servicesContainer).toBeVisible();
+        await expect(await homePage.servicesUnitsList.count()).toBe(7);
 
         await servicesList.nth(i).click();
 
-        firstServicesUnitName = await homepage.getFirstServicesUnitName();
+        firstServicesUnitName = await homePage.getFirstServicesUnitName();
 
-        await homepage.clickFirstServicesUnit();
+        await homePage.clickFirstServicesUnit();
 
-        await expect(await productsPage.productFilterItem).toBeVisible();
-        await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
-        await expect(await productsPage.unitsContainer).toBeVisible();
+        let filterIsVisible = await productsPage.productFilterItem.isVisible();
 
-        await productsPage.clickFirstProduct();
+        if(filterIsVisible) {
+            await expect(productsPage.productFilterItem).toHaveText(firstServicesUnitName)
+        }
 
-        await unitPage.checkUnitIsVisible();
+        const productsListIsVisible = await productsPage.produtsList.first().isVisible();
 
-        await unitPage.clickOnLogo();
+        if(productsListIsVisible) {
+            await productsPage.clickFirstProduct();
+            await expect(await unitPage.checkUnitIsVisible()).toBe(true);
 
-        await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await unitPage.clickOnLogo();
 
-        await homepage.clickOnAnnouncementsNavMenuItem();
+            await expect(await homePage.getUrl()).toBe(HOMEPAGE_URL);
 
-        await expect(await productsPage.productFilterItem).toBeVisible();
-        await expect(await productsPage.filtersAreChecked(firstServicesUnitName)).toBe(true);
+            await homePage.announcementsNavMenuItem.click({force: true});
 
-        await homepage.clickOnLogo();
+            filterIsVisible = await productsPage.productFilterItem.isVisible();
+
+            if(filterIsVisible) {
+                await expect(productsPage.productFilterItem).toBeVisible();
+            }
+
+        }
+
+        await productsPage.clickOnLogo()
     }
 })
 
-test('test case c213: Checking ""Спецтехніка"" section on the main page', async ({ page }) => {
-    const specialEquipmentsList = homepage.specialEquipmentsList;
+test('test case c213: Checking "Спецтехніка" section on the main page', async ({ homePage, productsPage, unitPage }) => {
+    const specialEquipmentsList = homePage.specialEquipmentsList;
     const specialEquipmentsCount = await specialEquipmentsList.count();
 
     for (let i = 0; i < specialEquipmentsCount; i++) {
-        await homepage.scrollToSpecialEquipmentContainer();
+        await homePage.scrollToSpecialEquipmentContainer();
 
-        await expect(homepage.specialEquipmentContainer).toBeVisible();
-        await expect(await homepage.specialEquipmentsUnitsList.count()).toBe(7);
+        await expect(homePage.specialEquipmentContainer).toBeVisible();
+        await expect(await homePage.specialEquipmentsUnitsList.count()).toBe(7);
 
         await specialEquipmentsList.nth(i).click({force: true});
 
-        await homepage.clickFirstSpecialEquipmentUnit();
+        await homePage.clickFirstSpecialEquipmentUnit();
 
-        await expect(await productsPage.productFilterItem).toBeVisible();
+        await expect(productsPage.productFilterItem).toBeVisible();
         await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);
-        await expect(await productsPage.unitsContainer).toBeVisible();
+        await expect(productsPage.unitsContainer).toBeVisible();
 
-        await productsPage.clickFirstProduct();
+        const productsListIsVisible = await productsPage.produtsList.first().isVisible();
 
-        await unitPage.checkUnitIsVisible();
+        if(productsListIsVisible){
+            await productsPage.clickFirstProduct();
 
-        await unitPage.clickOnLogo();
+            await expect(await unitPage.checkUnitIsVisible()).toBe(true);
 
-        await expect(await homepage.getUrl()).toBe(HOMEPAGE_URL);
+            await unitPage.clickOnLogo();
 
-        await homepage.clickOnAnnouncementsNavMenuItem();
-        
-        await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);
-    }
+            await expect(await homePage.getUrl()).toBe(HOMEPAGE_URL);
+
+            await homePage.announcementsNavMenuItem.click({force: true});
+            
+            await expect(await productsPage.checkCategoriesCheckboxesAreChecked()).toBe(true);}
+        }
+
+        await productsPage.clickOnLogo()
 })

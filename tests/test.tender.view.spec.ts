@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures";
-import testData from '../data/test_data.json' assert {type: 'json'};
+import testData from '../data/test.data.json' assert {type: 'json'};
 import { faker } from "@faker-js/faker";
 import { getDateRangeFromElement, parseApiDate, parseDate } from "../helpers/datetime.helpers";
 
@@ -44,7 +44,7 @@ test.describe('Tender View Tests', async () => {
         tenders.push({
             ...createdTender,
             name: tenderName,
-            attachment: await apiHelper.uploadTenderAttachment(userAccessToken, createdTender.id, testData["photo file names"][0]),
+            attachment: await apiHelper.uploadTenderAttachment(userAccessToken, createdTender.id, testData.photoFileNames[0]),
         });
 
         tenderPrice = new Intl.NumberFormat('uk-UA').format(tenders[0].start_price);
@@ -171,7 +171,7 @@ test.describe('Tender View Tests', async () => {
 
         await ownerTendersPage.refreshUntilElementVisible(
             ownerTendersPage.getTenderByTitle(tenders[0].name));
-        homePage.clickOnClosePopUpBtn();
+        await homePage.closePopUpBtn.click();
 
 
         await ownerTendersPage.getTenderByTitle(tenders[0].name).click();
@@ -206,7 +206,7 @@ test.describe('Tender View Tests', async () => {
         await expect(tenderViewPage.tenderServiceLabel).toHaveText(testData.apiRequestData.defaultServiceName);
         await expect(tenderViewPage.tenderDescription).toHaveText(tenders[0].description);
 
-        await expect(tenderViewPage.tenderDocumentName).toHaveText(testData["photo file names"][0]);
+        await expect(tenderViewPage.tenderDocumentName).toHaveText(testData.photoFileNames[0]);
 
         const currentDate = new Date();
         expect(parseDate(await tenderViewPage.tenderDocumentDate.innerText()))
@@ -218,7 +218,7 @@ test.describe('Tender View Tests', async () => {
 
         await tenderViewPage.downloadFile(async () => {
             await tenderViewPage.tenderDocumentDownloadBtn.click();
-        }, testData["photo file names"][0] + ".jpg");
+        }, testData.photoFileNames[0] + ".jpg");
 
         await expect(tenderViewPage.tendersFromAuthorBlock).toBeVisible();
     });
@@ -239,7 +239,7 @@ test.describe('Tender Search and Sorting Tests', async () => {
             tenders.push({
                 ...createdTender,
                 name: tenderName,
-                attachment: await apiHelper.uploadTenderAttachment(userAccessToken, createdTender.id, testData["photo file names"][0]),
+                attachment: await apiHelper.uploadTenderAttachment(userAccessToken, createdTender.id, testData.photoFileNames[0]),
             });
 
             await apiHelper.setTenderModerationStatus(adminAccessToken, createdTender.id, 'approved');
